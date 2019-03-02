@@ -1,5 +1,9 @@
-import { TagsService, ArticlesService } from "@/common/api.service";
-import { FETCH_ARTICLES, FETCH_TAGS } from "./actions.type";
+import {
+  TagsService,
+  ArticlesService,
+  TestService
+} from "@/common/api.service";
+import { FETCH_ARTICLES, FETCH_TAGS, TEST } from "./actions.type";
 import {
   FETCH_START,
   FETCH_END,
@@ -40,10 +44,19 @@ const actions = {
         throw new Error(error);
       });
   },
-  [FETCH_TAGS]({ commit }) {
+  [TEST]({ commit }) {
+    /*
+    FETCH_TAGS
     return TagsService.get()
       .then(({ data }) => {
         commit(SET_TAGS, data.tags);
+      })
+      .catch(error => {
+        throw new Error(error);
+      });*/
+    return TestService.get()
+      .then(({ data }) => {
+        console.log("TestService", data);
       })
       .catch(error => {
         throw new Error(error);

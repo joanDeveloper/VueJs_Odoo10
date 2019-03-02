@@ -75,6 +75,12 @@ export const ArticlesService = {
   }
 };
 
+export const TestService = {
+  get() {
+    return ApiService.get("contact");
+  }
+};
+
 export const CommentsService = {
   get(slug) {
     if (typeof slug !== "string") {
