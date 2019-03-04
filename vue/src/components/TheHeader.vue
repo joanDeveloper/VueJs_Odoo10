@@ -35,6 +35,18 @@
             <i class="ion-compose"></i>Sign up
           </router-link>
         </li>
+
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            active-class="active"
+            exact
+            :to="{ name: 'contact' }"
+          >
+            <i class="ion-compose"></i>Contact
+          </router-link>
+        </li>
+
       </ul>
       <ul v-else class="nav navbar-nav pull-xs-right">
         <li class="nav-item">

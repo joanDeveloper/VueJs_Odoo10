@@ -41,6 +41,11 @@ export default new Router({
       path: "/settings",
       component: () => import("@/views/Settings")
     },
+    {
+      name: "contact",
+      path: "/contact",
+      component: () => import("@/views/Contact")
+    },
     // Handle child routes with a default, by giving the name to the
     // child.
     // SO: https://github.com/vuejs/vue-router/issues/777

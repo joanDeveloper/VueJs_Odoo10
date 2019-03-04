@@ -23,3 +23,4 @@ export const UPDATE_USER = "updateUser";
 
 ////////////////////////////////////
 export const TEST = "TEST";
+export const SEND_CONTACT = "SEND_CONTACT";

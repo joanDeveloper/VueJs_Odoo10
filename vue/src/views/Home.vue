@@ -14,7 +14,7 @@ export default {
   },
   mounted() {
     console.log("HOME", this.$store);
-    this.$store.dispatch(TEST);
+    //this.$store.dispatch(TEST);
   },
   computed: {
     ...mapGetters(["isAuthenticated", "tags"]),
