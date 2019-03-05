@@ -29,8 +29,6 @@ const ApiService = {
   },
 
   post(resource, params) {
-    console.log("POST___",resource);
-    console.log("POST___1",params);
     return Vue.axios.post(`${resource}`, params);
   },
 
@@ -81,6 +79,12 @@ export const ArticlesService = {
 export const ContactService = {
   post(payload) {
     return ApiService.post(`contact`, { "data":  payload });
+  }
+};
+
+export const UsersService = {
+  get() {
+    return ApiService.get("lawyers");
   }
 };
 

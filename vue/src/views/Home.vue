@@ -5,7 +5,7 @@
 <script>
 import { mapGetters } from "vuex";
 import RwvTag from "@/components/VTag";
-import { TEST } from "@/store/actions.type";
+import { GET_LAWYERS } from "@/store/actions.type";
 
 export default {
   name: "home",
@@ -14,7 +14,7 @@ export default {
   },
   mounted() {
     console.log("HOME", this.$store);
-    //this.$store.dispatch(TEST);
+    this.$store.dispatch(GET_LAWYERS);
   },
   computed: {
     ...mapGetters(["isAuthenticated", "tags"]),
