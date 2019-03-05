@@ -2,6 +2,9 @@ import { ContactService } from "@/common/api.service";
 import {
     SEND_CONTACT
 } from "./actions.type";
+import Vue from "vue";
+import Toasted from 'vue-toasted';
+Vue.use(Toasted);
 
 const actions = {
 
@@ -9,11 +12,20 @@ const actions = {
         return new Promise((resolve, reject) => {
             ContactService.post(data)
                 .then(({ data }) => {
-                    console.log("SUCCESS", JSON.parse(data.result));
-                    if(JSON.parse(data.result).message) alert("EMAIL SEND CORRECT");
+                    if(JSON.parse(data.result).message){
+                        Vue.toasted.show(JSON.parse(data.result).message, { 
+                            theme: "outline", 
+                            position: "top-right", 
+                            duration : 5000
+                       });
+                    } 
                 })
-                .catch(({ response }) => {
-                    alert("There has been some problem sending the email");
+                .catch(() => {
+                    Vue.toasted.show("There has been some problem sending the email", { 
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 5000
+                   });
                 });
         });
     }

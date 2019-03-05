@@ -1,5 +1,5 @@
 {
-  "author": "Emmanuel Vilsbol <emmanuel@vilsbol.com>",
+  "author": "Joan Montés <joanmodaw@gmail.com>",
   "dependencies": {
     "axios": "^0.18.0",
     "date-fns": "^1.29.0",
@@ -8,9 +8,10 @@
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1",
+    "vue-toasted": "^1.1.26",
     "vuex": "^3.0.1"
   },
-  "description": "TodoMVC for the RealWorld™",
+  "description": "Project Educational",
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.1",

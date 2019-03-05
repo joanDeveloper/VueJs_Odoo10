@@ -1,7 +1,6 @@
 import {
   TagsService,
-  ArticlesService,
-  TestService
+  ArticlesService
 } from "@/common/api.service";
 import { FETCH_ARTICLES, FETCH_TAGS, TEST } from "./actions.type";
 import {
@@ -39,24 +38,6 @@ const actions = {
     return ArticlesService.query(params.type, params.filters)
       .then(({ data }) => {
         commit(FETCH_END, data);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
-  },
-  [TEST]({ commit }) {
-    /*
-    FETCH_TAGS
-    return TagsService.get()
-      .then(({ data }) => {
-        commit(SET_TAGS, data.tags);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });*/
-    return TestService.get()
-      .then(({ data }) => {
-        console.log("TestService", data);
       })
       .catch(error => {
         throw new Error(error);
