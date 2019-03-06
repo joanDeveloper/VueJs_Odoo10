@@ -3,12 +3,22 @@ import {
     GET_LAWYERS
 } from "./actions.type";
 
-const actions = {
+const state = {
+    users: [],
+    isLoading: true
+};
 
+const getters = {
+    user(state) { return state.users; }
+};
+
+const actions = {
     [GET_LAWYERS](context, data) {
+        console.log("CONTEXT", context);
         UsersService.get()
             .then(({ data }) => {
                 console.log("GET_LAWYERS", data);
+                state.users = data;
             })
             .catch(() => {
 
@@ -17,5 +27,7 @@ const actions = {
 };
 
 export default {
-    actions
+    actions,
+    state,
+    getters
 };

@@ -1,5 +1,20 @@
 <template>
-  <section class="container-home">content home</section>
+  <section class="container-home">
+      <table>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Codigo postal</th>
+          <th>Número de colegiado</th>
+        </tr>
+        <tr v-for="(user, index) in user" :key="index">
+          <td>{{user.nombre}}</td>
+          <td>{{user.apellidos}}</td>
+          <td>{{user.cod_postal}}</td>
+          <td>{{user.num_colegiado}}</td>
+        </tr>
+      </table>
+  </section>
 </template>
 
 <script>
@@ -13,14 +28,22 @@ export default {
     RwvTag
   },
   mounted() {
-    console.log("HOME", this.$store);
     this.$store.dispatch(GET_LAWYERS);
   },
   computed: {
-    ...mapGetters(["isAuthenticated", "tags"]),
-    tag() {
-      return this.$route.params.tag;
-    }
+    ...mapGetters(["user"])
   }
 };
 </script>
+<style>
+table,th,td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+th {
+  text-align: left;
+}
+</style>
