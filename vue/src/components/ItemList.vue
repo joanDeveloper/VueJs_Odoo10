@@ -1,32 +1,42 @@
 <template>
-  <section class="container-home">
+  <section>
     <div
       class="banner"
       style="background:linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%);">
       <div class="container" align="center">
-        <h1 class="logo-font">Colegio Abogados Liberty</h1>
+        <h1 class="logo-font">List Items</h1>
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article class="container-list__lawyer container">
-      <router-link :to="{ name: 'listItems' }">Listado de abogados</router-link>
+    <article class="container">
+      <table>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Codigo postal</th>
+          <th>Número de colegiado</th>
+        </tr>
+        <tr v-for="(user, index) in user" :key="index">
+          <td>{{user.nombre}}</td>
+          <td>{{user.apellidos}}</td>
+          <td>{{user.cod_postal}}</td>
+          <td>{{user.num_colegiado}}</td>
+        </tr>
+      </table>
     </article>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+//import RwvTag from "@/components/VTag";
 import { GET_LAWYERS } from "@/store/actions.type";
-//import CompItemsList from "@/components/ItemList";
 
 export default {
-  name: "home",
+  name: "CompItemsList",
   mounted() {
-    //this.$store.dispatch(GET_LAWYERS);
+    this.$store.dispatch(GET_LAWYERS);
   },
-  /*components: {
-    CompItemsList
-  },*/
   computed: {
     ...mapGetters(["user"])
   }
@@ -45,11 +55,5 @@ td {
 }
 th {
   text-align: left;
-}
-.container-list__lawyer {
-  background-color: blue;
-  width: 10%;
-  padding: 1%;
-  color: white;
 }
 </style>
