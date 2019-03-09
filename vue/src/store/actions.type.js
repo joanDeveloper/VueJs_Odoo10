@@ -22,6 +22,6 @@ export const REGISTER = "register";
 export const UPDATE_USER = "updateUser";
 
 ////////////////////////////////////
-export const TEST = "TEST";
 export const SEND_CONTACT = "SEND_CONTACT";
 export const GET_LAWYERS = "GET_LAWYERS";
+export const GET_CATEGORIES = "GET_CATEGORIES";

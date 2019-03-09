@@ -2,33 +2,39 @@
   <section class="container-home">
     <div
       class="banner"
-      style="background:linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%);">
+      style="background:linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%);"
+    >
       <div class="container" align="center">
         <h1 class="logo-font">Colegio Abogados Liberty</h1>
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
     <article class="container-list__lawyer container">
-      <router-link :to="{ name: 'listItems' }">Listado de abogados</router-link>
+      <div v-for="(categories, index) in categories" :key="index">
+        <router-link
+          :to="{ name: 'listItems', params: { categories: categories.name } }"
+        >{{categories.description}}</router-link>
+      </div>
     </article>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_LAWYERS } from "@/store/actions.type";
-//import CompItemsList from "@/components/ItemList";
+import { GET_CATEGORIES } from "@/store/actions.type";
+import CompItemsList from "@/components/ItemList";
+import CategoriesList from "@/components/CategoriesList";
 
 export default {
   name: "home",
   mounted() {
-    //this.$store.dispatch(GET_LAWYERS);
+    this.$store.dispatch(GET_CATEGORIES);
   },
-  /*components: {
-    CompItemsList
-  },*/
+  components: {
+    CategoriesList
+  },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["categories"])
   }
 };
 </script>

@@ -29,6 +29,7 @@ const ApiService = {
   },
 
   post(resource, params) {
+    console.log("POST", params, resource);
     return Vue.axios.post(`${resource}`, params);
   },
 
@@ -52,8 +53,7 @@ export default ApiService;
 export const TagsService = {
   get() {
     return ApiService.get("tags");
-  },
-  
+  }
 };
 
 export const ArticlesService = {
@@ -78,13 +78,22 @@ export const ArticlesService = {
 
 export const ContactService = {
   post(payload) {
-    return ApiService.post(`contact`, { "data":  payload });
+    return ApiService.post(`contact`, { data: payload });
   }
 };
 
 export const UsersService = {
   get() {
     return ApiService.get("lawyers");
+  },
+  post(payload) {
+    return ApiService.post(`users`, { data: payload });
+  }
+};
+
+export const CategoriesService = {
+  get() {
+    return ApiService.get("categories");
   }
 };
 

@@ -4,6 +4,7 @@ class Lawyer(models.Model):
     _name = 'users.lawyer'
 
     slug = fields.Char('slug', required=True)
+    categories_slug = fields.Many2one('categories.list','slug_categories')
     num_colegiado = fields.Integer('numero colegiado', required=True)
     ejerciente = fields.Boolean('ejerciente', required=True)
     nombre = fields.Char('nombre', required=True)

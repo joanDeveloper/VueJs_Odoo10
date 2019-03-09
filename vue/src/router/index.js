@@ -47,9 +47,14 @@ export default new Router({
       component: () => import("@/views/Contact")
     },
     {
-      name: "listItems",
-      path: "/list",
-      component: () => import("@/components/ItemList")
+      path: "/list/:categories",
+      component: () => import("@/components/ItemList"),
+      children: [
+        {
+          path: "",
+          name: "listItems"
+        }
+      ]
     },
     // Handle child routes with a default, by giving the name to the
     // child.
