@@ -60,21 +60,6 @@ export default {
 };
 </script>
 <style>
-table,
-th,
-td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  border: 0px;
-  margin-left: 25%;
-}
-th,
-td {
-  padding: 5px;
-}
-th {
-  text-align: left;
-}
 .responsive-img {
   width: 5%;
   height: 4vw;

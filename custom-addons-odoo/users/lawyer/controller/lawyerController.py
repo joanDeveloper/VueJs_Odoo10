@@ -31,3 +31,14 @@ class LawyerController(http.Controller):
 
         _logger.info(search)
         return json.dumps(search)
+
+    @http.route('/detail/', type="json", auth="none",website=True, cors="*")
+    def getDetail(self):
+        data = request.jsonrequest
+        _logger.info(data['data'])
+        fields = ['slug','nombre','apellidos','num_colegiado','cod_postal','email','ejerciente','direccion','fax','telefono']
+        searchDetail = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        'search_read',[[['num_colegiado', '=', data['data']]],fields])
+
+        _logger.info(searchDetail)
+        return json.dumps(searchDetail)
