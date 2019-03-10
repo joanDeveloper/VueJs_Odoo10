@@ -25,7 +25,7 @@ class LawyerController(http.Controller):
     def get(self):
         data = request.jsonrequest
         _logger.info(data['data'])
-        fields = ['slug','nombre','apellidos','numero colegiado','codigo postal']
+        fields = ['slug','nombre','apellidos','num_colegiado','cod_postal','email','ejerciente']
         search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_read',[[['categories_slug', '=', data['data']]],fields])
 

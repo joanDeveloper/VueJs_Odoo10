@@ -56,6 +56,16 @@ export default new Router({
         }
       ]
     },
+    {
+      path: "/detail/:id",
+      component: () => import("@/components/ItemDetail"),
+      children: [
+        {
+          path: "",
+          name: "detailItems"
+        }
+      ]
+    },
     // Handle child routes with a default, by giving the name to the
     // child.
     // SO: https://github.com/vuejs/vue-router/issues/777

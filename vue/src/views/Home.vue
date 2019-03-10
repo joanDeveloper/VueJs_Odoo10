@@ -12,7 +12,9 @@
     <article class="container-list__lawyer container">
       <div v-for="(categories, index) in categories" :key="index">
         <router-link
-          :to="{ name: 'listItems', params: { categories: categories.name } }"
+          class="link-category"
+          :to="{ name: 'listItems', 
+          params: { categories: categories.name } }"
         >{{categories.description}}</router-link>
       </div>
     </article>
@@ -23,15 +25,11 @@
 import { mapGetters } from "vuex";
 import { GET_CATEGORIES } from "@/store/actions.type";
 import CompItemsList from "@/components/ItemList";
-import CategoriesList from "@/components/CategoriesList";
 
 export default {
   name: "home",
   mounted() {
     this.$store.dispatch(GET_CATEGORIES);
-  },
-  components: {
-    CategoriesList
   },
   computed: {
     ...mapGetters(["categories"])
@@ -39,23 +37,14 @@ export default {
 };
 </script>
 <style>
-table,
-th,
-td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th,
-td {
-  padding: 5px;
-}
-th {
-  text-align: left;
+.link-category {
+  color: white;
 }
 .container-list__lawyer {
-  background-color: blue;
+  background-color: grey;
   width: 10%;
   padding: 1%;
-  color: white;
+  border-radius: 5%;
+  text-align: center;
 }
 </style>
