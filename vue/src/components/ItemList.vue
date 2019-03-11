@@ -13,7 +13,7 @@
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
         <img
-          class="responsive-img"
+          class="responsive-img__list"
           src="img/users/joanet1.jpg"
           alt="imagen usuario abogado"
           width="35"
@@ -41,28 +41,96 @@
         <span class="data-items" v-if="user.ejerciente==true">Sí</span>
         <span class="data-items" v-else>No</span>
       </router-link>
+      
     </article>
+    <VPagination :pages="pages" :currentPage.sync="currentPage" />
   </section>
 </template>
 
 <script>
+// console.log("PAGES",pages);
 import { mapGetters } from "vuex";
 import { GET_LAWYERS } from "@/store/actions.type";
+import VPagination from "./VPagination";
 
 export default {
   name: "CompItemsList",
   mounted() {
     this.$store.dispatch(GET_LAWYERS, this.$route.params.categories);
   },
+  components: {
+    VPagination
+  },
+  props: {
+    type: {
+      type: String,
+      required: false,
+      default: "all"
+    },
+    itemsPerPage: {
+      type: Number,
+      required: false,
+      default: 10
+    }
+  },
+  data() {
+    return {
+      currentPage: 1
+    };
+  },
   computed: {
-    ...mapGetters(["user"])
+    listConfig() {
+      const { type } = this;
+      const filters = {
+        offset: (this.currentPage - 1) * this.itemsPerPage,
+        limit: this.itemsPerPage
+      };
+      if (this.author) {
+        filters.author = this.author;
+      }
+      if (this.tag) {
+        filters.tag = this.tag;
+      }
+      if (this.favorited) {
+        filters.favorited = this.favorited;
+      }
+      return {
+        type,
+        filters
+      };
+    },
+    pages() {
+      console.log("PAGES_LIST",this.itemsPerPage);;
+      if (this.isLoading || this.articlesCount <= this.itemsPerPage) {
+        return [];
+      }
+      return [
+        ...Array(Math.ceil(this.articlesCount / this.itemsPerPage)).keys()
+      ].map(e => e + 1);
+    },
+    ...mapGetters(["user","articlesCount", "isLoading", "articles"])
+  },
+  watch: {
+    currentPage(newValue) {
+      this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
+      this.fetchArticles();
+    },
+  },
+  methods: {
+    fetchArticles() {
+      this.$store.dispatch(FETCH_ARTICLES, this.listConfig);
+    },
+    resetPagination() {
+      this.listConfig.offset = 0;
+      this.currentPage = 1;
+    }
   }
 };
 </script>
 <style>
-.responsive-img {
+.responsive-img__list {
   width: 5%;
-  height: 4vw;
+  height: 3vw;
   border-radius: 45%;
 }
 .container-border {
