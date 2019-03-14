@@ -9,7 +9,7 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article v-for="(user, index) in user" :key="index" class="container container-border">
+    <article v-for="(user, index) in user.users" :key="index" class="container container-border">
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
         <img
@@ -41,9 +41,8 @@
         <span class="data-items" v-if="user.ejerciente==true">Sí</span>
         <span class="data-items" v-else>No</span>
       </router-link>
-      
     </article>
-    <VPagination :pages="pages" :currentPage.sync="currentPage" />
+    <VPagination :pages="pages" :currentPage.sync="currentPage" class="nav-pag"/>
   </section>
 </template>
 
@@ -56,7 +55,11 @@ import VPagination from "./VPagination";
 export default {
   name: "CompItemsList",
   mounted() {
-    this.$store.dispatch(GET_LAWYERS, this.$route.params.categories);
+    let dataJson = {
+      "category":this.$route.params.categories,
+      "filters":{"limit":10,"offset":0}
+    }
+    this.$store.dispatch(GET_LAWYERS, dataJson);
   },
   components: {
     VPagination
@@ -81,44 +84,40 @@ export default {
   computed: {
     listConfig() {
       const { type } = this;
+      const category = {
+        "category":this.$route.params.categories,
+      };
       const filters = {
         offset: (this.currentPage - 1) * this.itemsPerPage,
         limit: this.itemsPerPage
       };
-      if (this.author) {
-        filters.author = this.author;
-      }
-      if (this.tag) {
-        filters.tag = this.tag;
-      }
-      if (this.favorited) {
-        filters.favorited = this.favorited;
-      }
       return {
         type,
-        filters
+        filters,
+        ...category
       };
     },
     pages() {
-      console.log("PAGES_LIST",this.itemsPerPage);;
-      if (this.isLoading || this.articlesCount <= this.itemsPerPage) {
+      console.log("PAGES_LIST", this.user.usersCount, this.itemsPerPage);
+      if (this.user.usersCount <= this.itemsPerPage) {
         return [];
       }
+
       return [
-        ...Array(Math.ceil(this.articlesCount / this.itemsPerPage)).keys()
+        ...Array(Math.ceil(this.user.usersCount / this.itemsPerPage)).keys()
       ].map(e => e + 1);
     },
-    ...mapGetters(["user","articlesCount", "isLoading", "articles"])
+    ...mapGetters(["user", "articlesCount", "isLoading", "articles"])
   },
   watch: {
     currentPage(newValue) {
       this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
       this.fetchArticles();
-    },
+    }
   },
   methods: {
     fetchArticles() {
-      this.$store.dispatch(FETCH_ARTICLES, this.listConfig);
+      this.$store.dispatch(GET_LAWYERS, this.listConfig);
     },
     resetPagination() {
       this.listConfig.offset = 0;
@@ -144,5 +143,8 @@ li {
 }
 .data-items {
   margin-left: 2%;
+}
+.nav-pag{
+ text-align: center;
 }
 </style>

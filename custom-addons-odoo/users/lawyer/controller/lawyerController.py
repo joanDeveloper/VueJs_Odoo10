@@ -26,11 +26,23 @@ class LawyerController(http.Controller):
         data = request.jsonrequest
         _logger.info(data['data'])
         fields = ['slug','nombre','apellidos','num_colegiado','cod_postal','email','ejerciente']
+        # search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        # 'search_read',[[['categories_slug', '=', data['data']['category']]],fields,{"limit":10,"offset":0}])
+
         search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-        'search_read',[[['categories_slug', '=', data['data']]],fields])
+        'search_read',[[['categories_slug', '=', data['data']['category']]],fields],
+        {"limit":data['data']['filters']['limit'],"offset":data['data']['filters']['offset']})
+
+# {"limit":data['limit'],"offset":data['offset']}
+        searchCount = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        'search_count',[[['categories_slug', '=', data['data']['category']]]])
 
         _logger.info(search)
-        return json.dumps(search)
+        dataJson = {
+            "users":search,
+            "usersCount":searchCount
+        }
+        return json.dumps(dataJson)
 
     @http.route('/detail/', type="json", auth="none",website=True, cors="*")
     def getDetail(self):
