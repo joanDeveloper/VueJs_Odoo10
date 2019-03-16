@@ -9,7 +9,10 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article v-for="(user, index) in user.users" :key="index" class="container container-border">
+    <input type="text" id="searchName" placeholder="filter by name" v-model="searchName">
+    <input type="text" id="searchSurname" placeholder="filter by surname" v-model="searchSurname">
+    <input type="text" id="searchEmail" placeholder="filter by email" v-model="searchEmail">
+    <article v-for="(user, index) in filter" :key="index" class="container container-border">
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
         <img
@@ -56,9 +59,9 @@ export default {
   name: "CompItemsList",
   mounted() {
     let dataJson = {
-      "category":this.$route.params.categories,
-      "filters":{"limit":10,"offset":0}
-    }
+      category: this.$route.params.categories,
+      filters: { limit: 10, offset: 0 }
+    };
     this.$store.dispatch(GET_LAWYERS, dataJson);
   },
   components: {
@@ -78,14 +81,34 @@ export default {
   },
   data() {
     return {
-      currentPage: 1
+      searchName: "",
+      currentPage: 1,
+      filters: { n1: "nombre", n2: "email", n3: "apellidos" },
+      searchEmail: "",
+      searchSurname: ""
     };
   },
   computed: {
+    filter() {
+      if (this.searchName != "") {
+        return this.user.users.filter(
+          item =>
+            item[this.filters.n1]
+              .toLowerCase()
+              .indexOf(this.searchName.toLowerCase()) !== -1 &&
+            item[this.filters.n2]
+              .toLowerCase()
+              .indexOf(this.searchEmail.toLowerCase()) !== -1 &&
+            item[this.filters.n3]
+              .toLowerCase()
+              .indexOf(this.searchSurname.toLowerCase()) !== -1
+        );
+      } else return this.user.users;
+    },
     listConfig() {
       const { type } = this;
       const category = {
-        "category":this.$route.params.categories,
+        category: this.$route.params.categories
       };
       const filters = {
         offset: (this.currentPage - 1) * this.itemsPerPage,
@@ -99,9 +122,7 @@ export default {
     },
     pages() {
       console.log("PAGES_LIST", this.user.usersCount, this.itemsPerPage);
-      if (this.user.usersCount <= this.itemsPerPage) {
-        return [];
-      }
+      if (this.user.usersCount <= this.itemsPerPage) return [];
 
       return [
         ...Array(Math.ceil(this.user.usersCount / this.itemsPerPage)).keys()
@@ -144,7 +165,7 @@ li {
 .data-items {
   margin-left: 2%;
 }
-.nav-pag{
- text-align: center;
+.nav-pag {
+  text-align: center;
 }
 </style>
