@@ -12,7 +12,8 @@
     <input type="text" id="searchName" placeholder="filter by name" v-model="searchName">
     <input type="text" id="searchSurname" placeholder="filter by surname" v-model="searchSurname">
     <input type="text" id="searchEmail" placeholder="filter by email" v-model="searchEmail">
-    <article v-for="(user, index) in filter" :key="index" class="container container-border">
+    <button v-on:click="filter"></button>
+    <article v-for="(user, index) in user.users" :key="index" class="container container-border">
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
         <img
@@ -52,7 +53,7 @@
 <script>
 // console.log("PAGES",pages);
 import { mapGetters } from "vuex";
-import { GET_LAWYERS } from "@/store/actions.type";
+import { GET_LAWYERS, GET_LAWYERS_FILTERED } from "@/store/actions.type";
 import VPagination from "./VPagination";
 
 export default {
@@ -89,22 +90,6 @@ export default {
     };
   },
   computed: {
-    filter() {
-      if (this.searchName != "") {
-        return this.user.users.filter(
-          item =>
-            item[this.filters.n1]
-              .toLowerCase()
-              .indexOf(this.searchName.toLowerCase()) !== -1 &&
-            item[this.filters.n2]
-              .toLowerCase()
-              .indexOf(this.searchEmail.toLowerCase()) !== -1 &&
-            item[this.filters.n3]
-              .toLowerCase()
-              .indexOf(this.searchSurname.toLowerCase()) !== -1
-        );
-      } else return this.user.users;
-    },
     listConfig() {
       const { type } = this;
       const category = {
@@ -137,8 +122,40 @@ export default {
     }
   },
   methods: {
+    filter() {
+      console.log(
+        "FILTER",
+        this.searchEmail,
+        this.searchName,
+        this.searchSurname
+      );
+      let dataFilters = {
+        page: this.listConfig,
+        email: this.searchEmail,
+        name: this.searchName,
+        surname: this.searchSurname
+      };
+      this.fetchFiltersItems(dataFilters);
+      /*if (this.searchName != "") {
+        return this.user.users.filter(
+          item =>
+            item[this.filters.n1]
+              .toLowerCase()
+              .indexOf(this.searchName.toLowerCase()) !== -1 &&
+            item[this.filters.n2]
+              .toLowerCase()
+              .indexOf(this.searchEmail.toLowerCase()) !== -1 &&
+            item[this.filters.n3]
+              .toLowerCase()
+              .indexOf(this.searchSurname.toLowerCase()) !== -1
+        );
+      } else return this.user.users;*/
+    },
     fetchArticles() {
       this.$store.dispatch(GET_LAWYERS, this.listConfig);
+    },
+    fetchFiltersItems(data) {
+      this.$store.dispatch(GET_LAWYERS_FILTERED, data);
     },
     resetPagination() {
       this.listConfig.offset = 0;
