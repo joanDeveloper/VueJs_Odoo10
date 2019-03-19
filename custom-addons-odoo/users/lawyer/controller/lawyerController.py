@@ -41,6 +41,35 @@ class LawyerController(http.Controller):
         }
         return json.dumps(dataJson)
 
+    @http.route('/userFilter/', type="json", auth="none",website=True, cors="*")
+    def getUserFiltered(self):
+        data = request.jsonrequest
+        _logger.info(data['data'])
+
+        search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        'search_read',[[['categories_slug', '=',  data['data']['page']['category']], 
+        ['nombre', 'ilike', data['data']['name']],
+        ['apellidos', 'ilike', data['data']['surname']],
+        ['email', 'ilike', data['data']['email']]
+        ]],
+        {"limit":data['data']['page']['filters']['limit'],
+        "offset":data['data']['page']['filters']['offset']})
+        _logger.info(search)
+
+        searchCount = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        'search_count',[[['categories_slug', '=',  data['data']['page']['category']], 
+        ['nombre', 'ilike', data['data']['name']],
+        ['apellidos', 'ilike', data['data']['surname']],
+        ['email', 'ilike', data['data']['email']]
+        ]])
+
+        _logger.info(search)
+        dataJson = {
+            "users":search,
+            "usersCount":searchCount
+        }
+        return json.dumps(dataJson)
+
     @http.route('/detail/', type="json", auth="none",website=True, cors="*")
     def getDetail(self):
         data = request.jsonrequest

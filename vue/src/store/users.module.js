@@ -1,5 +1,5 @@
 import { UsersService } from "@/common/api.service";
-import { GET_LAWYERS,GET_DETAILS } from "./actions.type";
+import { GET_LAWYERS, GET_DETAILS, GET_LAWYERS_FILTERED } from "./actions.type";
 
 const state = {
   users: [],
@@ -22,6 +22,15 @@ const actions = {
     UsersService.post(slug)
       .then(({ data }) => {
         console.log("GET_LAWYERS", JSON.parse(data.result));
+        state.users = JSON.parse(data.result);
+      })
+      .catch(() => {});
+  },
+  [GET_LAWYERS_FILTERED](context, slug) {
+    console.log("CONTEXT_GET_LAWYERS_FILTERED", context, slug);
+    UsersService.postFilter(slug)
+      .then(({ data }) => {
+        console.log("GET_LAWYERS_FILTERED", JSON.parse(data.result));
         state.users = JSON.parse(data.result);
       })
       .catch(() => {});

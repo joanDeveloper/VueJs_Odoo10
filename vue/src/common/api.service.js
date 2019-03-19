@@ -89,6 +89,9 @@ export const UsersService = {
   post(payload) {
     return ApiService.post(`users`, { data: payload });
   },
+  postFilter(payload) {
+    return ApiService.post(`userFilter`, { data: payload });
+  },
   postDetail(payload) {
     return ApiService.post(`detail`, { data: payload });
   }
