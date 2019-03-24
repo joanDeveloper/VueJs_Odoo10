@@ -30,13 +30,16 @@ const getters = {
 const actions = {
   [LOGIN](context, credentials) {
     return new Promise(resolve => {
-      ApiService.post("users/login", { user: credentials })
+      console.log("LOGIN__", credentials);
+      ApiService.post("signin", { credentials })
         .then(({ data }) => {
-          context.commit(SET_AUTH, data.user);
-          resolve(data);
+          console.log("RES_LOGIN", data);
+          // context.commit(SET_AUTH, data.user);
+          // resolve(data);
         })
         .catch(({ response }) => {
-          context.commit(SET_ERROR, response.data.errors);
+          console.log("RES_LOGIN_ERROR", response);
+          // context.commit(SET_ERROR, response.data.errors);
         });
     });
   },

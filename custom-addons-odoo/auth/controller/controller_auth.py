@@ -18,8 +18,6 @@ class Auth(http.Controller):
     def register(self):
         _logger.info("REGISTER")
         data = request.jsonrequest
-        token = Middleware().encode(data)
-        _logger.info(token)
 
         searchCount = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
         'search_count',[[['email', '=', data['credentials']['email']]]])
@@ -44,45 +42,56 @@ class Auth(http.Controller):
         data = request.jsonrequest
     
         searchEmail = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
-        'search_count',[[['email', '=', data['email']]]])
-        print(searchEmail)
+        'search_count',[[['email', '=', data['credentials']['email']]]])
 
         if searchEmail == 0:
+            _logger.info("el email no existe")
             return {"error":{"message":"el email no existe"}}
             
         else:
-            print("email correcto")
-            passwordEncode = base64.b64encode(data['password'])
+            _logger.info("email correcto")
+            passwordEncode = base64.b64encode(data['credentials']['password'])
             searchPasswd = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
-            'search_count',[ [['email', '=', data['email']], ['password', '=', passwordEncode] ]])
+            'search_count',[ [['email', '=', data['credentials']['email']], ['password', '=', passwordEncode] ]])
 
             if searchPasswd >= 1:
-                print("USUARIO Y PASSWD CORRECTO")
-                fields = ['id','email','username','password']
+                _logger.info("usuario y passwd correcto")
+                fields = ['id','email','nombre','apellidos','categories_slug','password']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-                'search_read',[[['email', '=', data['email']]],fields])
-                
-                token = Middleware().encode(searchUser)
-                print(token)
-                
-                ######## Update token ###########
-                self._models.execute_kw(self._db, self._uid, self._password, 'users.lawyer',
-                'write', [[searchUser[0]['id']], {
-                    'token': token
-                }])
+                'search_read',[[['email', '=', data['credentials']['email']]],fields])
+
+                if searchUser[0]['categories_slug'][0] == 1:
+                    searchLawyerActivate = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+                    'search_count',[[['email', '=', data['credentials']['email']], ['verificar','=',True] ]])
+                    _logger.info("*****SEARCH_ACTIVATE******")
+                    _logger.info(searchLawyerActivate)
+                    if searchLawyerActivate == 0:
+                        return json.dumps({"message":"Aun no has sido verificado como abogado"})
+
+                _logger.info("*****SEARCH_USER******")
+                _logger.info(searchUser)
+                dataToEncode = {
+                    "credentials":{
+                        "email":searchUser[0]['email'],
+                        "password":searchUser[0]['password'],
+                        "typeUser":searchUser[0]['categories_slug'][0]}
+                }
+                token = Middleware().encode(dataToEncode)
+                _logger.info("*****TOKEN_ENCODED*******")
+                _logger.info(token)
 
                 return {
                     "user":{
                         "token":token,
                         "currentUser":{
-                            "id":searchUser[0]['id'],
-                            "username":searchUser[0]['username'],
+                            "nombre":searchUser[0]['nombre'],
+                            "apellidos":searchUser[0]['apellidos'],
                             "email":searchUser[0]['email']
                         }
-                    }
+                     }
                 }
             else:
-                print("PASSWORD INCORRECTO")
+                _logger.info("PASSWORD INCORRECTO")
                 return {"error":{"message":"password incorrecto"}}
                 
     @http.route('/verify', type="json", auth="none", website=True, cors="*" )
