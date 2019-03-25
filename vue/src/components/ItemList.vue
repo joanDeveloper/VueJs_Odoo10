@@ -12,7 +12,7 @@
     <input type="text" id="searchName" placeholder="filter by name" v-model="searchName">
     <input type="text" id="searchSurname" placeholder="filter by surname" v-model="searchSurname">
     <input type="text" id="searchEmail" placeholder="filter by email" v-model="searchEmail">
-    <button v-on:click="filter"></button>
+    <button class="btn btn-sm btn-primary" v-on:click="filter">Filtrar</button>
     <article v-for="(user, index) in user.users" :key="index" class="container container-border">
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-// console.log("PAGES",pages);
 import { mapGetters } from "vuex";
 import { GET_LAWYERS, GET_LAWYERS_FILTERED } from "@/store/actions.type";
 import VPagination from "./VPagination";
@@ -129,6 +128,7 @@ export default {
         this.searchName,
         this.searchSurname
       );
+      this.resetPagination();
       let dataFilters = {
         page: this.listConfig,
         email: this.searchEmail,

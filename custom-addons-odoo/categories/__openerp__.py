@@ -1,6 +1,6 @@
 {
     'name': 'Categories',
-    'description': 'Modulo para mostrar listar categorias',
+    'description': 'Modulo para listar categorias',
     'author': 'Joan Montes',
     'application': True,
 }

@@ -3,7 +3,7 @@ _logger = logging.getLogger("credentials")
 
 class Credentials():
     def models(self):
-        _logger.info("CREDENTIALS")
+        _logger.info("CREDENTIALSSSS")
         url = 'http://51.75.31.239:8069'
         db = base64.b64decode("bGliZXJ0eQ==")
         username = base64.b64decode('am9hbm1vZGF3QGdtYWlsLmNvbQ==')
