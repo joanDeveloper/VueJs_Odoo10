@@ -84,7 +84,6 @@ export default {
     return {
       searchName: "",
       currentPage: 1,
-      filters: { n1: "nombre", n2: "email", n3: "apellidos" },
       searchEmail: "",
       searchSurname: ""
     };
@@ -117,6 +116,7 @@ export default {
   },
   watch: {
     currentPage(newValue) {
+      console.log("currentPage",newValue);
       this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
       this.fetchArticles();
     }
@@ -136,20 +136,6 @@ export default {
         surname: this.searchSurname
       };
       this.fetchFiltersItems(dataFilters);
-      /*if (this.searchName != "") {
-        return this.user.users.filter(
-          item =>
-            item[this.filters.n1]
-              .toLowerCase()
-              .indexOf(this.searchName.toLowerCase()) !== -1 &&
-            item[this.filters.n2]
-              .toLowerCase()
-              .indexOf(this.searchEmail.toLowerCase()) !== -1 &&
-            item[this.filters.n3]
-              .toLowerCase()
-              .indexOf(this.searchSurname.toLowerCase()) !== -1
-        );
-      } else return this.user.users;*/
     },
     fetchArticles() {
       this.$store.dispatch(GET_LAWYERS, this.listConfig);
