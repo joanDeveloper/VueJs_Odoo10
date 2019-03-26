@@ -33,9 +33,10 @@ const actions = {
       console.log("LOGIN__", credentials);
       ApiService.post("signin", { credentials })
         .then(({ data }) => {
-          console.log("RES_LOGIN", data);
-          // context.commit(SET_AUTH, data.user);
-          // resolve(data);
+          console.log("RES_LOGIN", data.result);
+          console.log("RES_LOGIN__", context);
+          context.commit(SET_AUTH, data.result.user);
+          //resolve(data);
         })
         .catch(({ response }) => {
           console.log("RES_LOGIN_ERROR", response);
@@ -44,6 +45,7 @@ const actions = {
     });
   },
   [LOGOUT](context) {
+    console.log("PURGE_AUTH_LOGOUT");
     context.commit(PURGE_AUTH);
   },
   [REGISTER](context, credentials) {
@@ -82,15 +84,18 @@ const actions = {
   },
   [CHECK_AUTH](context) {
     if (JwtService.getToken()) {
-      ApiService.setHeader();
-      ApiService.get("user")
+      //ApiService.setHeader();
+      ApiService.post("verify",{"Token":JwtService.getToken()})
         .then(({ data }) => {
-          context.commit(SET_AUTH, data.user);
+          console.log("CHECK_AUTH",data.result);
+          context.commit(SET_AUTH, data.result.user);
         })
         .catch(({ response }) => {
-          context.commit(SET_ERROR, response.data.errors);
+          console.log("CHECK_AUTH_ERROR",response);
+          //context.commit(SET_ERROR, response.data.errors);
         });
     } else {
+      console.log("PURGE_AUTH");
       context.commit(PURGE_AUTH);
     }
   },
@@ -118,12 +123,14 @@ const mutations = {
     state.errors = error;
   },
   [SET_AUTH](state, user) {
+    console.log("SET_AUTH",user);
     state.isAuthenticated = true;
-    state.user = user;
+    state.user = user.currentUser;
     state.errors = {};
-    JwtService.saveToken(state.user.token);
+    JwtService.saveToken(user.token);
   },
   [PURGE_AUTH](state) {
+    console.log("PURGE_AUTH__");
     state.isAuthenticated = false;
     state.user = {};
     state.errors = {};

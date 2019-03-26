@@ -78,17 +78,18 @@
             <i class="ion-gear-a"></i>&nbsp;Settings
           </router-link>
         </li>
-        <li class="nav-item" v-if="currentUser.username">
+        
+        <li class="nav-item" v-if="currentUser.email">
           <router-link
             class="nav-link"
             active-class="active"
             exact
             :to="{
               name: 'profile',
-              params: { username: currentUser.username }
+              params: { username: currentUser.email }
             }"
           >
-            {{ currentUser.username }}
+            {{ currentUser.email }}
           </router-link>
         </li>
       </ul>
@@ -100,6 +101,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  
   name: "RwvHeader",
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"])

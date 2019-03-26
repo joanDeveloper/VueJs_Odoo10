@@ -95,26 +95,30 @@ class Auth(http.Controller):
                 return {"error":{"message":"password incorrecto"}}
                 
     @http.route('/verify', type="json", auth="none", website=True, cors="*" )
-    def authToken(self,req):
-        print("VERIFY-TOKEN")
-        #print(request.httprequest.headers)
+    def authToken(self):
+        _logger.info("VERIFY-TOKEN")
+        _logger.info(request.jsonrequest)
+        # print(request.httprequest.headers)
         data = request.jsonrequest
-        decToken = Middleware().decode(data)
+        decToken = Middleware().decode(data['Token'])
+        dataDecoded = json.loads(decToken)
         if decToken == 0:
             return {"error":{"message":"token invalido o expirado"}}
 
         else:
             searchCount = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
-            'search_count',[[['email', '=', decToken['user']['email']]]])
+            'search_count',[[['email', '=', dataDecoded['email']]]])
 
             if searchCount >=1:
-                fields = ['id','email','username','password']
+                fields = ['id','email','nombre','apellidos','categories_slug','password']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-                'search_read',[[['email', '=', decToken['user']['email']]],fields])
+                'search_read',[[['email', '=', dataDecoded['email']]],fields])
                 return {"user":{
+                    'token':data['Token'],
                     "currentUser":{
                                 "id":searchUser[0]['id'],
-                                "username":searchUser[0]['username'],
+                                "nombre":searchUser[0]['nombre'],
+                                "apellidos":searchUser[0]['apellidos'],
                                 "email":searchUser[0]['email']
                             }}}
             else:

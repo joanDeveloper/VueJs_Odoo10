@@ -41,7 +41,11 @@ class Middleware():
 
         try:
             cipher_suite = Fernet(key)
-            decToken = cipher_suite.decrypt(data)
+            _logger.info("****dataDecode****")
+            _logger.info(data)
+            decToken = cipher_suite.decrypt(bytes(data))
+            _logger.info("****dataDecrypt****")
+            _logger.info(decToken)
             time_exp = json.loads(decToken)
             time_exp = time_exp['exp']
             if time_exp >= str(datetime.now()):
@@ -53,4 +57,5 @@ class Middleware():
 
         except Exception as e:
             _logger.info("token_ERROR")
+            _logger.info(e)
             return 0
