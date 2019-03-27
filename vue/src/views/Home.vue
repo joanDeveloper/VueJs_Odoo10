@@ -10,13 +10,14 @@
       </div>
     </div>
     <article class="container-list__lawyer container">
-      <div v-for="(categories, index) in categories" :key="index">
+      <section v-for="(categories, index) in categories" :key="index">
         <router-link
+          v-if="categories.show == true "
           class="link-category"
           :to="{ name: 'listItems', 
           params: { categories: categories.name } }"
         >{{categories.description}}</router-link>
-      </div>
+      </section>
     </article>
   </section>
 </template>

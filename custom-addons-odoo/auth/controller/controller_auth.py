@@ -1,6 +1,7 @@
 import openerp.http as http
 import json, logging
 from openerp.http import request
+from openerp.http import Response 
 from ...utils.credentials import Credentials
 import xmlrpclib, base64
 from controller_middleware import Middleware
@@ -66,7 +67,8 @@ class Auth(http.Controller):
                     _logger.info("*****SEARCH_ACTIVATE******")
                     _logger.info(searchLawyerActivate)
                     if searchLawyerActivate == 0:
-                        return json.dumps({"message":"Aun no has sido verificado como abogado"})
+                        Response.status = "400 Bad Request" 
+                        return json.dumps({"error":{"message":"Aun no has sido verificado como abogado"}})
 
                 _logger.info("*****SEARCH_USER******")
                 _logger.info(searchUser)

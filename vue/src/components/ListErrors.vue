@@ -8,10 +8,12 @@
 </template>
 
 <script>
+
 export default {
   name: "RwvListErorrs",
   props: {
     errors: { type: Object, required: true }
   }
 };
+console.log("LIST_ERRORS",errors);
 </script>

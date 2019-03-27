@@ -34,18 +34,16 @@ const actions = {
       ApiService.post("signin", { credentials })
         .then(({ data }) => {
           console.log("RES_LOGIN", data.result);
-          console.log("RES_LOGIN__", context);
           context.commit(SET_AUTH, data.result.user);
-          //resolve(data);
+          resolve(data);
         })
         .catch(({ response }) => {
           console.log("RES_LOGIN_ERROR", response);
-          // context.commit(SET_ERROR, response.data.errors);
+          context.commit(SET_ERROR, JSON.parse(response.data.result).error);
         });
     });
   },
   [LOGOUT](context) {
-    console.log("PURGE_AUTH_LOGOUT");
     context.commit(PURGE_AUTH);
   },
   [REGISTER](context, credentials) {
@@ -77,8 +75,8 @@ const actions = {
             position: "top-right",
             duration: 5000
           });
-          // context.commit(SET_ERROR, response.data.errors);
-          // reject(response);
+          context.commit(SET_ERROR, response.result.error);
+          reject(response);
         });
     });
   },
@@ -92,10 +90,9 @@ const actions = {
         })
         .catch(({ response }) => {
           console.log("CHECK_AUTH_ERROR",response);
-          //context.commit(SET_ERROR, response.data.errors);
+          context.commit(SET_ERROR, response.result.error);
         });
     } else {
-      console.log("PURGE_AUTH");
       context.commit(PURGE_AUTH);
     }
   },

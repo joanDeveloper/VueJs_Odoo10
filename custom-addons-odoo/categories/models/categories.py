@@ -6,3 +6,4 @@ class Categories(models.Model):
     slug = fields.Char('slug', required=True)
     name = fields.Char('name', required=True)
     description = fields.Char('description', required=True)
+    show = fields.Boolean('show', required=True)

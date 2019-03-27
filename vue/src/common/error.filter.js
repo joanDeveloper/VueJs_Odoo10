@@ -1,3 +1,4 @@
 export default errorValue => {
-  return `${errorValue[0]}`;
+  console.log("error_filter",errorValue);
+  return `${errorValue}`;
 };
