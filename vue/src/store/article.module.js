@@ -56,8 +56,11 @@ export const actions = {
     return data.comments;
   },
   async [COMMENT_CREATE](context, payload) {
-    await CommentsService.post(payload.slug, payload.comment);
-    context.dispatch(FETCH_COMMENTS, payload.slug);
+    console.log("COMMENTS_MODULE",context, payload);
+    return await CommentsService.post(payload)
+      .then((data)=>{return data;})
+      .catch(({ response }) => {return response;});
+    //context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [COMMENT_DESTROY](context, payload) {
     await CommentsService.destroy(payload.slug, payload.commentId);

@@ -23,18 +23,20 @@
             <strong>Nº Colegiado:</strong>
             {{ userDetail[0].num_colegiado }}
           </span>
-          <br> <br>
+          <br>
+          <br>
 
           <span class="data-items__detail">
             <strong>Email:</strong>
             {{ userDetail[0].email }}
           </span>
-          <br> <br>
+          <br>
+          <br>
 
           <span class="data-items__detail">
             <strong>Ejerciente:</strong>
-            <span class="data-items__detail" v-if="userDetail[0].ejerciente==true"> Sí</span>
-            <span class="data-items__detail" v-else> No</span>
+            <span class="data-items__detail" v-if="userDetail[0].ejerciente==true">Sí</span>
+            <span class="data-items__detail" v-else>No</span>
           </span>
         </div>
         <div class="container-detail__left" v-if="userDetail[0]">
@@ -42,7 +44,8 @@
             <strong>Nombre:</strong>
             {{ userDetail[0].nombre }}
           </span>
-          <br><br>
+          <br>
+          <br>
           <span class="data-items__detail">
             <strong>Apellidos:</strong>
             {{ userDetail[0].apellidos }}
@@ -50,33 +53,41 @@
         </div>
       </div>
     </article>
+    <RwvCommentEditor v-if="isAuthenticated && userDetail[0]" :id="userDetail[0].id" :currentUser="currentUser"></RwvCommentEditor>
+    <p v-else>
+      <router-link :to="{ name: 'login' }">Logueate</router-link> para comentar si eres usuario o
+      <router-link :to="{ name: 'register' }">Registrate</router-link> para añadir comentarios
+    </p>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { GET_DETAILS } from "@/store/actions.type";
+import RwvCommentEditor from "@/components/CommentEditor";
 
 export default {
   name: "CompItemsList",
   mounted() {
     console.log("DETAIL", this.$route.params.id);
     this.$store.dispatch(GET_DETAILS, this.$route.params.id);
+    console.log("USER_DETAIL",this.userDetail[0], this.currentUser);
   },
   computed: {
-    ...mapGetters(["userDetail"])
+    ...mapGetters(["userDetail", "isAuthenticated", "currentUser"])
+  },
+  components: {
+    RwvCommentEditor
   }
 };
 </script>
 <style>
-
 .container-detail {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
   margin-left: 40%;
   clear: both;
-  
 }
 .container-detail__rigth {
   margin-left: 20%;
