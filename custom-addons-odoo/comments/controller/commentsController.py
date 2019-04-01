@@ -30,37 +30,35 @@ class CommentsController(http.Controller):
         except Exception as e:
             return json.dumps({"error":{"message":"error al crear comentario " + e}})
 
-        fields = ['comment','user_lawyer_id','user_client_id']
+        fields = ['comment','user_lawyer_id','user_client_id','email']
         search = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
         'search_read',[[['user_lawyer_id', '=', data['payload']['id']]],fields])
-        _logger.info("*****SEARCH*****")
         _logger.info(search)
-        #cont = 0
-        # for user in search:
-        #     _logger.info("*****FOR*****")
-        #     _logger.info(user)
-        #     searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-        #     'search_read',[[['id', '=', user['user_id'][0]]],['nombre']])
-        #     search[cont]['user_id'] = searchUser[0]['nombre']
-        #     cont +=1
+        # obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['user_client_id'][0]]],['nombre','email']])
+            search[cont]['user_client_id'] = searchUser[0]['email']
+            cont +=1
 
         return json.dumps({"comments":search})
     
-    @http.route('/getComments', type="json", auth="none",website=True, cors="*")
+    @http.route('/get-comments', type="http", auth="none",website=True, cors="*")
     def getComment(self):
-        print("ENTRA EN GET_COMMENTS")
-        data = request.jsonrequest
-        print(data['device_id'])
-        fields = ['comment','user_id','device_id']
-        searchComments = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
-        'search_read',[[['device_id', '=', data['device_id']]],fields])
-        print(searchComments)
-        cont = 0
-        for user in searchComments:
-            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'auth.user',
-            'search_read',[[['id', '=', user['user_id'][0]]],['username']])
-            searchComments[cont]['user_id'] = searchUser[0]['username']
-            cont +=1
+        _logger.info("Entra en getComment")
+        # data = request.jsonrequest
+        # _logger.info(data)
+        # print(data['device_id'])
+        # fields = ['comment','user_id','device_id']
+        # searchComments = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
+        # 'search_read',[[['device_id', '=', data['device_id']]],fields])
+        # # obtener nombre usuario para pintar quien ha escrito el comentario
+        # cont = 0
+        # for user in searchComments:
+        #     searchUser = self._models.execute_kw(self._db, self._uid, self._password,'auth.user',
+        #     'search_read',[[['id', '=', user['user_id'][0]]],['username']])
+        #     searchComments[cont]['user_id'] = searchUser[0]['username']
+        #     cont +=1
 
-        print(searchComments)
-        return {"comments":searchComments}
+        # return {"comments":searchComments}

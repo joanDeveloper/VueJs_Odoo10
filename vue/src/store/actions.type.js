@@ -27,3 +27,4 @@ export const GET_LAWYERS = "GET_LAWYERS";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const GET_DETAILS = "GET_DETAILS";
 export const GET_LAWYERS_FILTERED = "GET_LAWYERS_FILTERED";
+export const GET_COMMENT = "GET_COMMENT";

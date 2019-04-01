@@ -8,6 +8,7 @@ import {
   FETCH_ARTICLE,
   FETCH_COMMENTS,
   COMMENT_CREATE,
+  GET_COMMENT,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -59,6 +60,13 @@ export const actions = {
     console.log("COMMENTS_MODULE",context, payload);
     return await CommentsService.post(payload)
       .then((data)=>{return data;})
+      .catch(({ response }) => {return response;});
+    //context.dispatch(FETCH_COMMENTS, payload.slug);
+  },
+  async [GET_COMMENT](context, payload) {
+    console.log("GET_COMMENT",context, payload);
+    return await CommentsService.get(payload)
+      .then((data)=>{console.log("DATA_GET_COMMENT",data); return data;})
       .catch(({ response }) => {return response;});
     //context.dispatch(FETCH_COMMENTS, payload.slug);
   },

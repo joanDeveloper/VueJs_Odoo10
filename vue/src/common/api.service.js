@@ -28,6 +28,11 @@ const ApiService = {
       throw new Error(`[RWV] ApiService ${error}`);
     });
   },
+  getParams(resource, params) {
+    return Vue.axios.get(`${resource}`,params).catch(error => {
+      throw new Error(`[RWV] ApiService ${error}`);
+    });
+  },
 
   post(resource, params) {
     return Vue.axios.post(`${resource}`, params);
@@ -105,12 +110,12 @@ export const CategoriesService = {
 
 export const CommentsService = {
   get(slug) {
-    if (typeof slug !== "string") {
+    /*if (typeof slug !== "string") {
       throw new Error(
         "[RWV] CommentsService.get() article slug required to fetch comments"
       );
-    }
-    return ApiService.get("articles", `${slug}/comments`);
+    }*/
+    return ApiService.getParams("get-comments", slug);
   },
 
   post(payload) {
