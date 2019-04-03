@@ -65,7 +65,7 @@ export const actions = {
   },
   async [GET_COMMENT](context, payload) {
     console.log("GET_COMMENT",context, payload);
-    return await CommentsService.get(payload)
+    return await CommentsService.get(payload.num_colegiado)
       .then((data)=>{console.log("DATA_GET_COMMENT",data); return data;})
       .catch(({ response }) => {return response;});
     //context.dispatch(FETCH_COMMENTS, payload.slug);

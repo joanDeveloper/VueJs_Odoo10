@@ -44,21 +44,24 @@ class CommentsController(http.Controller):
 
         return json.dumps({"comments":search})
     
-    @http.route('/get-comments', type="http", auth="none",website=True, cors="*")
-    def getComment(self):
-        _logger.info("Entra en getComment")
-        # data = request.jsonrequest
-        # _logger.info(data)
-        # print(data['device_id'])
-        # fields = ['comment','user_id','device_id']
-        # searchComments = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
-        # 'search_read',[[['device_id', '=', data['device_id']]],fields])
-        # # obtener nombre usuario para pintar quien ha escrito el comentario
-        # cont = 0
-        # for user in searchComments:
-        #     searchUser = self._models.execute_kw(self._db, self._uid, self._password,'auth.user',
-        #     'search_read',[[['id', '=', user['user_id'][0]]],['username']])
-        #     searchComments[cont]['user_id'] = searchUser[0]['username']
-        #     cont +=1
+    @http.route('/get-comments/<numCol>', type="http", auth="none",website=True, cors="*")
+    def getComment(self,**post):
+        _logger.info(post['numCol'])
+        num_colegiado = post['numCol']
 
-        # return {"comments":searchComments}
+        searchId = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        'search_read',[[['num_colegiado', '=', num_colegiado]],['id']])
+
+        _logger.info(searchId)
+        fields = ['comment','user_lawyer_id','user_client_id']
+        searchComments = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
+        'search_read',[[['user_lawyer_id', '=', searchId[0]['id']]],fields])
+        # obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in searchComments:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['user_client_id'][0]]],['nombre','email']])
+            searchComments[cont]['user_client_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"comments":searchComments})

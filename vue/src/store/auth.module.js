@@ -40,6 +40,7 @@ const actions = {
         .catch(({ response }) => {
           console.log("RES_LOGIN_ERROR", response);
           context.commit(SET_ERROR, JSON.parse(response.data.result).error);
+          //reject(response)
         });
     });
   },
@@ -90,7 +91,7 @@ const actions = {
         })
         .catch(({ response }) => {
           console.log("CHECK_AUTH_ERROR",response);
-          context.commit(SET_ERROR, response.result.error);
+          context.commit(SET_ERROR, JSON.parse(response.data.result).error.message);
         });
     } else {
       context.commit(PURGE_AUTH);
@@ -117,6 +118,12 @@ const actions = {
 
 const mutations = {
   [SET_ERROR](state, error) {
+    Vue.toasted.show(error, {
+      theme: "bubble",
+      position: "top-right",
+      duration: 5000
+    });
+    JwtService.destroyToken();
     state.errors = error;
   },
   [SET_AUTH](state, user) {

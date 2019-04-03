@@ -103,11 +103,14 @@ class Auth(http.Controller):
         # print(request.httprequest.headers)
         data = request.jsonrequest
         decToken = Middleware().decode(data['Token'])
-        dataDecoded = json.loads(decToken)
+        _logger.info(decToken)
         if decToken == 0:
-            return {"error":{"message":"token invalido o expirado"}}
+            _logger.info("token invalido o expirado")
+            Response.status = "400 Bad Request" 
+            return json.dumps({"error":{"message":"token invalido o expirado"}})
 
         else:
+            dataDecoded = json.loads(decToken)
             searchCount = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
             'search_count',[[['email', '=', dataDecoded['email']]]])
 
@@ -124,4 +127,5 @@ class Auth(http.Controller):
                                 "email":searchUser[0]['email']
                             }}}
             else:
-                return {"error":{"message":"fallo autentificacion del token"}}
+                Response.status = "400 Bad Request" 
+                return json.dumps({"error":{"message":"fallo autentificacion del token"}})

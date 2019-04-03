@@ -12,6 +12,7 @@ const getters = {
     return state.users;
   },
   userDetail(state) {
+    console.log("AAAA22222________",state);
     return state.userDetail;
   }
 };
@@ -36,13 +37,18 @@ const actions = {
       .catch(() => {});
   },
   [GET_DETAILS](context, id) {
-    console.log("CONTEXT_DETAIL", context, id);
-    UsersService.postDetail(id)
-      .then(({ data }) => {
-        console.log("GET_DETAILS", JSON.parse(data.result));
-        state.userDetail = JSON.parse(data.result);
-      })
-      .catch(() => {});
+    return new Promise(resolve => {
+      console.log("CONTEXT_DETAIL", context, id);
+      UsersService.postDetail(id)
+        .then(({ data }) => {
+          console.log("GET_DETAILS", JSON.parse(data.result));
+          state.userDetail = JSON.parse(data.result);
+          console.log("AAAA________",state);
+          //resolve(JSON.parse(data.result));
+          return JSON.parse(data.result);
+        })
+        .catch(() => {});
+    });
   }
 };
 

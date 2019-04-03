@@ -29,7 +29,7 @@ const ApiService = {
     });
   },
   getParams(resource, params) {
-    return Vue.axios.get(`${resource}`,params).catch(error => {
+    return Vue.axios.get(`${resource}/${params}`).catch(error => {
       throw new Error(`[RWV] ApiService ${error}`);
     });
   },
