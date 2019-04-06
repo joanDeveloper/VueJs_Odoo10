@@ -17,7 +17,7 @@ class LawyerController(http.Controller):
     def get(self):
         data = request.jsonrequest
         _logger.info(data['data'])
-        fields = ['slug','nombre','apellidos','num_colegiado','cod_postal','email','ejerciente']
+        fields = ['slug','name','apellidos','num_colegiado','cod_postal','email','ejerciente']
 
         search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_read',[[['categories_slug', '=', data['data']['category']]],fields],
@@ -40,7 +40,7 @@ class LawyerController(http.Controller):
 
         search = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_read',[[['categories_slug', '=',  data['data']['page']['category']], 
-        ['nombre', 'ilike', data['data']['name']],
+        ['name', 'ilike', data['data']['name']],
         ['apellidos', 'ilike', data['data']['surname']],
         ['email', 'ilike', data['data']['email']]
         ]],
@@ -50,7 +50,7 @@ class LawyerController(http.Controller):
 
         searchCount = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_count',[[['categories_slug', '=',  data['data']['page']['category']], 
-        ['nombre', 'ilike', data['data']['name']],
+        ['name', 'ilike', data['data']['name']],
         ['apellidos', 'ilike', data['data']['surname']],
         ['email', 'ilike', data['data']['email']]
         ]])
@@ -66,7 +66,7 @@ class LawyerController(http.Controller):
     def getDetail(self):
         data = request.jsonrequest
         _logger.info(data['data'])
-        fields = ['slug','nombre','apellidos','num_colegiado','cod_postal','email','ejerciente','direccion','fax','telefono']
+        fields = ['slug','name','apellidos','num_colegiado','cod_postal','email','ejerciente','direccion','fax','telefono']
         searchDetail = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_read',[[['num_colegiado', '=', data['data']]],fields])
 

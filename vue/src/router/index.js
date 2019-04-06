@@ -66,6 +66,16 @@ export default new Router({
         }
       ]
     },
+    {
+      path: "/lista/:categories",
+      component: () => import("@/components/GuardiasLawyer"),
+      children: [
+        {
+          path: "",
+          name: "guardiasLawyer"
+        }
+      ]
+    },
     // Handle child routes with a default, by giving the name to the
     // child.
     // SO: https://github.com/vuejs/vue-router/issues/777

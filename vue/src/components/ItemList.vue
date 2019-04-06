@@ -30,7 +30,7 @@
         <span class="data-items">
           <strong>Nombre:</strong>
         </span>
-        {{ user.nombre }}
+        {{ user.name }}
         <span class="data-items">
           <strong>Apellidos:</strong>
         </span>

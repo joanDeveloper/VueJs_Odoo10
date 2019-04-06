@@ -42,7 +42,7 @@
         <div class="container-detail__left" v-if="userDetail[0]">
           <span>
             <strong>Nombre:</strong>
-            {{ userDetail[0].nombre }}
+            {{ userDetail[0].name }}
           </span>
           <br>
           <br>
