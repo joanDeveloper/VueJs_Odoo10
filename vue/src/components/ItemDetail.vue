@@ -49,7 +49,6 @@
           <span class="data-items__detail">
             <strong>Apellidos:</strong>
             {{ userDetail[0].apellidos }}
-            {{ userDetail[0].id }}
           </span>
         </div>
       </div>

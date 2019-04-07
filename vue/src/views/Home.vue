@@ -14,7 +14,7 @@
         <router-link
           v-if="categories.show == true "
           class="link-category"
-          :to="{ name: 'listItems', 
+          :to="{ name: categories.slug, 
           params: { categories: categories.name } }"
         >{{categories.description}}</router-link>
       </section>

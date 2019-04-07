@@ -28,7 +28,7 @@ class CommentsController(http.Controller):
                 'user_client_id': data['payload']['currentUser']['id'],
                 'comment': data['payload']['comment']}])
         except Exception as e:
-            return json.dumps({"error":{"message":"error al crear comentario " + e}})
+            return json.dumps({"error":{"message":"error al crear comentario"}})
 
         fields = ['comment','user_lawyer_id','user_client_id','email']
         search = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',

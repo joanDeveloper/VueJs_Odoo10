@@ -43,7 +43,7 @@ export default {
     this.init();
   },
   props: {
-    id: { type: String, required: true },
+    id: { type: Number, required: true },
     currentUser: { type: Object, required: true },
     content: { type: String, required: false },
     userImage: { type: String, required: false }
@@ -60,7 +60,8 @@ export default {
   },
   methods: {
     onSubmit(id, comment, currentUser) {
-      console.log("onSubmit_COMMENT", id, comment, currentUser);
+      console.log("onSubmit_COMMENT", this.userDetail[0].id, comment, currentUser);
+      id = this.userDetail[0].id;
       this.$store
         .dispatch(COMMENT_CREATE, { id, comment, currentUser })
         .then(data => {
