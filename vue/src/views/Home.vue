@@ -24,13 +24,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_CATEGORIES } from "@/store/actions.type";
+import { GET_CATEGORIES, GET_GUARDIAS } from "@/store/actions.type";
 import CompItemsList from "@/components/ItemList";
 
 export default {
   name: "home",
   mounted() {
     this.$store.dispatch(GET_CATEGORIES);
+    this.$store.dispatch(GET_GUARDIAS);
   },
   computed: {
     ...mapGetters(["categories"])

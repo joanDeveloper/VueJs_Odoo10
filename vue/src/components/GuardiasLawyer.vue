@@ -10,31 +10,49 @@
       </div>
     </div>
     <section class>
-        <div class="container-detail" v-if="isAuthenticated && currentUser.typeUser==1">
-            Mis Guardias
+      <div class="container-detail" v-if="isAuthenticated && currentUser.typeUser==1">
+        <h3>Mis Guardias</h3>
+          <table style="width:100%;">
+            <tr>
+              <th>Nombre</th>
+              <th>Turno</th>
+              <th>Zona</th>
+              <th>Fecha Asistencia</th>
+              <th>Entregado</th>
+              <th>Importe</th>
+            </tr>
+            <tr v-for="(guardias, index) in guardias" :key="index">
+              <td>{{guardias.user_lawyer[1]}}</td>
+              <td>{{guardias.nombre_turno[1]}}</td>
+              <td>{{guardias.nombre_zonas[1]}}</td>
+              <td>{{guardias.date_attendance}}</td>
+              <td>{{guardias.delivered}}</td>
+              <td>{{guardias.import_}} €</td>
+            </tr>
+          </table>
         </div>
-        <p v-else>Usted no es un usuario abogado</p>
+      <p v-else>Usted no es un usuario abogado</p>
     </section>
-    
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_DETAILS,GET_COMMENT } from "@/store/actions.type";
+import { GET_GUARDIAS } from "@/store/actions.type";
 
 export default {
   name: "CompItemsList",
-  mounted() {
-       console.log("USER_DETAIL", this.currentUser);
-    //this.$nextTick(function() {
-      /*console.log("DETAIL", this.$route.params.id);
-      this.$store.dispatch(GET_DETAILS, this.$route.params.id);
-      console.log("USER_DETAIL", this.userDetail[0], this.currentUser);*/
-
+  data() {
+    return {
+      misGuardias: []
+    };
+  },
+  beforeMount() {
+    console.log("GUARDIASSSS", this);
+    this.$store.dispatch(GET_GUARDIAS);
   },
   computed: {
-    ...mapGetters(["isAuthenticated", "currentUser"])
+    ...mapGetters(["isAuthenticated", "currentUser", "guardias"])
   }
 };
 </script>
@@ -42,7 +60,7 @@ export default {
 .container-detail {
   display: flex;
   flex-flow: column wrap;
-  justify-content: center;
+  justify-content: flex-start;
   margin-left: 40%;
   clear: both;
 }

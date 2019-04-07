@@ -5,4 +5,4 @@ class Comment(models.Model):
 
     user_lawyer_id = fields.Many2one('users.lawyer','id')
     user_client_id = fields.Many2one('users.lawyer','id')
-    comment = fields.Char('comment', required=True)
+    comment = fields.Char('comment')

@@ -18,3 +18,4 @@ class Guards(models.Model):
     nombre_turno = fields.Many2one('turn.lawyers','name_turno')
     date_attendance = fields.Char('Fecha asistencia', required=True)
     delivered = fields.Boolean('Entregado', required=True)
+    import_ = fields.Integer('Importe', required=True)

@@ -28,9 +28,10 @@ class CommentsController(http.Controller):
                 'user_client_id': data['payload']['currentUser']['id'],
                 'comment': data['payload']['comment']}])
         except Exception as e:
-            return json.dumps({"error":{"message":"error al crear comentario " + e}})
+            _logger.info(e)
+            return json.dumps({"error":{"message":"error al crear comentario"}})
 
-        fields = ['comment','user_lawyer_id','user_client_id','email']
+        fields = ['comment','user_lawyer_id','user_client_id']
         search = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
         'search_read',[[['user_lawyer_id', '=', data['payload']['id']]],fields])
         _logger.info(search)
@@ -38,7 +39,7 @@ class CommentsController(http.Controller):
         cont = 0
         for user in search:
             searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-            'search_read',[[['id', '=', user['user_client_id'][0]]],['nombre','email']])
+            'search_read',[[['id', '=', user['user_client_id'][0]]],['name','email']])
             search[cont]['user_client_id'] = searchUser[0]['email']
             cont +=1
 
@@ -60,7 +61,7 @@ class CommentsController(http.Controller):
         cont = 0
         for user in searchComments:
             searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-            'search_read',[[['id', '=', user['user_client_id'][0]]],['nombre','email']])
+            'search_read',[[['id', '=', user['user_client_id'][0]]],['name','email']])
             searchComments[cont]['user_client_id'] = searchUser[0]['email']
             cont +=1
 

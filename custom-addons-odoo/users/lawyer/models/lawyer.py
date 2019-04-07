@@ -8,7 +8,7 @@ class Lawyer(models.Model):
     num_colegiado = fields.Integer('numero colegiado')
     ejerciente = fields.Boolean('ejerciente', required=True)
     # nombre = fields.Char('nombre')
-    name = fields.Char('nombre')
+    name = fields.Char('nombres')
     apellidos = fields.Char('apellidos')
     cod_postal = fields.Char('codigo postal')
     seguro_res_civil = fields.Boolean('seguro responsabilidad civil', required=True)

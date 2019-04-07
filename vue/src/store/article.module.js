@@ -2,13 +2,15 @@ import Vue from "vue";
 import {
   ArticlesService,
   CommentsService,
-  FavoriteService
+  FavoriteService,
+  GuardiasService
 } from "@/common/api.service";
 import {
   FETCH_ARTICLE,
   FETCH_COMMENTS,
   COMMENT_CREATE,
   GET_COMMENT,
+  GET_GUARDIAS,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -25,18 +27,13 @@ import {
   SET_COMMENTS,
   TAG_ADD,
   TAG_REMOVE,
-  UPDATE_ARTICLE_IN_LIST
+  UPDATE_ARTICLE_IN_LIST,
+  SET_GUARDIAS
 } from "./mutations.type";
 
 const initialState = {
-  article: {
-    author: {},
-    title: "",
-    description: "",
-    body: "",
-    tagList: []
-  },
-  comments: []
+  comments: [],
+  guardias: []
 };
 
 export const state = { ...initialState };
@@ -58,7 +55,7 @@ export const actions = {
   },
   async [COMMENT_CREATE](context, payload) {
     console.log("COMMENTS_MODULE",context, payload);
-    return await CommentsService.post(payload)
+   return await CommentsService.post(payload)
       .then((data)=>{return data;})
       .catch(({ response }) => {return response;});
     //context.dispatch(FETCH_COMMENTS, payload.slug);
@@ -68,6 +65,17 @@ export const actions = {
     return await CommentsService.get(payload.num_colegiado)
       .then((data)=>{console.log("DATA_GET_COMMENT",data); return data;})
       .catch(({ response }) => {return response;});
+    //context.dispatch(FETCH_COMMENTS, payload.slug);
+  },
+  async [GET_GUARDIAS](context, payload) {
+    console.log("GET_GUARDIAS",context, payload);
+    return await GuardiasService.get(context.getters.currentUser.id)
+    .then((data)=>{
+      console.log("DATA_GET_GUARDIAS",data, state);
+      state.guardias = data.data;
+      //return data;
+      /*context.commit(SET_GUARDIAS, data);return data;*/})
+      .catch(({ response }) => {/*return response;*/});
     //context.dispatch(FETCH_COMMENTS, payload.slug);
   },
   async [COMMENT_DESTROY](context, payload) {
@@ -113,6 +121,10 @@ export const mutations = {
   [SET_COMMENTS](state, comments) {
     state.comments = comments;
   },
+  [SET_GUARDIAS](state, guardia) {
+    console.log("SET_GUARDIAS",guardia);
+    state.guardias = guardia.data;
+  },
   [TAG_ADD](state, tag) {
     state.article.tagList = state.article.tagList.concat([tag]);
   },
@@ -132,6 +144,9 @@ const getters = {
   },
   comments(state) {
     return state.comments;
+  },
+  guardias(state) {
+    return state.guardias;
   }
 };
 
