@@ -108,17 +108,27 @@ export const CategoriesService = {
   }
 };
 
+export const GuardiasService = {
+  get(id) {
+    console.log("GuardiasService", id);
+    return ApiService.getParams("getGuards", id);
+  }
+};
+
+export const CasosService = {
+  get(id) {
+    console.log("CasosService", id);
+    return ApiService.getParams("get-casos", id);
+  }
+};
+
 export const CommentsService = {
   get(slug) {
-    /*if (typeof slug !== "string") {
-      throw new Error(
-        "[RWV] CommentsService.get() article slug required to fetch comments"
-      );
-    }*/
     return ApiService.getParams("get-comments", slug);
   },
 
   post(payload) {
+    console.log("POST COMMENT",payload);
     return ApiService.post(`create-comments`, { payload });
   },
 

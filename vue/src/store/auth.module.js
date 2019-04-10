@@ -84,18 +84,22 @@ const actions = {
   [CHECK_AUTH](context) {
     if (JwtService.getToken()) {
       //ApiService.setHeader();
-      ApiService.post("verify",{"Token":JwtService.getToken()})
-        .then(({ data }) => {
-          console.log("CHECK_AUTH",data.result);
-          context.commit(SET_AUTH, data.result.user);
-        })
-        .catch(({ response }) => {
-          console.log("CHECK_AUTH_ERROR",response);
-          context.commit(SET_ERROR, JSON.parse(response.data.result).error.message);
-        });
+      return new Promise((resolve, reject) => {
+        ApiService.post("verify",{"Token":JwtService.getToken()})
+          .then(({ data }) => {
+            console.log("CHECK_AUTH",data.result);
+            context.commit(SET_AUTH, data.result.user);
+            resolve(data);
+          })
+          .catch(({ response }) => {
+            console.log("CHECK_AUTH_ERROR",response);
+            context.commit(SET_ERROR, JSON.parse(response.data.result).error.message);
+          });
+      });
     } else {
       context.commit(PURGE_AUTH);
     }
+   
   },
   [UPDATE_USER](context, payload) {
     const { email, username, password, image, bio } = payload;

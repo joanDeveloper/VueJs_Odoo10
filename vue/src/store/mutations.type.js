@@ -7,6 +7,7 @@ export const SET_COMMENTS = "setComments";
 export const SET_ERROR = "setError";
 export const SET_PROFILE = "setProfile";
 export const SET_TAGS = "setTags";
+export const SET_GUARDIAS = "setGuardias";
 export const TAG_ADD = "addTag";
 export const TAG_REMOVE = "removeTag";
 export const UPDATE_ARTICLE_IN_LIST = "updateAricleInList";

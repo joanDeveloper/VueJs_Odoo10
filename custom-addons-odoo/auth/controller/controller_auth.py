@@ -57,7 +57,7 @@ class Auth(http.Controller):
 
             if searchPasswd >= 1:
                 _logger.info("usuario y passwd correcto")
-                fields = ['id','email','nombre','apellidos','categories_slug','password']
+                fields = ['id','email','name','apellidos','categories_slug','password']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
                 'search_read',[[['email', '=', data['credentials']['email']]],fields])
 
@@ -86,9 +86,10 @@ class Auth(http.Controller):
                     "user":{
                         "token":token,
                         "currentUser":{
-                            "nombre":searchUser[0]['nombre'],
+                            "nombre":searchUser[0]['name'],
                             "apellidos":searchUser[0]['apellidos'],
-                            "email":searchUser[0]['email']
+                            "email":searchUser[0]['email'],
+                            "typeUser":searchUser[0]['categories_slug'][0]
                         }
                      }
                 }
@@ -115,16 +116,17 @@ class Auth(http.Controller):
             'search_count',[[['email', '=', dataDecoded['email']]]])
 
             if searchCount >=1:
-                fields = ['id','email','nombre','apellidos','categories_slug','password']
+                fields = ['id','email','name','apellidos','categories_slug','password']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
                 'search_read',[[['email', '=', dataDecoded['email']]],fields])
                 return {"user":{
                     'token':data['Token'],
                     "currentUser":{
                                 "id":searchUser[0]['id'],
-                                "nombre":searchUser[0]['nombre'],
+                                "nombre":searchUser[0]['name'],
                                 "apellidos":searchUser[0]['apellidos'],
-                                "email":searchUser[0]['email']
+                                "email":searchUser[0]['email'],
+                                "typeUser":searchUser[0]['categories_slug'][0]
                             }}}
             else:
                 Response.status = "400 Bad Request" 

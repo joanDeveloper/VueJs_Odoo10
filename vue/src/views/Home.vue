@@ -9,22 +9,41 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article class="container-list__lawyer container">
-      <section v-for="(categories, index) in categories" :key="index">
+    <article class="container-list__lawyer">
+      <section v-for="(categories, index) in categories" :key="index" class="container-categories">
+        
         <router-link
-          v-if="categories.show == true "
+          v-if="categories.show == true && !isAuthenticated && (categories.id==1)"
           class="link-category"
           :to="{ name: categories.slug, 
           params: { categories: categories.name } }"
         >{{categories.description}}</router-link>
+
+        <router-link
+          v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==4) && (categories.id==1)"
+          class="link-category"
+          :to="{ name: categories.slug, 
+          params: { categories: categories.name } }"
+        >{{categories.description}}</router-link>
+
+        <router-link
+          v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==1)"
+          class="link-category"
+          :to="{ name: categories.slug, 
+          params: { categories: categories.name } }"
+        >{{categories.description}}</router-link>
+        
       </section>
+    </article>
+    <article class="banner-asociacion">
+      Eres una associación y necesitas un abogado? Regístrase en nuestra plataforma.
     </article>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_CATEGORIES } from "@/store/actions.type";
+import { GET_CATEGORIES, GET_GUARDIAS } from "@/store/actions.type";
 import CompItemsList from "@/components/ItemList";
 
 export default {
@@ -33,7 +52,7 @@ export default {
     this.$store.dispatch(GET_CATEGORIES);
   },
   computed: {
-    ...mapGetters(["categories"])
+    ...mapGetters(["categories","isAuthenticated", "currentUser"])
   }
 };
 </script>
@@ -42,10 +61,27 @@ export default {
   color: white;
 }
 .container-list__lawyer {
-  background-color: grey;
-  width: 10%;
-  padding: 1%;
+  display: flex;
+  flex-direction: row wrap;
+  justify-content: center;
+}
+.container-categories a{
+  margin-left: 10px;
+  background: rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(179, 220, 237) 0%, rgb(41, 184, 229) 50%, rgb(188, 224, 238) 100%) repeat scroll 0% 0%;
+  padding: 20px;
   border-radius: 5%;
+}
+.container-categories a:hover{
+  outline: none !important;
+  border: none;
+  text-decoration: none;
+  color: black;
+}
+.banner-asociacion{
   text-align: center;
+  background: grey;
+  margin-top: 5%;
+  padding: 2%;
+  color: white;
 }
 </style>

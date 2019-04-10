@@ -14,7 +14,7 @@
       <br>
       <p class="comment-user">{{commentLawyer.comment}}</p>
     </article>
-    <form class="card comment-form" v-on:submit.prevent="onSubmit(id, comment, currentUser);">
+    <form class="card comment-form" v-if="isAuthenticated" v-on:submit.prevent="onSubmit(id, comment, currentUser); ">
       <div class="card-block">
         <textarea
           class="form-control"
@@ -28,6 +28,10 @@
         <button class="btn btn-sm btn-primary">Enviar comentario</button>
       </div>
     </form>
+    <p v-else>
+      <router-link :to="{ name: 'login' }">Logueate</router-link>para comentar si eres usuario o
+      <router-link :to="{ name: 'register' }">Registrate</router-link>para añadir comentarios
+    </p>
   </div>
 </template>
 
@@ -49,7 +53,7 @@ export default {
     userImage: { type: String, required: false }
   },
   computed: {
-    ...mapGetters(["userDetail"])
+    ...mapGetters(["userDetail","isAuthenticated", "currentUser"])
   },
   data() {
     return {

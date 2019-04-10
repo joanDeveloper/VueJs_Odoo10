@@ -16,9 +16,11 @@
               <br>
               <label for="typeLawyer">Abogado:</label>
               <input id="typeLawyer" type="radio" name="typeUser" v-model="typeUser" value="1">
-              <br>
+              
               <label for="typeClient">Cliente:</label>
               <input id="typeClient" type="radio" name="typeUser" v-model="typeUser" value="4">
+              <label for="typeAsociacion">Asociación:</label>
+              <input id="typeAsociacion" type="radio" name="typeUser" v-model="typeUser" value="6">
             </fieldset>
             <fieldset class="form-group">
               <input

@@ -42,7 +42,7 @@
         <div class="container-detail__left" v-if="userDetail[0]">
           <span>
             <strong>Nombre:</strong>
-            {{ userDetail[0].nombre }}
+            {{ userDetail[0].name }}
           </span>
           <br>
           <br>
@@ -54,14 +54,10 @@
       </div>
     </article>
     <RwvCommentEditor
-      v-if="isAuthenticated && userDetail[0]"
+      v-if="userDetail[0]"
       :id="this.$route.params.id"
       :currentUser="currentUser"
     ></RwvCommentEditor>
-    <p v-else>
-      <router-link :to="{ name: 'login' }">Logueate</router-link>para comentar si eres usuario o
-      <router-link :to="{ name: 'register' }">Registrate</router-link>para añadir comentarios
-    </p>
   </section>
 </template>
 
