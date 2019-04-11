@@ -49,6 +49,8 @@
 <script>
 import { mapState } from "vuex";
 import { REGISTER } from "@/store/actions.type";
+import { Utils } from "../utils/utils.js";
+import { emails, maxLength10, minLength5 } from "../utils/helpers.js";
 
 export default {
   name: "RwvRegister",
@@ -66,13 +68,23 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store
-        .dispatch(REGISTER, {
+      let validateMaxLength = maxLength10(this.password);
+      let validateMinLength = minLength5(this.password);
+      let validateEmail = emails(this.email);
+
+      this.typeUser.length == 0 ? Utils.toasterError("Error, selecciona el tipo de usuario") : true;
+      !validateMaxLength ? Utils.toasterError("Error, maximo 15 caracteres") : true;
+      !validateMinLength ? Utils.toasterError("Error, minimo 5 caracteres") : true;
+      !validateEmail ? Utils.toasterError("Error, email invalido") : true;
+
+      if (validateMaxLength && validateEmail && validateMinLength && this.typeUser.length > 0 ) {
+        console.log("TRUE_REGISTER", this.email, this.password, this.typeUser);
+        this.$store.dispatch(REGISTER, {
           email: this.email,
           password: this.password,
           typeUser: this.typeUser
-        })
-        .then(() => this.$router.push({ name: "home" }));
+        }).then(() => this.$router.push({ name: "home" }));
+      }
     }
   }
 };

@@ -39,6 +39,8 @@
 //import RwvListErrors from "@/components/ListErrors";
 import { GET_COMMENT, COMMENT_CREATE, GET_DETAILS } from "@/store/actions.type";
 import { mapGetters } from "vuex";
+import { Utils } from "../utils/utils.js";
+import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
 
 export default {
   name: "RwvCommentEditor",
@@ -65,19 +67,28 @@ export default {
   methods: {
     onSubmit(id, comment, currentUser) {
       console.log("onSubmit_COMMENT", this.userDetail[0].id, comment, currentUser);
-      id = this.userDetail[0].id;
-      this.$store
-        .dispatch(COMMENT_CREATE, { id, comment, currentUser })
-        .then(data => {
-          console.log("DATA__", JSON.parse(data.data.result).comments);
-          console.log("DATA__", this);
-          this.$data.commentLawyer = JSON.parse(data.data.result).comments;
-          //this.errors = {};
-        })
-        .catch(({ response }) => {
-          console.log("DATA__ERROR", response);
-          //this.errors = response.data.errors;
-        });
+      let validateMaxLength = maxLength55(comment);
+      let validateMinLength = minLength5(comment);
+
+      !validateMaxLength ? Utils.toasterError("Error, maximo 55 caracteres") : true;
+      !validateMinLength ? Utils.toasterError("Error, minimo 5 caracteres") : true;
+
+      if ( validateMaxLength && validateMinLength ) {
+        id = this.userDetail[0].id;
+        this.$store
+          .dispatch(COMMENT_CREATE, { id, comment, currentUser })
+          .then(data => {
+            console.log("DATA__", JSON.parse(data.data.result).comments);
+            console.log("DATA__", this);
+            this.$data.commentLawyer = JSON.parse(data.data.result).comments;
+            //this.errors = {};
+          })
+          .catch(({ response }) => {
+            console.log("DATA__ERROR", response);
+            //this.errors = response.data.errors;
+          });
+      }
+      
     },
     init() {
      
