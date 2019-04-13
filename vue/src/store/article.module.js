@@ -4,7 +4,8 @@ import {
   CommentsService,
   FavoriteService,
   GuardiasService,
-  CasosService
+  CasosService,
+  AssociacionesService
 } from "@/common/api.service";
 import {
   FETCH_ARTICLE,
@@ -13,6 +14,7 @@ import {
   GET_COMMENT,
   GET_GUARDIAS,
   GET_CASOS,
+  GET_ASSOCIACIONES,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -37,6 +39,7 @@ const initialState = {
   comments: [],
   guardias: [],
   casos: [],
+  associaciones: []
 };
 
 export const state = { ...initialState };
@@ -87,6 +90,15 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_GET_CASOS",data, state);
       state.casos = data.data;
+    }).catch(({ response }) => {});
+
+  },
+  async [GET_ASSOCIACIONES](context, payload) {
+    console.log("GET_ASSOCIACIONES",context, payload);
+    return await AssociacionesService.get()
+    .then((data)=>{
+      console.log("DATA_GET_ASSOCIACIONES",data, state);
+      state.associaciones = data.data;
     }).catch(({ response }) => {});
 
   },
@@ -162,6 +174,9 @@ const getters = {
   },
   casos(state) {
     return state.casos;
+  },
+  associaciones(state) {
+    return state.associaciones;
   }
 };
 

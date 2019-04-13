@@ -122,6 +122,13 @@ export const CasosService = {
   }
 };
 
+export const AssociacionesService = {
+  get() {
+    console.log("AssociacionesService");
+    return ApiService.get("get-associaciones");
+  }
+};
+
 export const CommentsService = {
   get(slug) {
     return ApiService.getParams("get-comments", slug);
