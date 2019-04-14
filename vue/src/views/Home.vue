@@ -32,7 +32,14 @@
           :to="{ name: categories.slug, 
           params: { categories: categories.name } }"
         >{{categories.description}}</router-link>
-        
+
+        <router-link
+          v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==6) && (categories.id==6)"
+          class="link-category"
+          :to="{ name: categories.slug, 
+          params: { categories: categories.name } }"
+        >{{categories.description}}</router-link>
+
       </section>
     </article>
     <article class="banner-asociacion">

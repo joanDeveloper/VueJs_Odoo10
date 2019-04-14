@@ -18,33 +18,54 @@
               <th>Email</th>
               <th>Teléfono</th>
               <th>Código Postal</th>
-              <th>Inscribirse</th>
+              <th>Acción</th>
             </tr>
             <tr v-for="(associaciones, index) in associaciones" :key="index">
               <td>{{associaciones.name}}</td>
               <td>{{associaciones.email}}</td>
               <td>{{associaciones.telefono}}</td>
               <td>{{associaciones.cod_postal}}</td>
-              <td><button value="Inscribirse">Inscribirse</button></td>
+              <td><button v-on:click="suscribe(associaciones.id)">Inscribirse</button></td>
             </tr>
           </table>
         </div>
-      <p v-else>Usted no es un usuario abogado</p>
+
+        <div v-if="isAuthenticated && currentUser.typeUser==6">
+        <h3 align="center">Listado de Abogados Interesados</h3><br>
+          <table style="width:100%;">
+            <tr>
+              <th>Nombre Abogado</th>
+            </tr>
+            <tr v-for="(lawyersInteresados, index) in lawyersInteresados" :key="index">
+              <td>{{lawyersInteresados.user_lawyer[1]}}</td>
+            </tr>
+          </table>
+        </div>
+      <!-- <p v-else>Usted no es un usuario abogado</p> -->
     </section>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_ASSOCIACIONES } from "@/store/actions.type";
+import { GET_ASSOCIACIONES, GET_LAWYERS_INTERESADOS, POST_ASSOCIACIONES } from "@/store/actions.type";
 
 export default {
   name: "CompItemsList",
   mounted() {
     this.$store.dispatch(GET_ASSOCIACIONES);
+    this.$store.dispatch(GET_LAWYERS_INTERESADOS,this.currentUser.id);
   },
   computed: {
-    ...mapGetters(["isAuthenticated", "currentUser", "associaciones"])
+    ...mapGetters(["isAuthenticated", "currentUser", "associaciones","lawyersInteresados"])
+  },
+  methods: {
+    suscribe(id) {
+      console.log("suscribe associacion",id, this.currentUser.id);
+      let payload = {"id_asociacion":id,"id_user":this.currentUser.id};
+      this.$store.dispatch(POST_ASSOCIACIONES, payload);
+
+    }
   }
 };
 </script>

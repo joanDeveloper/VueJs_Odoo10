@@ -126,6 +126,12 @@ export const AssociacionesService = {
   get() {
     console.log("AssociacionesService");
     return ApiService.get("get-associaciones");
+  },
+  getLawyers(payload) {
+    return ApiService.getParams("getLawyers-interesados", payload);
+  },
+  post(payload) {
+    return ApiService.post("post-asociaciones", { payload });
   }
 };
 

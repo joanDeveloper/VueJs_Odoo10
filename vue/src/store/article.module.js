@@ -15,6 +15,8 @@ import {
   GET_GUARDIAS,
   GET_CASOS,
   GET_ASSOCIACIONES,
+  GET_LAWYERS_INTERESADOS,
+  POST_ASSOCIACIONES,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -39,7 +41,8 @@ const initialState = {
   comments: [],
   guardias: [],
   casos: [],
-  associaciones: []
+  associaciones: [],
+  lawyersInteresados: []
 };
 
 export const state = { ...initialState };
@@ -99,6 +102,24 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_GET_ASSOCIACIONES",data, state);
       state.associaciones = data.data;
+    }).catch(({ response }) => {});
+
+  },
+  async [GET_LAWYERS_INTERESADOS](context, payload) {
+    console.log("GET_LAWYERS_INTERESADOS",context, payload);
+    return await AssociacionesService.getLawyers(payload)
+    .then((data)=>{
+      console.log("DATA_LAWYERS_INTERESADOS",data, state);
+      state.lawyersInteresados = data.data;
+    }).catch(({ response }) => {});
+
+  },
+  async [POST_ASSOCIACIONES](context, payload) {
+    console.log("POST_ASSOCIACIONES",context, payload);
+    return await AssociacionesService.post(payload)
+    .then((data)=>{
+      console.log("DATA_POST_ASSOCIACIONES",data, state);
+      state.lawyersInteresados = data.data;
     }).catch(({ response }) => {});
 
   },
@@ -177,6 +198,9 @@ const getters = {
   },
   associaciones(state) {
     return state.associaciones;
+  },
+  lawyersInteresados(state) {
+    return state.lawyersInteresados;
   }
 };
 
