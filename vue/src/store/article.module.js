@@ -17,6 +17,7 @@ import {
   GET_ASSOCIACIONES,
   GET_LAWYERS_INTERESADOS,
   POST_ASSOCIACIONES,
+  POST_INTERESADO,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -120,6 +121,16 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_POST_ASSOCIACIONES",data, state);
       state.lawyersInteresados = data.data;
+    }).catch(({ response }) => {});
+
+  },
+
+  async [POST_INTERESADO](context, payload) {
+    console.log("POST_INTERESADO",context, payload);
+    return await AssociacionesService.postInteresado(payload)
+    .then((data)=>{
+      console.log("DATA_POST_INTERESADO",data, state);
+      //state.lawyersInteresados = data.data;
     }).catch(({ response }) => {});
 
   },

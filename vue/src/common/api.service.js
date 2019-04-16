@@ -132,6 +132,9 @@ export const AssociacionesService = {
   },
   post(payload) {
     return ApiService.post("post-asociaciones", { payload });
+  },
+  postInteresado(payload) {
+    return ApiService.post("postLawyer-interesado", { payload });
   }
 };
 

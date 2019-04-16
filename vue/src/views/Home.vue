@@ -34,7 +34,7 @@
         >{{categories.description}}</router-link>
 
         <router-link
-          v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==6) && (categories.id==6)"
+          v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==6) && (categories.id==6 || categories.id==1)"
           class="link-category"
           :to="{ name: categories.slug, 
           params: { categories: categories.name } }"
