@@ -135,6 +135,9 @@ export const AssociacionesService = {
   },
   postInteresado(payload) {
     return ApiService.post("postLawyer-interesado", { payload });
+  },
+  deleteInteresado(payload) {
+    return ApiService.post("delete-interesado", { payload });
   }
 };
 

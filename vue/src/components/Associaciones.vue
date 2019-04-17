@@ -85,7 +85,8 @@ import {
   GET_ASSOCIACIONES,
   GET_LAWYERS_INTERESADOS,
   POST_ASSOCIACIONES,
-  POST_INTERESADO
+  POST_INTERESADO,
+  DELETE_INTERESADO
 } from "@/store/actions.type";
 
 export default {
@@ -110,13 +111,13 @@ export default {
     },
     selected(id) {
       console.log("selected lawyer", id, this.currentUser.id);
-      let payload = { id_interesado: id };
+      let payload = { id_interesado: id, id_asociacion: this.currentUser.id };
       this.$store.dispatch(POST_INTERESADO, payload);
     },
     deleteSelected(id) {
       console.log("deleteSelected lawyer", id, this.currentUser.id);
-      // let payload = { id_interesado: id };
-      // this.$store.dispatch(POST_INTERESADO, payload);
+      let payload = { id_interesado: id , id_asociacion: this.currentUser.id};
+      this.$store.dispatch(DELETE_INTERESADO, payload);
     }
   }
 };

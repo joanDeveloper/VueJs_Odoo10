@@ -71,4 +71,35 @@ class AssociacionesController(http.Controller):
             _logger.info(e)
             return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
         
-        return json.dumps({"message":"Has elejido a un abogado correctamente"})
+        search = self._models.execute_kw(self._db, self._uid, self._password,'asociaciones.lawyer',
+        'search_read',[[['user_asociation', '=',int(data['payload']['id_asociacion'])]]])
+        
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=',user['user_lawyer'][0]]]])
+            user['userDetail'] = searchUser[0]
+        
+        return json.dumps(search)
+    
+    @http.route('/delete-interesado', type="json", auth="none",website=True, cors="*")
+    def deleteInteresados(self,**post):
+        _logger.info("**** DELETE INTERESADOS *******")
+        data = request.jsonrequest
+        _logger.info(data['payload']['id_asociacion'])
+        try:
+            writeInteresado = self._models.execute_kw(self._db, self._uid, self._password,'asociaciones.lawyer', 'write', [[int(data['payload']['id_interesado'])], {
+                'selected': False
+            }])
+        except Exception as e:
+            _logger.info(e)
+            return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
+        
+        search = self._models.execute_kw(self._db, self._uid, self._password,'asociaciones.lawyer',
+        'search_read',[[['user_asociation', '=',int(data['payload']['id_asociacion'])]]])
+        
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=',user['user_lawyer'][0]]]])
+            user['userDetail'] = searchUser[0]
+
+        return json.dumps(search)
