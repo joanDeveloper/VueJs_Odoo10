@@ -9,6 +9,11 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
+    <section style="text-align:center;margin-bottom:20px;" v-if="isAuthenticated && currentUser.typeUser==1 && asociacionesInteresadas.length > 0">
+      <span v-for="(asociacionesInteresadas, index) in asociacionesInteresadas" :key="index">
+        La asociación {{ asociacionesInteresadas.user_asociation[1]}} te ha elegido como abogado
+      </span>
+    </section>
     <section class>
       <div v-if="isAuthenticated && currentUser.typeUser==1">
         <h3 align="center">Listado de Associaciones</h3>
@@ -28,6 +33,7 @@
             <td>{{associaciones.cod_postal}}</td>
             <td>
               <button v-on:click="suscribe(associaciones.id)">Inscribirse</button>
+              <button v-on:click="unsuscribe(associaciones.id)">Desuscribirse</button>
             </td>
           </tr>
         </table>
@@ -86,7 +92,9 @@ import {
   GET_LAWYERS_INTERESADOS,
   POST_ASSOCIACIONES,
   POST_INTERESADO,
-  DELETE_INTERESADO
+  DELETE_INTERESADO,
+  DELETE_ASOCIACION,
+  GET_ASSOCIACIONES_INTERESADOS
 } from "@/store/actions.type";
 
 export default {
@@ -94,13 +102,15 @@ export default {
   mounted() {
     this.$store.dispatch(GET_ASSOCIACIONES);
     this.$store.dispatch(GET_LAWYERS_INTERESADOS, this.currentUser.id);
+    this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, this.currentUser.id);
   },
   computed: {
     ...mapGetters([
       "isAuthenticated",
       "currentUser",
       "associaciones",
-      "lawyersInteresados"
+      "lawyersInteresados",
+      "asociacionesInteresadas"
     ])
   },
   methods: {
@@ -118,6 +128,11 @@ export default {
       console.log("deleteSelected lawyer", id, this.currentUser.id);
       let payload = { id_interesado: id , id_asociacion: this.currentUser.id};
       this.$store.dispatch(DELETE_INTERESADO, payload);
+    },
+    unsuscribe(id) {
+      console.log("unsuscribe lawyer", id, this.currentUser.id);
+      let payload = { id_interesado: this.currentUser.id , id_asociacion: id};
+      this.$store.dispatch(DELETE_ASOCIACION, payload);
     }
   }
 };

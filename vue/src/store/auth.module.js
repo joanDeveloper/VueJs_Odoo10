@@ -94,6 +94,7 @@ const actions = {
           .catch(({ response }) => {
             console.log("CHECK_AUTH_ERROR",response);
             context.commit(SET_ERROR, JSON.parse(response.data.result).error.message);
+            reject(response);
           });
       });
     } else {

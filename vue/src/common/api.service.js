@@ -131,13 +131,19 @@ export const AssociacionesService = {
     return ApiService.getParams("getLawyers-interesados", payload);
   },
   post(payload) {
-    return ApiService.post("post-asociaciones", { payload });
+    return ApiService.post("postInteresado", { payload });
   },
   postInteresado(payload) {
     return ApiService.post("postLawyer-interesado", { payload });
   },
   deleteInteresado(payload) {
     return ApiService.post("delete-interesado", { payload });
+  },
+  deleteAsociacion(payload) {
+    return ApiService.post("post-desuscribe", { payload });
+  },
+  getAsociacionesInteresados(payload) {
+    return ApiService.getParams("getAsociaciones-interesados", payload);
   }
 };
 

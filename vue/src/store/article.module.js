@@ -19,6 +19,8 @@ import {
   POST_ASSOCIACIONES,
   POST_INTERESADO,
   DELETE_INTERESADO,
+  DELETE_ASOCIACION,
+  GET_ASSOCIACIONES_INTERESADOS,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -38,13 +40,15 @@ import {
   UPDATE_ARTICLE_IN_LIST,
   SET_GUARDIAS
 } from "./mutations.type";
+import {Utils} from "../utils/utils";
 
 const initialState = {
   comments: [],
   guardias: [],
   casos: [],
   associaciones: [],
-  lawyersInteresados: []
+  lawyersInteresados: [],
+  asociacionesInteresadas: []
 };
 
 export const state = { ...initialState };
@@ -121,8 +125,16 @@ export const actions = {
     return await AssociacionesService.post(payload)
     .then((data)=>{
       console.log("DATA_POST_ASSOCIACIONES",data, state);
+      if(JSON.parse(data.data.result).message!=undefined){
+        console.log("ASOCIACIONES____ERROR_______");
+        Utils.toasterError(JSON.parse(data.data.result).message);
+        return false;
+      }
+      console.log("ASOCIACIONES____OK_______");
       state.lawyersInteresados = data.data;
-    }).catch(({ response }) => {});
+    }).catch(({ response }) => {
+      console.log("DATA_ERROR_POST_ASSOCIACIONES",response.data);
+    });
 
   },
 
@@ -131,6 +143,11 @@ export const actions = {
     return await AssociacionesService.postInteresado(payload)
     .then((data)=>{
       console.log("DATA_POST_INTERESADO",data, state);
+      if(JSON.parse(data.data.result).message!=undefined){
+        console.log("INTERESADO____ERROR_______");
+        Utils.toasterError(JSON.parse(data.data.result).message);
+        return false;
+      }
       state.lawyersInteresados = JSON.parse(data.data.result);
     }).catch(({ response }) => {});
 
@@ -142,6 +159,29 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_DELETE_INTERESADO___",data.data.result);
       state.lawyersInteresados = JSON.parse(data.data.result);
+    }).catch(({ response }) => {});
+
+  },
+  async [DELETE_ASOCIACION](context, payload) {
+    console.log("DELETE_ASOCIACION",context, payload);
+    return await AssociacionesService.deleteAsociacion(payload)
+    .then((data)=>{
+      console.log("DATA_DELETE_ASOCIACION___",data.data.result);
+      if(JSON.parse(data.data.result).message!=undefined){
+        console.log("DELETE_ASOCIACION____ERROR_______");
+        Utils.toasterError(JSON.parse(data.data.result).message);
+        return false;
+      }
+      //state.lawyersInteresados = JSON.parse(data.data.result);
+    }).catch(({ response }) => {});
+
+  },
+  async [GET_ASSOCIACIONES_INTERESADOS](context, payload) {
+    console.log("GET_ASSOCIACIONES_INTERESADOS",context, payload);
+    return await AssociacionesService.getAsociacionesInteresados(payload)
+    .then((data)=>{
+      console.log("DATA_GET_ASSOCIACIONES_INTERESADOS___",data);
+      state.asociacionesInteresadas = data.data;
     }).catch(({ response }) => {});
 
   },
@@ -223,6 +263,9 @@ const getters = {
   },
   lawyersInteresados(state) {
     return state.lawyersInteresados;
+  },
+  asociacionesInteresadas(state) {
+    return state.asociacionesInteresadas;
   }
 };
 
