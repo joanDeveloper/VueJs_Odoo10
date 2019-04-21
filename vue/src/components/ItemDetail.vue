@@ -10,6 +10,15 @@
       </div>
     </div>
     <article class>
+      <section
+        style="text-align:center;margin-bottom:20px;"
+        v-if="asociacionesInteresadas.length > 0"
+      >
+        <span v-for="(asociacionesInteresadas, index) in asociacionesInteresadas" :key="index">
+          Este abogado ayuda a la asociación
+          <strong>{{ asociacionesInteresadas.user_asociation[1]}}</strong>
+        </span>
+      </section>
       <div class="container-detail">
         <img
           class="responsive-img"
@@ -53,30 +62,39 @@
         </div>
       </div>
     </article>
-    <RwvCommentEditor
-      v-if="userDetail[0]"
-      :id="this.$route.params.id"
-      :currentUser="currentUser"
-    ></RwvCommentEditor>
+    <RwvCommentEditor v-if="userDetail[0]" :id="this.$route.params.id" :currentUser="currentUser"></RwvCommentEditor>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_DETAILS,GET_COMMENT } from "@/store/actions.type";
+import {
+  GET_DETAILS,
+  GET_COMMENT,
+  GET_ASSOCIACIONES_INTERESADOS
+} from "@/store/actions.type";
 import RwvCommentEditor from "@/components/CommentEditor";
 
 export default {
   name: "CompItemsList",
   mounted() {
-    //this.$nextTick(function() {
-      console.log("DETAIL", this.$route.params.id);
-      this.$store.dispatch(GET_DETAILS, this.$route.params.id);
-      console.log("USER_DETAIL", this.userDetail[0], this.currentUser);
-
+    console.log("DETAIL", this.$route.params.id);
+    this.$store
+      .dispatch(GET_DETAILS, this.$route.params.id)
+      .then(data => {
+        console.log("AS_DETAIL___", JSON.parse(data.result)[0].id);
+        let id = JSON.parse(data.result)[0].id;
+        this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, id);
+      })
+      .catch(({ response }) => {});
   },
   computed: {
-    ...mapGetters(["userDetail", "isAuthenticated", "currentUser"])
+    ...mapGetters([
+      "userDetail",
+      "isAuthenticated",
+      "currentUser",
+      "asociacionesInteresadas"
+    ])
   },
   components: {
     RwvCommentEditor

@@ -36,6 +36,7 @@ class Auth(http.Controller):
                 return json.dumps({"message":"Has sido registrado correctamente. Gracias"})
 
         else:
+            Response.status = "400 Bad Request"
             return json.dumps({"error":{"message":"el email ya existe"}})
         
     @http.route('/signin', type="json", auth="none",website=True, cors="*")
@@ -47,6 +48,7 @@ class Auth(http.Controller):
 
         if searchEmail == 0:
             _logger.info("el email no existe")
+            Response.status = "400 Bad Request"
             return {"error":{"message":"el email no existe"}}
             
         else:
@@ -81,7 +83,7 @@ class Auth(http.Controller):
                 token = Middleware().encode(dataToEncode)
                 _logger.info("*****TOKEN_ENCODED*******")
                 _logger.info(token)
-
+                Response.status = "200"
                 return {
                     "user":{
                         "token":token,
@@ -95,6 +97,7 @@ class Auth(http.Controller):
                 }
             else:
                 _logger.info("PASSWORD INCORRECTO")
+                Response.status = "400 Bad Request"
                 return {"error":{"message":"password incorrecto"}}
                 
     @http.route('/verify', type="json", auth="none", website=True, cors="*" )
@@ -119,6 +122,7 @@ class Auth(http.Controller):
                 fields = ['id','email','name','apellidos','categories_slug','password']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
                 'search_read',[[['email', '=', dataDecoded['email']]],fields])
+                Response.status = "200"
                 return {"user":{
                     'token':data['Token'],
                     "currentUser":{

@@ -11,7 +11,7 @@
     </div>
     <section style="text-align:center;margin-bottom:20px;" v-if="isAuthenticated && currentUser.typeUser==1 && asociacionesInteresadas.length > 0">
       <span v-for="(asociacionesInteresadas, index) in asociacionesInteresadas" :key="index">
-        La asociación {{ asociacionesInteresadas.user_asociation[1]}} te ha elegido como abogado
+        La asociación <strong>{{ asociacionesInteresadas.user_asociation[1]}}</strong> te ha elegido como abogado
       </span>
     </section>
     <section class>
@@ -100,9 +100,11 @@ import {
 export default {
   name: "CompItemsList",
   mounted() {
-    this.$store.dispatch(GET_ASSOCIACIONES);
-    this.$store.dispatch(GET_LAWYERS_INTERESADOS, this.currentUser.id);
-    this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, this.currentUser.id);
+    this.$store.dispatch(GET_ASSOCIACIONES).then(res=>{
+      this.$store.dispatch(GET_LAWYERS_INTERESADOS, this.currentUser.id).then(res=>{
+        this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, this.currentUser.id);
+      });
+    });
   },
   computed: {
     ...mapGetters([

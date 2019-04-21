@@ -7,8 +7,9 @@
           <p class="text-xs-center">
             <router-link :to="{ name: 'register' }">Need an account?</router-link>
           </p>
-          <ul v-if="errors" class="error-messages">
-            <li v-for="(v, k) in errors" :key="k">{{ v | error }}</li>
+          <ul v-if="errors.length > 0" class="error-messages">
+            <li>{{errors}}</li>
+            <!-- <li v-for="(v, k) in errors" :key="k">{{ v | error }}</li> -->
           </ul>
           <form v-on:submit.prevent="onSubmit(email, password);">
             <fieldset class="form-group">

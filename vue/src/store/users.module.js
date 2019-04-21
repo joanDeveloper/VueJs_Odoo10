@@ -37,19 +37,29 @@ const actions = {
       .catch(() => {});
   },
   [GET_DETAILS](context, id) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       console.log("CONTEXT_DETAIL", context, id);
       UsersService.postDetail(id)
         .then(({ data }) => {
           console.log("GET_DETAILS", JSON.parse(data.result));
           state.userDetail = JSON.parse(data.result);
-          console.log("AAAA________",state);
-          //resolve(JSON.parse(data.result));
-          return JSON.parse(data.result);
+          resolve(data);
+          // return JSON.parse(data.result);
         })
         .catch(() => {});
     });
-  }
+  },
+  // async [GET_DETAILS](context, id) {
+  //   //console.log("GET_ASSOCIACIONES_INTERESADOS",context, payload);
+  //   console.log("CONTEXT_DETAIL", context, id);
+  //   return await UsersService.postDetail(id)
+  //   .then((data)=>{
+  //     console.log("GET_DETAILS", JSON.parse(data.result));
+  //     state.userDetail = JSON.parse(data.result);
+  //     //resolve(data);
+  //   }).catch(({ response }) => {});
+
+  // },
 };
 
 export default {
