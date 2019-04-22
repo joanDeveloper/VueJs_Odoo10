@@ -156,6 +156,10 @@ export const CommentsService = {
     console.log("POST COMMENT",payload);
     return ApiService.post(`create-comments`, { payload });
   },
+  update(payload) {
+    console.log("UPDATE COMMENT",payload);
+    return ApiService.post(`update-comments`, { payload });
+  },
 
   destroy(slug, commentId) {
     return ApiService.delete(`articles/${slug}/comments/${commentId}`);

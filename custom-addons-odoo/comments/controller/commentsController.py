@@ -65,3 +65,31 @@ class CommentsController(http.Controller):
             cont +=1
 
         return json.dumps({"comments":searchComments})
+    
+    @http.route('/update-comments', type="json", auth="none",website=True, cors="*")
+    def updateComment(self):
+        _logger.info("UPDATE_COMENTARIOS")
+        data = request.jsonrequest
+        _logger.info(data)
+        
+        try:
+            writeInteresado = self._models.execute_kw(self._db, self._uid, self._password,'comment.items', 'write', [[int(data['payload']['dataComment']['id_comment'])], {
+                'comment': data['payload']['dataComment']['comment']
+            }])
+        except Exception as e:
+            _logger.info(e)
+            return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
+
+        fields = ['comment','user_lawyer_id','user_client_id']
+        search = self._models.execute_kw(self._db, self._uid, self._password,'comment.items',
+        'search_read',[[['user_lawyer_id', '=', data['payload']['dataComment']['id_userLawyer']]],fields])
+        _logger.info(search)
+        # obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['user_client_id'][0]]],['name','email']])
+            search[cont]['user_client_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"comments":search})
