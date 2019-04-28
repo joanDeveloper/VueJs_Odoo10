@@ -9,10 +9,11 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article style="text-align:center;">
-      En construcción ...
+    <article style="text-align:center;" v-for="(temesForum, index) in temesForum" :key="index">
+      <router-link :to="{ name: 'itemForum', params: { slug: temesForum.slug } }">
+        <li>{{temesForum.name}}</li>
+      </router-link>
     </article>
-    <!-- <RwvCommentEditor v-if="userDetail[0]" :id="this.$route.params.id" :currentUser="currentUser"></RwvCommentEditor> -->
   </section>
 </template>
 
@@ -21,7 +22,8 @@ import { mapGetters } from "vuex";
 import {
   GET_DETAILS,
   GET_COMMENT,
-  GET_ASSOCIACIONES_INTERESADOS
+  GET_ASSOCIACIONES_INTERESADOS,
+  GET_TEMES_FORUM
 } from "@/store/actions.type";
 import RwvCommentEditor from "@/components/CommentEditor";
 
@@ -29,21 +31,18 @@ export default {
   name: "ComponenteForo",
   mounted() {
     console.log("FORO", this.$route.params.id);
-    // this.$store
-    //   .dispatch(GET_DETAILS, this.$route.params.id)
-    //   .then(data => {
-    //     console.log("AS_DETAIL___", JSON.parse(data.result)[0].id);
-    //     let id = JSON.parse(data.result)[0].id;
-    //     this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, id);
-    //   })
-    //   .catch(({ response }) => {});
+    this.$store.dispatch(GET_TEMES_FORUM).then(data => {
+        console.log("FORO_TEMES", this.temesForum);
+      })
+      .catch(({ response }) => {});
   },
   computed: {
     ...mapGetters([
       "userDetail",
       "isAuthenticated",
       "currentUser",
-      "asociacionesInteresadas"
+      "asociacionesInteresadas",
+      "temesForum"
     ])
   },
   components: {

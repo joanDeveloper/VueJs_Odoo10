@@ -122,6 +122,13 @@ export const CasosService = {
   }
 };
 
+export const ForumService = {
+  get() {
+    console.log("ForumService");
+    return ApiService.get("get-temesForum");
+  }
+};
+
 export const AssociacionesService = {
   get() {
     console.log("AssociacionesService");

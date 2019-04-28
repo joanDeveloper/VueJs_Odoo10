@@ -5,7 +5,8 @@ import {
   FavoriteService,
   GuardiasService,
   CasosService,
-  AssociacionesService
+  AssociacionesService,
+  ForumService
 } from "@/common/api.service";
 import {
   FETCH_ARTICLE,
@@ -22,6 +23,7 @@ import {
   DELETE_INTERESADO,
   DELETE_ASOCIACION,
   GET_ASSOCIACIONES_INTERESADOS,
+  GET_TEMES_FORUM,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -49,7 +51,8 @@ const initialState = {
   casos: [],
   associaciones: [],
   lawyersInteresados: [],
-  asociacionesInteresadas: []
+  asociacionesInteresadas: [],
+  temesForum: []
 };
 
 export const state = { ...initialState };
@@ -193,6 +196,16 @@ export const actions = {
     }).catch(({ response }) => {});
 
   },
+
+  async [GET_TEMES_FORUM](context, payload) {
+    console.log("GET_TEMES_FORUM",context, payload);
+    return await ForumService.get()
+    .then((data)=>{
+      console.log("DATA_GET_TEMES_FORUM",data);
+      state.temesForum = data.data;
+    }).catch(({ response }) => {});
+
+  },
   async [COMMENT_DESTROY](context, payload) {
     await CommentsService.destroy(payload.slug, payload.commentId);
     context.dispatch(FETCH_COMMENTS, payload.slug);
@@ -274,6 +287,9 @@ const getters = {
   },
   asociacionesInteresadas(state) {
     return state.asociacionesInteresadas;
+  },
+  temesForum(state) {
+    return state.temesForum;
   }
 };
 
