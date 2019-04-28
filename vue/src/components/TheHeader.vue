@@ -41,6 +41,17 @@
             class="nav-link"
             active-class="active"
             exact
+            :to="{ name: 'foro' }"
+          >
+            <i class="ion-compose"></i>Foro
+          </router-link>
+        </li>
+
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            active-class="active"
+            exact
             :to="{ name: 'contact' }"
           >
             <i class="ion-compose"></i>Contact
@@ -59,7 +70,7 @@
             Home
           </router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link
             class="nav-link"
             active-class="active"
@@ -67,7 +78,7 @@
           >
             <i class="ion-compose"></i>&nbsp;New Article
           </router-link>
-        </li>
+        </li> -->
         <li class="nav-item">
           <router-link
             class="nav-link"
@@ -92,6 +103,18 @@
             {{ currentUser.email }}
           </router-link>
         </li>
+
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            active-class="active"
+            exact
+            :to="{ name: 'foro' }"
+          >
+            <i class="ion-compose"></i>Foro
+          </router-link>
+        </li>
+        
       </ul>
     </div>
   </nav>
