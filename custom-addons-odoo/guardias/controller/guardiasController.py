@@ -2,6 +2,7 @@ import openerp.http as http
 import json, logging, xmlrpclib, base64
 from openerp.http import request
 from ...utils.credentials import Credentials
+from fpdf import FPDF
 
 _logger = logging.getLogger("guards_controller")
 
