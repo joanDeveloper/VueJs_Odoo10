@@ -126,6 +126,9 @@ export const ForumService = {
   get() {
     console.log("ForumService");
     return ApiService.get("get-temesForum");
+  },
+  postQuestion(payload) {
+    return ApiService.post("create-commentForum",{ payload });
   }
 };
 
