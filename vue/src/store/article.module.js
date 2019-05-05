@@ -24,6 +24,7 @@ import {
   DELETE_ASOCIACION,
   GET_ASSOCIACIONES_INTERESADOS,
   GET_TEMES_FORUM,
+  CREATE_QUESTION_FORUM,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -52,7 +53,8 @@ const initialState = {
   associaciones: [],
   lawyersInteresados: [],
   asociacionesInteresadas: [],
-  temesForum: []
+  temesForum: [],
+  questionsForum: []
 };
 
 export const state = { ...initialState };
@@ -206,6 +208,16 @@ export const actions = {
     }).catch(({ response }) => {});
 
   },
+
+  async [CREATE_QUESTION_FORUM](context, payload) {
+    console.log("CREATE_QUESTION_FORUM",context, payload);
+    return await ForumService.postQuestion(payload)
+    .then((data)=>{
+      console.log("DATA_CREATE_QUESTION_FORUM",data);
+      state.questionsForum = JSON.parse(data.data.result).questions;
+    }).catch(({ response }) => {});
+
+  },
   async [COMMENT_DESTROY](context, payload) {
     await CommentsService.destroy(payload.slug, payload.commentId);
     context.dispatch(FETCH_COMMENTS, payload.slug);
@@ -290,6 +302,9 @@ const getters = {
   },
   temesForum(state) {
     return state.temesForum;
+  },
+  questionsForum(state) {
+    return state.questionsForum;
   }
 };
 

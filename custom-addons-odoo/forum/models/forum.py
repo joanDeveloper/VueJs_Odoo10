@@ -9,7 +9,8 @@ class TemasForum(models.Model):
 class Forum(models.Model):
     _name = 'forum.lawyers'
 
-    user_lawyer_id = fields.Many2many('users.lawyer','id')
-    user_client_id = fields.Many2many('users.lawyer','id')
-    name_tema = fields.Many2one('temes.forum','Nombre Tema')
-    comment = fields.Char('comment')
+    lawyer_id = fields.Many2one('users.lawyer','id')
+    client_id = fields.Many2one('users.lawyer','id')
+    id_tema = fields.Many2one('temes.forum','id')
+    question = fields.Char('Pregunta')
+    answer = fields.Char('Respuesta')

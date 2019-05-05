@@ -9,6 +9,7 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
+    EN CONSTRUCCIÓN
     <article style="text-align:center;" v-for="(temesForum, index) in temesForum" :key="index">
       <router-link :to="{ name: 'itemForum', params: { slug: temesForum.slug } }">
         <li>{{temesForum.name}}</li>
@@ -20,9 +21,6 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  GET_DETAILS,
-  GET_COMMENT,
-  GET_ASSOCIACIONES_INTERESADOS,
   GET_TEMES_FORUM
 } from "@/store/actions.type";
 import RwvCommentEditor from "@/components/CommentEditor";
@@ -31,10 +29,7 @@ export default {
   name: "ComponenteForo",
   mounted() {
     console.log("FORO", this.$route.params.id);
-    this.$store.dispatch(GET_TEMES_FORUM).then(data => {
-        console.log("FORO_TEMES", this.temesForum);
-      })
-      .catch(({ response }) => {});
+    this.$store.dispatch(GET_TEMES_FORUM);
   },
   computed: {
     ...mapGetters([

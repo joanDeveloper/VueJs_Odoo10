@@ -104,7 +104,7 @@ export default new Router({
     {
       name: "itemForum",
       path: "/foro/:slug",
-      component: () => import("@/components/Foro")
+      component: () => import("@/components/ItemForo")
     },
     // Handle child routes with a default, by giving the name to the
     // child.
