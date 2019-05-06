@@ -124,12 +124,14 @@ export const CasosService = {
 
 export const ForumService = {
   get() {
-    console.log("ForumService");
     return ApiService.get("get-temesForum");
   },
   postQuestion(payload) {
     return ApiService.post("create-commentForum",{ payload });
-  }
+  },
+  getQuestions(id_tema) {
+    return ApiService.getParams("get-questionForum", id_tema);
+  },
 };
 
 export const AssociacionesService = {

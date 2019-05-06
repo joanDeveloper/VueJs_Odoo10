@@ -25,6 +25,7 @@ import {
   GET_ASSOCIACIONES_INTERESADOS,
   GET_TEMES_FORUM,
   CREATE_QUESTION_FORUM,
+  GET_QUESTIONS_FORUM,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -215,6 +216,16 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_CREATE_QUESTION_FORUM",data);
       state.questionsForum = JSON.parse(data.data.result).questions;
+    }).catch(({ response }) => {});
+
+  },
+
+  async [GET_QUESTIONS_FORUM](context, payload) {
+    console.log("GET_QUESTIONS_FORUM",context, payload);
+    return await ForumService.getQuestions(payload)
+    .then((data)=>{
+      console.log("DATA_GET_QUESTIONS_FORUM",data);
+      state.questionsForum = data.data.questions;
     }).catch(({ response }) => {});
 
   },

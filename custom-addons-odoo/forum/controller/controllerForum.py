@@ -51,3 +51,53 @@ class ForumController(http.Controller):
             cont +=1
 
         return json.dumps({"questions":search})
+    
+    @http.route('/get-questionForum/<id_tema>', type="http", auth="none",website=True, cors="*")
+    def getQuestionForum(self,**post):
+        _logger.info("QUESTIONSS_FORUM")
+        _logger.info(post['id_tema'])
+        
+        fields = ['question','client_id']
+        search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
+        'search_read',[[['id_tema', '=', int(post['id_tema'])]],fields])
+        _logger.info(search)
+        #obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['client_id'][0]]],['email']])
+            search[cont]['client_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"questions":search})
+    
+    @http.route('/create-answer', type="json", auth="none",website=True, cors="*")
+    def postAnswerForum(self):
+        _logger.info("ANSWER_FORUM")
+        # data = request.jsonrequest
+        # _logger.info(data['payload']['currentUser']['id'])
+        # _logger.info(data['payload']['question'])
+        # _logger.info(data['payload']['id_tema'])
+        # try:
+        #     self._models.execute_kw(self._db, self._uid, self._password, 'forum.lawyers', 'create', [{
+        #         'id_tema':data['payload']['id_tema'],
+        #         'question': data['payload']['question'],
+        #         'client_id': data['payload']['currentUser']['id']
+        #     }])
+        # except Exception as e:
+        #     _logger.info(e)
+        #     return json.dumps({"error":{"message":"error al crear pregunta en el forum"}})
+        
+        # fields = ['question','client_id']
+        # search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
+        # 'search_read',[[['id_tema', '=', data['payload']['id_tema']]],fields])
+        # _logger.info(search)
+        # #obtener nombre usuario para pintar quien ha escrito el comentario
+        # cont = 0
+        # for user in search:
+        #     searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        #     'search_read',[[['id', '=', user['client_id'][0]]],['email']])
+        #     search[cont]['client_id'] = searchUser[0]['email']
+        #     cont +=1
+
+        # return json.dumps({"questions":search})
