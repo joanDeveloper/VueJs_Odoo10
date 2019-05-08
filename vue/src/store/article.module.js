@@ -24,8 +24,11 @@ import {
   DELETE_ASOCIACION,
   GET_ASSOCIACIONES_INTERESADOS,
   GET_TEMES_FORUM,
+  GET_ANSWER_FORUM,
+  SUBMIT_ANSWER_FORUM,
   CREATE_QUESTION_FORUM,
   GET_QUESTIONS_FORUM,
+  GET_QUESTIONS_BYSLUG_FORUM,
   COMMENT_DESTROY,
   FAVORITE_ADD,
   FAVORITE_REMOVE,
@@ -55,7 +58,8 @@ const initialState = {
   lawyersInteresados: [],
   asociacionesInteresadas: [],
   temesForum: [],
-  questionsForum: []
+  questionsForum: [],
+  answerQuestion:[]
 };
 
 export const state = { ...initialState };
@@ -229,6 +233,37 @@ export const actions = {
     }).catch(({ response }) => {});
 
   },
+
+  async [SUBMIT_ANSWER_FORUM](context, payload) {
+    console.log("SUBMIT_ANSWER_FORUM",context, payload);
+    return await ForumService.postAnswer(payload)
+    .then((data)=>{
+      console.log("DATA_SUBMIT_ANSWER_FORUM",data);
+      state.answerQuestion = JSON.parse(data.data.result).answers;
+    }).catch(({ response }) => {});
+
+  },
+
+  async [GET_QUESTIONS_BYSLUG_FORUM](context, payload) {
+    console.log("GET_ALL_QUESTIONS_FORUM",context, payload);
+    return await ForumService.getAllQuestions(payload)
+    .then((data)=>{
+      console.log("DATA_GET_ALL_QUESTIONS_FORUM",data);
+      state.questionsForum = data.data.questions;
+    }).catch(({ response }) => {});
+
+  },
+
+  async [GET_ANSWER_FORUM](context, payload) {
+    console.log("GET_ANSWER_FORUM",context, payload);
+    return await ForumService.getAnswer(payload)
+    .then((data)=>{
+      console.log("DATA_GET_ANSWER_FORUM",data);
+      state.answerQuestion = data.data.answers;
+    }).catch(({ response }) => {});
+
+  },
+
   async [COMMENT_DESTROY](context, payload) {
     await CommentsService.destroy(payload.slug, payload.commentId);
     context.dispatch(FETCH_COMMENTS, payload.slug);
@@ -316,6 +351,9 @@ const getters = {
   },
   questionsForum(state) {
     return state.questionsForum;
+  },
+  answerQuestion(state) {
+    return state.answerQuestion;
   }
 };
 

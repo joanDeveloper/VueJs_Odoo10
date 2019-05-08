@@ -129,8 +129,17 @@ export const ForumService = {
   postQuestion(payload) {
     return ApiService.post("create-commentForum",{ payload });
   },
+  postAnswer(payload) {
+    return ApiService.post("create-answer",{ payload });
+  },
+  getAnswer(slug) {
+    return ApiService.getParams("get-answer",slug );
+  },
   getQuestions(id_tema) {
     return ApiService.getParams("get-questionForum", id_tema);
+  },
+  getAllQuestions(slug) {
+    return ApiService.getParams("get-all-questions", slug);
   },
 };
 

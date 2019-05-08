@@ -106,6 +106,12 @@ export default new Router({
       path: "/foro/:slug",
       component: () => import("@/components/ItemForo")
     },
+
+    {
+      name: "questionsForum",
+      path: "/foro/questions/:subtema",
+      component: () => import("@/components/QuestionsForum")
+    },
     // Handle child routes with a default, by giving the name to the
     // child.
     // SO: https://github.com/vuejs/vue-router/issues/777

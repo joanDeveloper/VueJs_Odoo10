@@ -27,18 +27,21 @@ class ForumController(http.Controller):
         data = request.jsonrequest
         _logger.info(data['payload']['currentUser']['id'])
         _logger.info(data['payload']['question'])
+        _logger.info(data['payload']['subteme'])
         _logger.info(data['payload']['id_tema'])
         try:
             self._models.execute_kw(self._db, self._uid, self._password, 'forum.lawyers', 'create', [{
                 'id_tema':data['payload']['id_tema'],
                 'question': data['payload']['question'],
-                'client_id': data['payload']['currentUser']['id']
+                'client_id': data['payload']['currentUser']['id'],
+                'subtema': data['payload']['subteme'],
+                'slug_subtema':data['payload']['subteme'].lower().replace(' ','-')
             }])
         except Exception as e:
             _logger.info(e)
             return json.dumps({"error":{"message":"error al crear pregunta en el forum"}})
         
-        fields = ['question','client_id']
+        fields = ['question','client_id','subtema','slug_subtema']
         search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
         'search_read',[[['id_tema', '=', data['payload']['id_tema']]],fields])
         _logger.info(search)
@@ -57,9 +60,25 @@ class ForumController(http.Controller):
         _logger.info("QUESTIONSS_FORUM")
         _logger.info(post['id_tema'])
         
-        fields = ['question','client_id']
         search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
-        'search_read',[[['id_tema', '=', int(post['id_tema'])]],fields])
+        'search_read',[[['id_tema', '=', int(post['id_tema'])]]])
+        _logger.info(search)
+        #obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['client_id'][0]]],['email']])
+            search[cont]['client_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"questions":search})
+
+    @http.route('/get-all-questions/<slug_subtema>', type="http", auth="none",website=True, cors="*")
+    def getAllQuestionsForum(self,**post):
+        _logger.info("ALL_BY_SLUGSUBTEMA_QUESTIONSS_FORUM")
+        
+        search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
+        'search_read',[[['slug_subtema', '=', post['slug_subtema']]]])
         _logger.info(search)
         #obtener nombre usuario para pintar quien ha escrito el comentario
         cont = 0
@@ -73,31 +92,45 @@ class ForumController(http.Controller):
     
     @http.route('/create-answer', type="json", auth="none",website=True, cors="*")
     def postAnswerForum(self):
-        _logger.info("ANSWER_FORUM")
-        # data = request.jsonrequest
-        # _logger.info(data['payload']['currentUser']['id'])
-        # _logger.info(data['payload']['question'])
-        # _logger.info(data['payload']['id_tema'])
-        # try:
-        #     self._models.execute_kw(self._db, self._uid, self._password, 'forum.lawyers', 'create', [{
-        #         'id_tema':data['payload']['id_tema'],
-        #         'question': data['payload']['question'],
-        #         'client_id': data['payload']['currentUser']['id']
-        #     }])
-        # except Exception as e:
-        #     _logger.info(e)
-        #     return json.dumps({"error":{"message":"error al crear pregunta en el forum"}})
-        
-        # fields = ['question','client_id']
-        # search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
-        # 'search_read',[[['id_tema', '=', data['payload']['id_tema']]],fields])
-        # _logger.info(search)
-        # #obtener nombre usuario para pintar quien ha escrito el comentario
-        # cont = 0
-        # for user in search:
-        #     searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-        #     'search_read',[[['id', '=', user['client_id'][0]]],['email']])
-        #     search[cont]['client_id'] = searchUser[0]['email']
-        #     cont +=1
+        _logger.info("ANSWERS_FORUM")
+        data = request.jsonrequest
 
-        # return json.dumps({"questions":search})
+        try:
+            self._models.execute_kw(self._db, self._uid, self._password, 'answer.forum', 'create', [{
+                'answer': data['payload']['answer'],
+                'lawyer_id': data['payload']['userLawyer']['id'],
+                'question_id':data['payload']['id_question']
+            }])
+        except Exception as e:
+            _logger.info(e)
+            return json.dumps({"error":"Ha habido algun problema al crear algun dato"})
+        
+        search = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
+        'search_read',[[['question_id', '=', int(data['payload']['id_question'])]]])
+        _logger.info(search)
+        #obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['lawyer_id'][0]]],['email']])
+            search[cont]['lawyer_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"answers":search})
+    
+    @http.route('/get-answer/<id_question>', type="http", auth="none",website=True, cors="*")
+    def getAnswerForum(self,**post):
+        _logger.info("GET_ANSWERS_FORUM")
+        
+        search = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
+        'search_read',[[['question_id', '=', int(post['id_question'])]]])
+        _logger.info(search)
+        #obtener nombre usuario para pintar quien ha escrito el comentario
+        cont = 0
+        for user in search:
+            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+            'search_read',[[['id', '=', user['lawyer_id'][0]]],['email']])
+            search[cont]['lawyer_id'] = searchUser[0]['email']
+            cont +=1
+
+        return json.dumps({"answers":search})
