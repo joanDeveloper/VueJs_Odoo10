@@ -8,13 +8,14 @@ class TemasForum(models.Model):
 
 class Forum(models.Model):
     _name = 'forum.lawyers'
-
+    _order = "create_date desc"
+    
     client_id = fields.Many2one('users.lawyer','id')
     id_tema = fields.Many2one('temes.forum','id')
     question = fields.Char('Pregunta')
     subtema = fields.Char('Subtema')
     slug_subtema = fields.Char('Slug Subtema')
-    answer_id = fields.Many2one('answer.forum','id')
+    #answer_id = fields.Many2one('answer.forum','id')
 
 class ForumAnswer(models.Model):
     _name = 'answer.forum'

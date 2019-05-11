@@ -10,38 +10,62 @@
       </div>
     </div>
     <article v-for="(questionsForum, index) in questionsForum" :key="index">
-        <div v-if="questionsForum.slug_subtema == slugSubtema">
-      <img
-        class="responsive-imgForo"
-        src="img/users/joanet1.jpg"
-        alt="imagen usuario abogado"
-        width="35"
-        height="35"
-      >
-      {{questionsForum.client_id}}
-      <br>
-      <p class="question-user">{{questionsForum.question}}</p>
-      <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
-        v-on:click="activateSubmitAnswer(questionsForum.id)">Responder</button>
-      <div class="card-block">
-        <textarea
-          v-if="answerQuestions==true && idQuestion==questionsForum.id"
-          class="form-control"
-          v-model="answer"
-          placeholder="Responda la pregunta ..."
-          rows="3"
-        ></textarea>
-      <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
-        v-on:click="submitAnswer(questionsForum.id, currentUser)">Responder</button>
+      <div v-if="questionsForum.slug_subtema == slugSubtema">
+        <img
+          class="responsive-imgForo"
+          src="img/users/joanet1.jpg"
+          alt="imagen usuario abogado"
+          width="35"
+          height="35"
+        >
+        {{questionsForum.client_id}}
+        <br>
+        <p class="question-user">{{questionsForum.question}}</p>
+        <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
+          v-on:click="activateSubmitAnswer(questionsForum.id)">Contestar</button>
+        <div class="card-block">
+          <textarea
+            v-if="answerQuestions==true && idQuestion==questionsForum.id"
+            class="form-control"
+            v-model="answer"
+            placeholder="Responda la pregunta ..."
+            rows="3"
+          ></textarea>
+          <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
+            v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
+
+            <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
+              <button class="btn btn-sm btn-primary">Ver Respuestas</button>
+            </router-link>
+
         </div>
       </div>
       
     </article>
-    <article v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
+
+    <form
+        class="card comment-form"
+        v-if="isAuthenticated && currentUser.typeUser == 4"
+        v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
+      >
+      <div class="card-block">
+          <textarea
+            class="form-control"
+            v-model="question"
+            placeholder="Escribe su pregunta ..."
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-primary">Enviar pregunta</button>
+        </div> 
+        
+    </form>
+    <!-- <article v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
       <div>
         {{answerQuestion.answer}}
       </div>
-    </article>
+    </article> -->
     
     <!-- <form
       class="card comment-form"
@@ -81,7 +105,7 @@ import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
 
 export default {
   name: "ComponenteItemForo",
-  mounted() {
+  beforeMount() {
     console.log("ITEM_FORO", this.$route.params.subtema);
     let slug = this.$route.params.subtema;
     if (this.questionsForum.length == 0) {
@@ -91,7 +115,7 @@ export default {
       });
     }
     //this.$store.dispatch(GET_ANSWER_FORUM, slug);
-    this.searchIdTeme();
+    //this.searchIdTeme();
     
   },
   props: {
@@ -122,20 +146,20 @@ export default {
           .replace("-", " ")
       );
     },
-    searchIdTeme() {
-      console.log("YEAH searchIdTeme",this.questionsForum);
-        this.questionsForum.forEach(element => {
-            console.log("questionsForum",element);
-            let id_question = element.slug_subtema == this.$route.params.subtema ? element.id : false;
-            console.log("searchIdTeme__",id_question);
-            let cont = 0;
-            if (id_question != false && cont === 0) {
-                cont++;
-                console.log("CCCCCCCC");
-                this.$store.dispatch(GET_ANSWER_FORUM, id_question);
-            }
-        });
-    },
+    // searchIdTeme() {
+    //   console.log("YEAH searchIdTeme",this.questionsForum);
+    //     this.questionsForum.forEach(element => {
+    //         console.log("questionsForum",element);
+    //         let id_question = element.slug_subtema == this.$route.params.subtema ? element.id : false;
+    //         console.log("searchIdTeme__",id_question);
+    //         let cont = 0;
+    //         if (id_question != false && cont === 0) {
+    //             cont++;
+    //             console.log("CCCCCCCC");
+    //             this.$store.dispatch(GET_ANSWER_FORUM, id_question);
+    //         }
+    //     });
+    // },
     onSubmit(question, subteme, currentUser) {
       console.log("onSubmit_FORO_COMMENT", question, currentUser);
       let validateMaxLength = maxLength55(question);
@@ -149,16 +173,31 @@ export default {
         : true;
 
       if (validateMaxLength && validateMinLength) {
-        console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
-        console.log("FORUM____", this.temesForum);
-        this.temesForum.forEach(element => {
-          let id_tema = element.slug == this.$route.params.slug ? element.id : false;
+        console.log("CREATE_QUESTION_FORUM", this.$route.params.subtema,currentUser);
+        console.log("FORUM____", this.questionsForum[0].id_tema[1]);
+        this.questionsForum.forEach(element => {
+          let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
           let cont = 0;
-          if (id_tema != false && cont === 0) {
+          if (subteme != false && cont === 0) {
             cont++;
+            let id_tema = this.questionsForum[0].id_tema[0];
+            console.log("AAA____GGGG",id_tema, subteme, question, currentUser);
             this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
           }
+          
         });
+        //this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+        
+        // let g = this.questionsForum[0].slug_subtema.charAt(0).toUpperCase() + this.questionsForum[0].slug_subtema.slice(1);
+        // console.log("FORUM____GGGG", g.replace("-", " "));
+        // this.temesForum.forEach(element => {
+        //   let id_tema = element.slug == this.$route.params.slug ? element.id : false;
+        //   let cont = 0;
+        //   if (id_tema != false && cont === 0) {
+        //     cont++;
+        //     this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+        //   }
+        // });
       }
     }
   },
