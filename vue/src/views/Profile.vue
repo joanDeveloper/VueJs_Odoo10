@@ -4,10 +4,10 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img :src="profile.image" class="user-img" />
+            <img src="img/users/joanet1.jpg" class="user-img" />
             <h4>{{ profile.username }}</h4>
             <p>{{ profile.bio }}</p>
-            <div v-if="isCurrentUser()">
+            <!-- <div v-if="isCurrentUser()">
               <router-link
                 class="btn btn-sm btn-outline-secondary action-btn"
                 :to="{ name: 'settings' }"
@@ -32,7 +32,7 @@
                 <i class="ion-plus-round"></i> &nbsp;Follow
                 {{ profile.username }}
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
         <div class="col-xs-12 col-md-10 offset-md-1">
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <router-link
                   class="nav-link"
                   active-class="active"
@@ -62,10 +62,40 @@
                 >
                   Favorited Articles
                 </router-link>
-              </li>
+              </li> -->
+              <div>
+                <vue-stripe-checkout
+                  ref="checkoutRef"
+                  :image="image"
+                  :name="name"
+                  :description="description"
+                  :currency="currency"
+                  :amount="selected > 0 ? selected : 0"
+                  :allow-remember-me="false"
+                  @done="done"
+                  @opened="opened"
+                  @closed="closed"
+                  @canceled="canceled"
+                ></vue-stripe-checkout>
+                <button @click="checkout"
+                  class="btn btn-sm btn-secondary action-btn">
+                  <i class="ion-plus-round"></i> Cargar dinero
+                </button>
+                <select name="" id="" @change="changeSelect($event)">
+                  <option disabled value="">Elige importe</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                </select>
+                
+              </div>
             </ul>
           </div>
-          <router-view></router-view>
+          <!-- <router-view></router-view> -->
+
         </div>
       </div>
     </div>
@@ -79,33 +109,72 @@ import {
   FETCH_PROFILE_FOLLOW,
   FETCH_PROFILE_UNFOLLOW
 } from "@/store/actions.type";
+import Vue from 'vue';
+import VueStripeCheckout from 'vue-stripe-checkout';
+Vue.use(VueStripeCheckout, 'pk_test_6K8hLzMgtuRmL2dXL429W3os');
 
 export default {
   name: "RwvProfile",
+  data() {
+    return {
+      selected: 0,
+      image: 'https://i.imgur.com/HhqxVCW.jpg',
+      name: 'Recargar dinero',
+      description: 'Recarga créditos',
+      currency: 'eur'
+    }
+  },
   mounted() {
-    this.$store.dispatch(FETCH_PROFILE, this.$route.params);
+    console.log("MONEY_",this.money, this.selected)
+    //this.$store.dispatch(FETCH_PROFILE, this.$route.params);
+    
   },
   computed: {
     ...mapGetters(["currentUser", "profile", "isAuthenticated"])
   },
   methods: {
-    isCurrentUser() {
-      if (this.currentUser.username && this.profile.username) {
-        return this.currentUser.username === this.profile.username;
-      }
-      return false;
+    changeSelect(event){
+      console.log("changeSelect", event.target.value);
+      this.selected = parseInt(event.target.value+"00");
+
     },
-    follow() {
-      if (!this.isAuthenticated) return;
-      this.$store.dispatch(FETCH_PROFILE_FOLLOW, this.$route.params);
+    // isCurrentUser() {
+    //   if (this.currentUser.username && this.profile.username) {
+    //     return this.currentUser.username === this.profile.username;
+    //   }
+    //   return false;
+    // },
+    // follow() {
+    //   if (!this.isAuthenticated) return;
+    //   this.$store.dispatch(FETCH_PROFILE_FOLLOW, this.$route.params);
+    // },
+    // unfollow() {
+    //   this.$store.dispatch(FETCH_PROFILE_UNFOLLOW, this.$route.params);
+    // },
+    async checkout () {
+      // token - is the token object
+      // args - is an object containing the billing and shipping address if enabled
+      const { token, args } = await this.$refs.checkoutRef.open();
     },
-    unfollow() {
-      this.$store.dispatch(FETCH_PROFILE_UNFOLLOW, this.$route.params);
+    done ({token, args}) {
+      console.log("STRIPE", token, args);
+      // token - is the token object
+      // args - is an object containing the billing and shipping address if enabled
+      // do stuff...
+    },
+    opened () {
+      // do stuff 
+    },
+    closed () {
+      // do stuff 
+    },
+    canceled () {
+      // do stuff 
     }
   },
   watch: {
     $route(to) {
-      this.$store.dispatch(FETCH_PROFILE, to.params);
+      //this.$store.dispatch(FETCH_PROFILE, to.params);
     }
   }
 };

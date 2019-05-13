@@ -41,7 +41,7 @@ class ForumController(http.Controller):
             _logger.info(e)
             return json.dumps({"error":{"message":"error al crear pregunta en el forum"}})
         
-        fields = ['question','client_id','subtema','slug_subtema']
+        fields = ['question','client_id','subtema','slug_subtema','create_date']
         search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
         'search_read',[[['id_tema', '=', data['payload']['id_tema']]],fields])
         _logger.info(search)

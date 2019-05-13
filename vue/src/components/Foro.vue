@@ -27,9 +27,11 @@ import RwvCommentEditor from "@/components/CommentEditor";
 
 export default {
   name: "ComponenteForo",
+  
   mounted() {
     console.log("FORO", this.$route.params.id);
     this.$store.dispatch(GET_TEMES_FORUM);
+    
   },
   computed: {
     ...mapGetters([
@@ -44,6 +46,10 @@ export default {
     RwvCommentEditor
   }
 };
+
+
+
+
 </script>
 <style>
 /* .container-detail {

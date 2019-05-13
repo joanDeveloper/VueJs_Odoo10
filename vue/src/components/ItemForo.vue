@@ -57,37 +57,41 @@
         <button class="btn btn-sm btn-primary">Enviar pregunta</button>
       </div>
     </form> -->
+    <section v-if="isAuthenticated">
+      <article v-for="(questionsForum, index) in questionsForum" :key="index">
+        <router-link :to="{ name: 'questionsForum', params: { subtema: questionsForum.slug_subtema } }">
+          <div v-if="questionsForum.display_name != 0">
+            {{questionsForum.subtema}}, {{questionsForum.client_id}}, {{questionsForum.create_date}}
+          </div>
 
-    <article v-for="(questionsForum, index) in questionsForum" :key="index">
-      <router-link :to="{ name: 'questionsForum', params: { subtema: questionsForum.slug_subtema } }">
-        <div v-if="questionsForum.display_name != 0">
-          {{questionsForum.subtema}}, {{questionsForum.client_id}}, {{questionsForum.create_date}}
-        </div>
-
-      </router-link> 
-    </article>
-    <form
-        class="card comment-form"
-        v-if="isAuthenticated && currentUser.typeUser == 4"
-        v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
-      >
-      <fieldset class="card-block form-group">
-        <input type="text" class="form-control form-control-lg" v-model="subteme" placeholder="Introduzca el título del tema ...">
-      </fieldset>
-      <div class="card-block">
-          <textarea
-            class="form-control"
-            v-model="question"
-            placeholder="Escribe su pregunta ..."
-            rows="3"
-          ></textarea>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-sm btn-primary">Enviar pregunta</button>
-        </div> 
-        
-    </form>
-    
+        </router-link> 
+      </article>
+      <form
+          class="card comment-form"
+          v-if="isAuthenticated && currentUser.typeUser == 4"
+          v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
+        >
+        <fieldset class="card-block form-group">
+          <input type="text" class="form-control form-control-lg" v-model="subteme" placeholder="Introduzca el título del tema ...">
+        </fieldset>
+        <div class="card-block">
+            <textarea
+              class="form-control"
+              v-model="question"
+              placeholder="Escribe su pregunta ..."
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-primary">Enviar pregunta</button>
+          </div> 
+          
+      </form>
+    </section>
+    <section v-else>
+      <router-link :to="{ name: 'login' }">Logueate</router-link> para preguntar si eres usuario o
+      <router-link :to="{ name: 'register' }">Registrate</router-link>
+    </section>
   </section>
 </template>
 
