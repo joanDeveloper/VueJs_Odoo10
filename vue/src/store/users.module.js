@@ -1,9 +1,10 @@
-import { UsersService } from "@/common/api.service";
-import { GET_LAWYERS, GET_DETAILS, GET_LAWYERS_FILTERED } from "./actions.type";
+import { UsersService, ProfileService} from "@/common/api.service";
+import { GET_LAWYERS, GET_DETAILS, GET_LAWYERS_FILTERED, CHARGE_MONEY_PROFILE  } from "./actions.type";
 
 const state = {
   users: [],
   userDetail: [],
+  profile: [],
   isLoading: true
 };
 
@@ -14,6 +15,10 @@ const getters = {
   userDetail(state) {
     console.log("AAAA22222________",state);
     return state.userDetail;
+  },
+  profile(state) {
+    console.log("AAAA33333________",state);
+    return state.profile;
   }
 };
 
@@ -49,17 +54,7 @@ const actions = {
         .catch(() => {});
     });
   },
-  // async [GET_DETAILS](context, id) {
-  //   //console.log("GET_ASSOCIACIONES_INTERESADOS",context, payload);
-  //   console.log("CONTEXT_DETAIL", context, id);
-  //   return await UsersService.postDetail(id)
-  //   .then((data)=>{
-  //     console.log("GET_DETAILS", JSON.parse(data.result));
-  //     state.userDetail = JSON.parse(data.result);
-  //     //resolve(data);
-  //   }).catch(({ response }) => {});
-
-  // },
+  
 };
 
 export default {

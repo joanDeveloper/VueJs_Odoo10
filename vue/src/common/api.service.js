@@ -122,6 +122,12 @@ export const CasosService = {
   }
 };
 
+export const ProfileService = {
+  post(payload) {
+    return ApiService.post("charge-money-profile", payload);
+  }
+};
+
 export const ForumService = {
   get() {
     return ApiService.get("get-temesForum");

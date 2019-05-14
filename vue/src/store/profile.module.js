@@ -1,8 +1,9 @@
-import ApiService from "@/common/api.service";
+import {ApiService, ProfileService} from "@/common/api.service";
 import {
   FETCH_PROFILE,
   FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW
+  FETCH_PROFILE_UNFOLLOW,
+  CHARGE_MONEY_PROFILE
 } from "./actions.type";
 import { SET_PROFILE } from "./mutations.type";
 
@@ -47,6 +48,19 @@ const actions = {
     return ApiService.delete(`profiles/${username}/follow`)
       .then(({ data }) => {
         context.commit(SET_PROFILE, data.profile);
+        return data;
+      })
+      .catch(() => {
+        // #todo SET_ERROR cannot work in multiple states
+        // context.commit(SET_ERROR, response.data.errors)
+      });
+  },
+  [CHARGE_MONEY_PROFILE](context, payload) {
+    //const { username } = payload;
+    return ProfileService.post(payload)
+      .then(({ data }) => {
+        console.log("DATA_CHARGE_MONEY_PROFILE",data);
+        context.commit(SET_PROFILE, JSON.parse(data.result));
         return data;
       })
       .catch(() => {

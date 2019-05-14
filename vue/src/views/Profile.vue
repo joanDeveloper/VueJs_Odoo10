@@ -65,6 +65,7 @@
               </li> -->
               <div>
                 <vue-stripe-checkout
+                  v-if="selected > 0"
                   ref="checkoutRef"
                   :image="image"
                   :name="name"
@@ -92,6 +93,9 @@
                 </select>
                 
               </div>
+              <section v-for="(profile, index) in profile" :key="index">
+                Créditos: {{ profile.credits }}
+              </section>
             </ul>
           </div>
           <!-- <router-view></router-view> -->
@@ -107,7 +111,8 @@ import { mapGetters } from "vuex";
 import {
   FETCH_PROFILE,
   FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW
+  FETCH_PROFILE_UNFOLLOW,
+  CHARGE_MONEY_PROFILE
 } from "@/store/actions.type";
 import Vue from 'vue';
 import VueStripeCheckout from 'vue-stripe-checkout';
@@ -154,7 +159,16 @@ export default {
     async checkout () {
       // token - is the token object
       // args - is an object containing the billing and shipping address if enabled
-      const { token, args } = await this.$refs.checkoutRef.open();
+      if(this.selected > 0){
+        const { token, args } = await this.$refs.checkoutRef.open();
+        let data = {"currentUser":this.currentUser, "credits":this.selected};
+        console.log("DATA_checkout",data);
+        this.$store.dispatch(CHARGE_MONEY_PROFILE, data).then(res=>{
+          // console.log("THEN__",res);
+          // this.profile = res;
+        });
+
+      }
     },
     done ({token, args}) {
       console.log("STRIPE", token, args);
