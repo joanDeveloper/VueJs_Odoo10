@@ -4,7 +4,6 @@ import { GET_LAWYERS, GET_DETAILS, GET_LAWYERS_FILTERED, CHARGE_MONEY_PROFILE  }
 const state = {
   users: [],
   userDetail: [],
-  profile: [],
   isLoading: true
 };
 
@@ -15,10 +14,6 @@ const getters = {
   userDetail(state) {
     console.log("AAAA22222________",state);
     return state.userDetail;
-  },
-  profile(state) {
-    console.log("AAAA33333________",state);
-    return state.profile;
   }
 };
 

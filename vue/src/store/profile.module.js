@@ -9,7 +9,7 @@ import { SET_PROFILE } from "./mutations.type";
 
 const state = {
   errors: {},
-  profile: {}
+  profile: []
 };
 
 const getters = {

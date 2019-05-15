@@ -59,7 +59,7 @@ class Auth(http.Controller):
 
             if searchPasswd >= 1:
                 _logger.info("usuario y passwd correcto")
-                fields = ['id','email','name','apellidos','categories_slug','password']
+                fields = ['id','email','name','apellidos','categories_slug','password','credits']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
                 'search_read',[[['email', '=', data['credentials']['email']]],fields])
 
@@ -78,7 +78,8 @@ class Auth(http.Controller):
                     "credentials":{
                         "email":searchUser[0]['email'],
                         "password":searchUser[0]['password'],
-                        "typeUser":searchUser[0]['categories_slug'][0]}
+                        "typeUser":searchUser[0]['categories_slug'][0],
+                        "credits":searchUser[0]['credits']}
                 }
                 token = Middleware().encode(dataToEncode)
                 _logger.info("*****TOKEN_ENCODED*******")
@@ -91,7 +92,8 @@ class Auth(http.Controller):
                             "nombre":searchUser[0]['name'],
                             "apellidos":searchUser[0]['apellidos'],
                             "email":searchUser[0]['email'],
-                            "typeUser":searchUser[0]['categories_slug'][0]
+                            "typeUser":searchUser[0]['categories_slug'][0],
+                            "credits":searchUser[0]['credits']
                         }
                      }
                 }
@@ -119,7 +121,7 @@ class Auth(http.Controller):
             'search_count',[[['email', '=', dataDecoded['email']]]])
 
             if searchCount >=1:
-                fields = ['id','email','name','apellidos','categories_slug','password']
+                fields = ['id','email','name','apellidos','categories_slug','password','credits']
                 searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
                 'search_read',[[['email', '=', dataDecoded['email']]],fields])
                 Response.status = "200"
@@ -130,7 +132,8 @@ class Auth(http.Controller):
                                 "nombre":searchUser[0]['name'],
                                 "apellidos":searchUser[0]['apellidos'],
                                 "email":searchUser[0]['email'],
-                                "typeUser":searchUser[0]['categories_slug'][0]
+                                "typeUser":searchUser[0]['categories_slug'][0],
+                                "credits":searchUser[0]['credits']
                             }}}
             else:
                 Response.status = "400 Bad Request" 

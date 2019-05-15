@@ -45,6 +45,29 @@ class ForumController(http.Controller):
         search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
         'search_read',[[['id_tema', '=', data['payload']['id_tema']]],fields])
         _logger.info(search)
+
+        if data['payload']['currentUser']['credits']:
+            data['payload']['currentUser']['credits'] = int(data['payload']['currentUser']['credits']) - 500
+
+        try:
+            writeUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer', 'write', [[int(data['payload']['currentUser']['id'])], {
+                'credits': data['payload']['currentUser']['credits']
+            }])
+        except Exception as e:
+            _logger.info(e)
+            return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
+        
+        aux = ''
+        contSubteme = 0
+        for subteme in search:
+            if subteme['subtema'] == aux:
+                _logger.info("*****REPETIDO*******")
+                _logger.info(contSubteme)
+                search[contSubteme]['display_name'] = 0
+                #lista_nueva.append(subteme)
+            contSubteme +=1
+            aux = subteme['subtema']
+            
         #obtener nombre usuario para pintar quien ha escrito el comentario
         cont = 0
         for user in search:

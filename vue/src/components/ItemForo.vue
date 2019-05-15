@@ -174,14 +174,21 @@ export default {
       if (validateMaxLength && validateMinLength) {
         console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
         console.log("FORUM____", this.temesForum);
-        this.temesForum.forEach(element => {
-          let id_tema = element.slug == this.$route.params.slug ? element.id : false;
-          let cont = 0;
-          if (id_tema != false && cont === 0) {
-            cont++;
-            this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
-          }
-        });
+
+        if (currentUser.credits >= 500){
+          this.temesForum.forEach(element => {
+            let id_tema = element.slug == this.$route.params.slug ? element.id : false;
+            let cont = 0;
+            if (id_tema != false && cont === 0) {
+              cont++;
+              this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+            }
+          });
+        }else{
+          console.log("NO_PASTA");
+          Utils.toasterError("Por favor, recargue 500 créditos mínimo para hacer esta pregunta. Gracias.")
+        }
+
       }
     }
   },

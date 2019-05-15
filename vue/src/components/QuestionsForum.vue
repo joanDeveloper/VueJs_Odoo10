@@ -175,17 +175,22 @@ export default {
       if (validateMaxLength && validateMinLength) {
         console.log("CREATE_QUESTION_FORUM", this.$route.params.subtema,currentUser);
         console.log("FORUM____", this.questionsForum[0].id_tema[1]);
-        this.questionsForum.forEach(element => {
-          let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
-          let cont = 0;
-          if (subteme != false && cont === 0) {
-            cont++;
-            let id_tema = this.questionsForum[0].id_tema[0];
-            console.log("AAA____GGGG",id_tema, subteme, question, currentUser);
-            this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
-          }
-          
-        });
+        if (currentUser.credits >= 500){
+          this.questionsForum.forEach(element => {
+            let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
+            let cont = 0;
+            if (subteme != false && cont === 0) {
+              cont++;
+              let id_tema = this.questionsForum[0].id_tema[0];
+              console.log("AAA____GGGG",id_tema, subteme, question, currentUser);
+              this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+            }
+            
+          });
+        }else{
+          console.log("NO_PASTA");
+          Utils.toasterError("Por favor, recargue 500 créditos mínimo para hacer esta pregunta. Gracias.")
+        }
         //this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
         
         // let g = this.questionsForum[0].slug_subtema.charAt(0).toUpperCase() + this.questionsForum[0].slug_subtema.slice(1);

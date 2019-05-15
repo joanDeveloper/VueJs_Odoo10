@@ -93,9 +93,12 @@
                 </select>
                 
               </div>
-              <section v-for="(profile, index) in profile" :key="index">
-                Créditos: {{ profile.credits }}
-              </section>
+              <div v-if="profile.length > 0">
+                <section v-for="(profile, index) in profile" :key="index">
+                  Tiene {{ profile.credits }} créditos
+                </section>
+              </div>
+              <section v-if="profile.length == 0">Tiene {{currentUser.credits}} créditos</section>
             </ul>
           </div>
           <!-- <router-view></router-view> -->
@@ -112,7 +115,8 @@ import {
   FETCH_PROFILE,
   FETCH_PROFILE_FOLLOW,
   FETCH_PROFILE_UNFOLLOW,
-  CHARGE_MONEY_PROFILE
+  CHARGE_MONEY_PROFILE,
+  CHECK_AUTH
 } from "@/store/actions.type";
 import Vue from 'vue';
 import VueStripeCheckout from 'vue-stripe-checkout';
@@ -131,6 +135,8 @@ export default {
   },
   mounted() {
     console.log("MONEY_",this.money, this.selected)
+    console.log("PROFILE_",this.profile)
+    //Promise.all([this.$store.dispatch(CHECK_AUTH)]);
     //this.$store.dispatch(FETCH_PROFILE, this.$route.params);
     
   },
