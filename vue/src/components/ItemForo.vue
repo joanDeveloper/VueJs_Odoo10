@@ -149,10 +149,10 @@ export default {
     },
     searchIdTeme() {
       console.log("YEAH searchIdTeme");
+      var cont = 0;
       this.temesForum.forEach(element => {
         let id_tema =
           element.slug == this.$route.params.slug ? element.id : false;
-        let cont = 0;
         if (id_tema != false && cont === 0) {
           cont++;
           this.$store.dispatch(GET_QUESTIONS_FORUM, id_tema);

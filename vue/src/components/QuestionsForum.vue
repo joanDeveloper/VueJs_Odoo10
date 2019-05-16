@@ -35,7 +35,7 @@
             v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
 
             <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
-              <button class="btn btn-sm btn-primary">Ver Respuestas</button>
+              <button class="btn btn-sm btn-primary" v-on:click='test(questionsForum.id)' >Ver Respuestas</button>
             </router-link>
 
         </div>
@@ -122,6 +122,10 @@ export default {
     content: { type: String, required: false }
   },
   methods: {
+    test(id_question){
+      console.log("METHOD_TEST",id_question);
+      localStorage.setItem("id_question",id_question);
+    },
     activateSubmitAnswer(id_question){
       this.answerQuestions = true;
       this.idQuestion = id_question;
@@ -162,6 +166,7 @@ export default {
     // },
     onSubmit(question, subteme, currentUser) {
       console.log("onSubmit_FORO_COMMENT", question, currentUser);
+      var cont = 0;
       let validateMaxLength = maxLength55(question);
       let validateMinLength = minLength5(question);
 
@@ -178,7 +183,6 @@ export default {
         if (currentUser.credits >= 500){
           this.questionsForum.forEach(element => {
             let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
-            let cont = 0;
             if (subteme != false && cont === 0) {
               cont++;
               let id_tema = this.questionsForum[0].id_tema[0];

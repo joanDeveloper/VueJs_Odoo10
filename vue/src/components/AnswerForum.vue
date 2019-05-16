@@ -135,17 +135,20 @@ export default {
     },
     searchIdTeme() {
       console.log("YEAH searchIdTeme",this.questionsForum);
-        this.questionsForum.forEach(element => {
-            console.log("questionsForum",element);
-            let id_question = element.slug_subtema == this.$route.params.subtema ? element.id : false;
-            console.log("searchIdTeme__",id_question);
-            let cont = 0;
-            if (id_question != false && cont === 0) {
-                cont++;
-                console.log("CCCCCCCC");
-                this.$store.dispatch(GET_ANSWER_FORUM, id_question);
-            }
-        });
+        //var cont = 0;
+        // this.questionsForum.forEach(element => {
+        //     console.log("questionsForum",element);
+        //     let id_question = element.slug_subtema == this.$route.params.subtema ? element.id : false;
+        //     console.log("searchIdTeme__",id_question);
+        //     if (id_question != false && cont === 0) {
+        //       cont++;
+        //       console.log("CCCCCCCC");
+        //       this.$store.dispatch(GET_ANSWER_FORUM, id_question);
+        //     }
+        // });
+        let id_question = localStorage.getItem("id_question");
+        this.$store.dispatch(GET_ANSWER_FORUM, id_question);
+
     },
     onSubmit(question, subteme, currentUser) {
       console.log("onSubmit_FORO_COMMENT", question, currentUser);
@@ -162,9 +165,9 @@ export default {
       if (validateMaxLength && validateMinLength) {
         console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
         console.log("FORUM____", this.temesForum);
+        var cont = 0;
         this.temesForum.forEach(element => {
           let id_tema = element.slug == this.$route.params.slug ? element.id : false;
-          let cont = 0;
           if (id_tema != false && cont === 0) {
             cont++;
             this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});

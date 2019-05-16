@@ -57,16 +57,15 @@ class ForumController(http.Controller):
             _logger.info(e)
             return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
         
-        aux = ''
+        lista_nueva = []
         contSubteme = 0
         for subteme in search:
-            if subteme['subtema'] == aux:
+            if subteme['subtema'] in lista_nueva:
                 _logger.info("*****REPETIDO*******")
                 _logger.info(contSubteme)
                 search[contSubteme]['display_name'] = 0
-                #lista_nueva.append(subteme)
             contSubteme +=1
-            aux = subteme['subtema']
+            lista_nueva.append(subteme['subtema'])
             
         #obtener nombre usuario para pintar quien ha escrito el comentario
         cont = 0
@@ -86,21 +85,17 @@ class ForumController(http.Controller):
         search = self._models.execute_kw(self._db, self._uid, self._password,'forum.lawyers',
         'search_read',[[['id_tema', '=', int(post['id_tema'])]]])
         _logger.info(search)
-        #search[0]['subtema']
-        # contSubteme = 0
-        # lista_nueva = []
-        aux = ''
+
+        lista_nueva = []
         contSubteme = 0
         for subteme in search:
-            if subteme['subtema'] == aux:
+            if subteme['subtema'] in lista_nueva:
                 _logger.info("*****REPETIDO*******")
                 _logger.info(contSubteme)
                 search[contSubteme]['display_name'] = 0
-                #lista_nueva.append(subteme)
             contSubteme +=1
-            aux = subteme['subtema']
-        # _logger.info("*********** LISTA NUEVAS ************")
-        # _logger.info(lista_nueva)
+            lista_nueva.append(subteme['subtema'])
+
         #obtener nombre usuario para pintar quien ha escrito el comentario
         cont = 0
         for user in search:
