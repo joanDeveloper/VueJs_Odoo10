@@ -240,7 +240,11 @@ export const actions = {
     .then((data)=>{
       console.log("DATA_SUBMIT_ANSWER_FORUM",data);
       state.answerQuestion = JSON.parse(data.data.result).answers;
-    }).catch(({ response }) => {});
+    }).catch(({ response }) => {
+      console.log("FFF", response);
+      let message = JSON.parse(response.data.result).error;
+      Utils.toasterError(message);
+    });
 
   },
 

@@ -35,7 +35,7 @@
             v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
 
             <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
-              <button class="btn btn-sm btn-primary" v-on:click='test(questionsForum.id)' >Ver Respuestas</button>
+              <button class="btn btn-sm btn-primary" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
             </router-link>
 
         </div>
@@ -122,7 +122,7 @@ export default {
     content: { type: String, required: false }
   },
   methods: {
-    test(id_question){
+    setIdQuestion(id_question){
       console.log("METHOD_TEST",id_question);
       localStorage.setItem("id_question",id_question);
     },

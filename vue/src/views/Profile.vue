@@ -63,7 +63,7 @@
                   Favorited Articles
                 </router-link>
               </li> -->
-              <div>
+              <div v-if="isAuthenticated && currentUser.typeUser !== 1">
                 <vue-stripe-checkout
                   v-if="selected > 0"
                   ref="checkoutRef"
@@ -169,10 +169,7 @@ export default {
         const { token, args } = await this.$refs.checkoutRef.open();
         let data = {"currentUser":this.currentUser, "credits":this.selected};
         console.log("DATA_checkout",data);
-        this.$store.dispatch(CHARGE_MONEY_PROFILE, data).then(res=>{
-          // console.log("THEN__",res);
-          // this.profile = res;
-        });
+        this.$store.dispatch(CHARGE_MONEY_PROFILE, data);
 
       }
     },

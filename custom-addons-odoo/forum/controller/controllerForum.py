@@ -2,6 +2,7 @@ import openerp.http as http
 import json,logging
 from openerp import models, fields, api
 from openerp.http import request
+from openerp.http import Response
 from ...utils.credentials import Credentials
 _logger = logging.getLogger("forum_controller")
 
@@ -128,28 +129,61 @@ class ForumController(http.Controller):
         _logger.info("ANSWERS_FORUM")
         data = request.jsonrequest
 
-        try:
-            self._models.execute_kw(self._db, self._uid, self._password, 'answer.forum', 'create', [{
-                'answer': data['payload']['answer'],
-                'lawyer_id': data['payload']['userLawyer']['id'],
-                'question_id':data['payload']['id_question']
-            }])
-        except Exception as e:
-            _logger.info(e)
-            return json.dumps({"error":"Ha habido algun problema al crear algun dato"})
-        
-        search = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
-        'search_read',[[['question_id', '=', int(data['payload']['id_question'])]]])
-        _logger.info(search)
-        #obtener nombre usuario para pintar quien ha escrito el comentario
-        cont = 0
-        for user in search:
-            searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
-            'search_read',[[['id', '=', user['lawyer_id'][0]]],['email']])
-            search[cont]['lawyer_id'] = searchUser[0]['email']
-            cont +=1
+        searchIdQuestion = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
+        'search_count',[[
+            ['question_id', '=', int(data['payload']['id_question'])],
+            ['lawyer_id', '!=', int(data['payload']['userLawyer']['id'])]
+        ]])
 
-        return json.dumps({"answers":search})
+        if searchIdQuestion >= 1:
+            Response.status = "400 Bad Request"
+            return json.dumps({"error":"Esta pregunta ya ha sido contestada por otro abogado"})
+
+        else:
+            searchCountAnswer = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
+            'search_count',[[
+                ['question_id', '=', int(data['payload']['id_question'])],
+                ['lawyer_id', '=', int(data['payload']['userLawyer']['id'])]
+            ]])
+            
+            if searchCountAnswer == 0:
+                _logger.info("**** YA HAY UN PREGUNTA RESPONDIDA ********")
+                if data['payload']['userLawyer']['credits'] is None:
+                    data['payload']['userLawyer']['credits'] = 500
+                else:
+                    data['payload']['userLawyer']['credits'] = int(data['payload']['userLawyer']['credits']) + 500
+
+                try:
+                    writeUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer', 'write', [[int(data['payload']['userLawyer']['id'])], {
+                        'credits': data['payload']['userLawyer']['credits']
+                    }])
+                except Exception as e:
+                    _logger.info(e)
+                    return json.dumps({"error":"Ha habido algun problema al actualizar algun dato"})
+
+            try:
+                self._models.execute_kw(self._db, self._uid, self._password, 'answer.forum', 'create', [{
+                    'answer': data['payload']['answer'],
+                    'lawyer_id': data['payload']['userLawyer']['id'],
+                    'question_id':data['payload']['id_question']
+                }])
+            except Exception as e:
+                _logger.info(e)
+                return json.dumps({"error":"Ha habido algun problema al crear algun dato"})
+
+            search = self._models.execute_kw(self._db, self._uid, self._password,'answer.forum',
+            'search_read',[[['question_id', '=', int(data['payload']['id_question'])]]])
+            _logger.info(search)
+
+            #obtener nombre usuario para pintar quien ha escrito el comentario
+            cont = 0
+            for user in search:
+                searchUser = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+                'search_read',[[['id', '=', user['lawyer_id'][0]]],['email']])
+                search[cont]['lawyer_id'] = searchUser[0]['email']
+                cont +=1
+
+            return json.dumps({"answers":search})
     
     @http.route('/get-answer/<id_question>', type="http", auth="none",website=True, cors="*")
     def getAnswerForum(self,**post):
