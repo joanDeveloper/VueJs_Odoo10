@@ -23,9 +23,11 @@
         <p class="question-user">{{questionsForum.question}}</p>
         <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
           v-on:click="activateSubmitAnswer(questionsForum.id)">Contestar</button>
-        <div class="card-block">
+          <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
+              <button class="btn btn-sm btn-primary" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
+            </router-link>
+        <div class="card-footer" v-if="answerQuestions==true && idQuestion==questionsForum.id">
           <textarea
-            v-if="answerQuestions==true && idQuestion==questionsForum.id"
             class="form-control"
             v-model="answer"
             placeholder="Responda la pregunta ..."
@@ -33,12 +35,9 @@
           ></textarea>
           <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
             v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
-
-            <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
-              <button class="btn btn-sm btn-primary" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
-            </router-link>
-
         </div>
+
+        
       </div>
       
     </article>
