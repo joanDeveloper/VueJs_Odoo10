@@ -9,23 +9,31 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <article v-for="(questionsForum, index) in questionsForum" :key="index">
-      <div v-if="questionsForum.slug_subtema == slugSubtema">
-        <img
-          class="responsive-imgForo"
-          src="img/users/joanet1.jpg"
-          alt="imagen usuario abogado"
-          width="35"
-          height="35"
-        >
-        {{questionsForum.client_id}}
+    <article v-for="(questionsForum, index) in questionsForum" :key="index" class="container-forum">
+      <div v-if="questionsForum.slug_subtema == slugSubtema" class="subitem-question-forum">
+        <div class="subitem-data">
+          <img
+            class="user-image"
+            src="img/users/joanet1.jpg"
+            alt="imagen usuario abogado"
+            width="35"
+            height="35"
+          >
+          <span class="subitem-email"><strong>{{questionsForum.client_id}}</strong></span>
+          <span class="subitem-date">
+           <strong>{{questionsForum.create_date}}</strong>
+          </span>
+        </div>
         <br>
-        <p class="question-user">{{questionsForum.question}}</p>
-        <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
+        <p class="subitem-question">{{questionsForum.question}}</p>
+        <div class="subitem-buttons">
+          <button class="btn btn-sm btn-info buttons-between" v-if="isAuthenticated && currentUser.typeUser == 1" 
           v-on:click="activateSubmitAnswer(questionsForum.id)">Contestar</button>
           <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
-              <button class="btn btn-sm btn-primary" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
-            </router-link>
+            <button class="btn btn-sm btn-info" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
+          </router-link>
+        </div>
+        
         <div class="card-footer" v-if="answerQuestions==true && idQuestion==questionsForum.id">
           <textarea
             class="form-control"
@@ -33,32 +41,76 @@
             placeholder="Responda la pregunta ..."
             rows="3"
           ></textarea>
-          <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
+          <button class="btn btn-sm btn-info" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
             v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
         </div>
-
-        
       </div>
-      
     </article>
 
+    <!-- <table>
+      <div v-for="(questionsForum, index) in questionsForum" :key="index">
+        <tr>
+          <th v-if="questionsForum.slug_subtema == slugSubtema">
+            <img
+              class="user-image"
+              src="img/users/joanet1.jpg"
+              alt="imagen usuario abogado"
+              width="35"
+              height="35"
+            >
+          </th>
+          <th v-if="questionsForum.slug_subtema == slugSubtema">
+            <span class="user-email">{{questionsForum.client_id}}</span>
+          </th>
+          <th v-if="questionsForum.slug_subtema == slugSubtema" class="subitem-date">
+            <span class="subitem-date">{{questionsForum.create_date}}</span>
+          </th>
+        </tr>
+        <tr v-if="questionsForum.slug_subtema == slugSubtema" class="subitem-question">
+          <td>{{questionsForum.question}}</td>
+        </tr>
+        <tr v-if="questionsForum.slug_subtema == slugSubtema">
+          <td class="space-top">
+            <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
+            v-on:click="activateSubmitAnswer(questionsForum.id)">Contestar</button>
+            <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
+              <button class="btn btn-sm btn-primary space-between" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
+            </router-link>
+          </td>
+          <td>
+            <div class="card-footer" v-if="answerQuestions==true && idQuestion==questionsForum.id">
+              <textarea
+                class="form-control"
+                v-model="answer"
+                placeholder="Responda la pregunta ..."
+                rows="3"
+              />
+              <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
+                v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
+            </div>
+          </td>
+        </tr>
+      </div>
+    </table> -->
+
     <form
-        class="card comment-form"
-        v-if="isAuthenticated && currentUser.typeUser == 4"
-        v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
-      >
+      class="card comment-form"
+      v-if="isAuthenticated && currentUser.typeUser == 4"
+      v-on:submit.prevent="onSubmit(question, subteme, currentUser);"
+    >
       <div class="card-block">
-          <textarea
-            class="form-control"
-            v-model="question"
-            placeholder="Escribe su pregunta ..."
-            rows="3"
-          ></textarea>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-sm btn-primary">Enviar pregunta</button>
-        </div> 
-        
+        <label for="write-question">Escribe su pregunta en este subtema</label>
+        <textarea
+          id="write-question"
+          class="form-control"
+          v-model="question"
+          placeholder="Escribe su pregunta ..."
+          rows="3"
+        />
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-info">Enviar pregunta</button>
+      </div>   
     </form>
     <!-- <article v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
       <div>
@@ -237,15 +289,48 @@ export default {
 };
 </script>
 <style>
-/*.responsive-imgForo {
-  width: 3%;
-  height: 3vw;
-  border-radius: 85%;
+.container-forum{
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
 }
-.question-user {
-  margin-left: 3.3%;
+.subitem-question-forum{
+  margin-top: 2%;
+  background-color: rgb(199, 196, 196);
+  border-radius: 15px;
+  width: 80%;
 }
-.btn{
+.subitem-data{
+  padding: 1%;
+  background-color: rgb(131, 191, 231);
+}
+.buttons-between{
+  margin-right: 5%;
+}
+.subitem-buttons{
   margin-left: 3%;
+  padding: 2%;
+}
+.subitem-date{
+  margin-left: 65%;
+}
+.subitem-question{
+  margin-left: 5%;
+  width: 90%;
+}
+.user-image{
+  border-radius: 50%;
+}
+.subitem-email{
+  margin-left: 1%;
+}
+.space-between{
+  margin-left: 5%;
+}
+.space-top{
+  padding-top: 5%;
+}
+/*td{
+  width: 50%;
 }*/
 </style>

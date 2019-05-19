@@ -247,7 +247,7 @@ export default {
   margin-left: 3.3%;
 }
 .btn{
-  margin-left: 3%;
+  /* margin-left: 3%; */
 }
 
 .delete-link-item{

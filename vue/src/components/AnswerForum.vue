@@ -37,19 +37,20 @@
       </div>
       
     </article> -->
-    <article v-if="answerQuestion.length > 0">
-        <div v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
+    <article v-if="answerQuestion.length > 0" class="container-forum">
+        <div v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index" class="subitem-question-forum">
             <img
-                class="responsive-imgForo"
+                class="user-image"
                 src="img/users/joanet1.jpg"
                 alt="imagen usuario abogado"
                 width="35"
                 height="35"
             >
-                {{answerQuestion.lawyer_id}}
-                <br>
-                <p class="question-user">{{answerQuestion.answer}}</p>
+            <span class="subitem-email"><strong>{{answerQuestion.lawyer_id}}</strong></span>
+            <span class="subitem-dates"><strong>{{answerQuestion.create_date}}</strong></span>
+            <p class="subitem-question-answer">{{answerQuestion.answer}}</p>
         </div>
+        
     </article>
     <article v-else>
         Cargando respuestas ...
@@ -204,15 +205,47 @@ export default {
 };
 </script>
 <style>
-/*.responsive-imgForo {
-  width: 3%;
-  height: 3vw;
-  border-radius: 85%;
+.container-forum{
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
 }
-.question-user {
-  margin-left: 3.3%;
+.subitem-question-forum{
+  margin-top: 2%;
+  background-color: rgb(199, 196, 196);
+  border-radius: 15px;
+  width: 80%;
 }
-.btn{
+.subitem-data{
+  padding: 1%;
+  background-color: rgb(131, 191, 231);
+}
+.buttons-between{
+  margin-right: 5%;
+}
+.subitem-buttons{
   margin-left: 3%;
-}*/
+  padding: 2%;
+}
+.subitem-dates{
+  margin-left: 60%;
+}
+.subitem-question-answer{
+  margin-left: 2%;
+  width: 90%;
+  margin-top: 1%;
+  padding: 2%;
+}
+.user-image{
+  border-radius: 50%;
+}
+.subitem-email{
+  margin-left: 1%;
+}
+.space-between{
+  margin-left: 5%;
+}
+.space-top{
+  padding-top: 5%;
+}
 </style>

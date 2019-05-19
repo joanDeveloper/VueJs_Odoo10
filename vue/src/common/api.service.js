@@ -91,6 +91,9 @@ export const UsersService = {
   get() {
     return ApiService.get("lawyers");
   },
+  getAll() {
+    return ApiService.get("count-all-users");
+  },
   post(payload) {
     return ApiService.post(`users`, { data: payload });
   },

@@ -45,21 +45,31 @@
     <article class="banner-asociacion">
       Eres una associación y necesitas un abogado? Regístrase en nuestra plataforma.
     </article>
+    <article>
+      <div>
+        <h3>Número de Usuarios registrados:</h3>
+        <span>Abogados:</span><span>{{countUsers.countLawyer}}</span>
+        <span>Clientes:</span><span>{{countUsers.countClient}}</span>
+        <span>Asociaciones:</span><span>{{countUsers.countAsociation}}</span>
+      </div>
+    </article>
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_CATEGORIES, GET_GUARDIAS } from "@/store/actions.type";
+import { GET_CATEGORIES, GET_GUARDIAS,GET_ALL_USERS } from "@/store/actions.type";
 import CompItemsList from "@/components/ItemList";
 
 export default {
   name: "home",
   mounted() {
-    this.$store.dispatch(GET_CATEGORIES);
+    this.$store.dispatch(GET_CATEGORIES).then(res=>{
+      this.$store.dispatch(GET_ALL_USERS);
+    });
   },
   computed: {
-    ...mapGetters(["categories","isAuthenticated", "currentUser"])
+    ...mapGetters(["categories","isAuthenticated", "currentUser","countUsers"])
   }
 };
 </script>

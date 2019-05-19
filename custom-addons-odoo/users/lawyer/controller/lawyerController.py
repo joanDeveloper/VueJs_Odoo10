@@ -72,3 +72,30 @@ class LawyerController(http.Controller):
 
         _logger.info(searchDetail)
         return json.dumps(searchDetail)
+    
+    @http.route('/count-all-users/', type="http", auth="none",website=True, cors="*")
+    def getAllusers(self):
+        countUsers = {}
+        _logger.info("**** ALL_USERS ****")
+
+        # countLawyer = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
+        # 'search_count',[['categories_slug','=','1']])
+
+        countLawyer = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
+        'search_count',[[['categories_slug', '=', 1]]])
+
+        countClient = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
+        'search_count',[[['categories_slug', '=', 4]]])
+
+        countAsociation = self._models.execute_kw(self._db,self._uid,self._password,'users.lawyer',
+        'search_count',[[['categories_slug', '=', 6]]])
+
+        _logger.info(countLawyer)
+        _logger.info(countClient)
+        _logger.info(countAsociation)
+
+        countUsers['countLawyer'] = countLawyer
+        countUsers['countClient'] = countClient
+        countUsers['countAsociation'] = countAsociation
+
+        return json.dumps({"countUsers":countUsers})
