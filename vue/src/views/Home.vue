@@ -9,6 +9,7 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
+    <!-- <h2 align="center">Mis Categorías</h2> -->
     <article class="container-list__lawyer">
       <section v-for="(categories, index) in categories" :key="index" class="container-categories">
         
@@ -17,7 +18,8 @@
           class="link-category"
           :to="{ name: categories.slug, 
           params: { categories: categories.name } }"
-        >{{categories.description}}</router-link>
+        >
+        {{categories.description}}</router-link>
 
         <router-link
           v-if="categories.show == true && isAuthenticated && (currentUser.typeUser==4) && (categories.id==1)"
@@ -45,12 +47,20 @@
     <article class="banner-asociacion">
       Eres una associación y necesitas un abogado? Regístrase en nuestra plataforma.
     </article>
-    <article>
+    
+    <div class="title-users"><h3>Número de Usuarios registrados</h3></div>
+    <article class="container-num_users">
       <div>
-        <h3>Número de Usuarios registrados:</h3>
-        <span>Abogados:</span><span>{{countUsers.countLawyer}}</span>
-        <span>Clientes:</span><span>{{countUsers.countClient}}</span>
-        <span>Asociaciones:</span><span>{{countUsers.countAsociation}}</span>
+        <span class="container-numUsers_item1">Abogados </span><br>
+        <span>{{countUsers.countLawyer}} </span>
+      </div>
+      <div>
+        <span>Clientes </span><br>
+        <span>{{countUsers.countClient}} </span>
+      </div>
+      <div>
+        <span>Asociaciones </span><br>
+        <span>{{countUsers.countAsociation}} </span>
       </div>
     </article>
   </section>
@@ -74,31 +84,43 @@ export default {
 };
 </script>
 <style>
-.link-category {
-  color: white;
-}
-.container-list__lawyer {
-  display: flex;
-  flex-direction: row wrap;
-  justify-content: center;
-}
-.container-categories a{
-  margin-left: 10px;
-  background: rgba(0, 0, 0, 0) linear-gradient(135deg, rgb(179, 220, 237) 0%, rgb(41, 184, 229) 50%, rgb(188, 224, 238) 100%) repeat scroll 0% 0%;
-  padding: 20px;
-  border-radius: 5%;
-}
-.container-categories a:hover{
-  outline: none !important;
-  border: none;
-  text-decoration: none;
-  color: black;
-}
-.banner-asociacion{
-  text-align: center;
-  background: grey;
-  margin-top: 5%;
-  padding: 2%;
-  color: white;
-}
+  .title-users{
+    margin-top: 2%;
+    text-align: center;
+  }
+  .container-num_users{
+    margin-top: 2%;
+    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    justify-content: space-evenly;
+  }
+  .link-category {
+    color: white;
+  }
+  .container-list__lawyer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+  .container-categories a{
+    margin-left: 10px;
+    background: #3177f0;
+    padding: 20px;
+    border-radius: 5%;
+  }
+  .container-categories a:hover{
+    outline: none !important;
+    border: none;
+    text-decoration: none;
+    color: black;
+  }
+  .banner-asociacion{
+    text-align: center;
+    background: grey;
+    margin-top: 5%;
+    padding: 2%;
+    color: white;
+  }
 </style>

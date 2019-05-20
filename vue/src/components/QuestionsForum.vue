@@ -45,7 +45,27 @@
             v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
         </div>
       </div>
+      
     </article>
+    <form
+      class="card comment-form"
+      v-if="isAuthenticated && currentUser.typeUser == 4"
+      v-on:submit.prevent="onSubmit(question, subteme, currentUser);"
+    >
+      <div class="card-block">
+        <label for="write-question">Escribe su pregunta en este subtema</label>
+        <textarea
+          id="write-question"
+          class="form-control"
+          v-model="question"
+          placeholder="Escribe su pregunta ..."
+          rows="3"
+        />
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-info">Enviar pregunta</button>
+      </div>   
+    </form>
 
     <!-- <table>
       <div v-for="(questionsForum, index) in questionsForum" :key="index">
@@ -93,7 +113,7 @@
       </div>
     </table> -->
 
-    <form
+    <!-- <form
       class="card comment-form"
       v-if="isAuthenticated && currentUser.typeUser == 4"
       v-on:submit.prevent="onSubmit(question, subteme, currentUser);"
@@ -111,7 +131,9 @@
       <div class="card-footer">
         <button class="btn btn-sm btn-info">Enviar pregunta</button>
       </div>   
-    </form>
+    </form> -->
+
+
     <!-- <article v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
       <div>
         {{answerQuestion.answer}}

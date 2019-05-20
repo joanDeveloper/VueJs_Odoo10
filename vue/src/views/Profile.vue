@@ -63,7 +63,7 @@
                   Favorited Articles
                 </router-link>
               </li> -->
-              <div v-if="isAuthenticated && currentUser.typeUser !== 1">
+              <div v-if="isAuthenticated && currentUser.typeUser !== 1" style="text-align:center;">
                 <vue-stripe-checkout
                   v-if="selected > 0"
                   ref="checkoutRef"
@@ -93,12 +93,12 @@
                 </select>
                 
               </div>
-              <div v-if="profile.length > 0">
-                <section v-for="(profile, index) in profile" :key="index">
+              <div v-if="profile.length > 0" >
+                <section v-for="(profile, index) in profile" :key="index" style="text-align:center;">
                   Tiene {{ profile.credits }} créditos
                 </section>
               </div>
-              <section v-if="profile.length == 0">Tiene {{currentUser.credits}} créditos</section>
+              <section v-if="profile.length == 0" style="text-align:center;">Tiene {{currentUser.credits}} créditos</section>
             </ul>
           </div>
           <!-- <router-view></router-view> -->
