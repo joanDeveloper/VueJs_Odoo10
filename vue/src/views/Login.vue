@@ -49,6 +49,11 @@ export default {
     };
   },
   methods: {
+    /**
+      * send email and password and take the action to send the data to the endpoint
+      * @param {string} email value user email
+      * @param {string} password value user password
+      */
     onSubmit(email, password) {
       this.$store
         .dispatch(LOGIN, { email, password })

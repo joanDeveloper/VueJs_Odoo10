@@ -67,6 +67,13 @@ export default {
     })
   },
   methods: {
+    /**
+      * before sending the data to the server, we validate the data and when it is correct, 
+      * we call the action to send the data to the endpoint
+      * @param {string} email value email user
+      * @param {string} password value password user
+      * @param {string} typeUser value type user (client,asociation or lawyer)
+      */
     onSubmit() {
       let validateMaxLength = maxLength10(this.password);
       let validateMinLength = minLength5(this.password);

@@ -43,26 +43,6 @@
         <div class="col-xs-12 col-md-10 offset-md-1">
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
-              <!-- <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  active-class="active"
-                  exact
-                  :to="{ name: 'profile' }"
-                >
-                  My Articles
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link
-                  class="nav-link"
-                  active-class="active"
-                  exact
-                  :to="{ name: 'profile-favorites' }"
-                >
-                  Favorited Articles
-                </router-link>
-              </li> -->
               <div v-if="isAuthenticated && currentUser.typeUser !== 1" style="text-align:center;">
                 <vue-stripe-checkout
                   v-if="selected > 0"
@@ -101,8 +81,6 @@
               <section v-if="profile.length == 0" style="text-align:center;">Tiene {{currentUser.credits}} créditos</section>
             </ul>
           </div>
-          <!-- <router-view></router-view> -->
-
         </div>
       </div>
     </div>
@@ -134,34 +112,25 @@ export default {
     }
   },
   mounted() {
-    console.log("MONEY_",this.money, this.selected)
-    console.log("PROFILE_",this.profile)
-    //Promise.all([this.$store.dispatch(CHECK_AUTH)]);
-    //this.$store.dispatch(FETCH_PROFILE, this.$route.params);
     
   },
   computed: {
     ...mapGetters(["currentUser", "profile", "isAuthenticated"])
   },
   methods: {
+    /**
+      * we save the value of the select in this and we put 2 zeros to show it in stripe
+      * @param {string} event value select
+      */
     changeSelect(event){
       console.log("changeSelect", event.target.value);
       this.selected = parseInt(event.target.value+"00");
 
     },
-    // isCurrentUser() {
-    //   if (this.currentUser.username && this.profile.username) {
-    //     return this.currentUser.username === this.profile.username;
-    //   }
-    //   return false;
-    // },
-    // follow() {
-    //   if (!this.isAuthenticated) return;
-    //   this.$store.dispatch(FETCH_PROFILE_FOLLOW, this.$route.params);
-    // },
-    // unfollow() {
-    //   this.$store.dispatch(FETCH_PROFILE_UNFOLLOW, this.$route.params);
-    // },
+    /**
+      * Open the stripe window and return the values. 
+      * When select is greater than 0 we send the data to the server
+      */
     async checkout () {
       // token - is the token object
       // args - is an object containing the billing and shipping address if enabled

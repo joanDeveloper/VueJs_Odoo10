@@ -100,28 +100,28 @@ export default {
     let slug = this.$route.params.subtema;
     if (this.questionsForum.length == 0) {
       this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug).then(res=>{
-        this.searchIdTeme();
+        this.getIdQuestion();
       });
     }
-    this.searchIdTeme();
+    this.getIdQuestion();
     
   },
   props: {
     content: { type: String, required: false }
   },
   methods: {
-    activateSubmitAnswer(id_question){
-      this.answerQuestions = true;
-      this.idQuestion = id_question;
-      this.desactivateAnswer = false;
-      this.activateAnswer = true;
-    },
-    submitAnswer(id_question, currentUser){ 
-      console.log("submitAnswer",id_question, currentUser, this.answer);
-      let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
-      this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
+    // activateSubmitAnswer(id_question){
+    //   this.answerQuestions = true;
+    //   this.idQuestion = id_question;
+    //   this.desactivateAnswer = false;
+    //   this.activateAnswer = true;
+    // },
+    // submitAnswer(id_question, currentUser){ 
+    //   console.log("submitAnswer",id_question, currentUser, this.answer);
+    //   let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
+    //   this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
 
-    },
+    // },
     itemTitle(slug) {
       return (
         slug
@@ -134,7 +134,10 @@ export default {
           .replace("-", " ")
       );
     },
-    searchIdTeme() {
+    /**
+      * get id of the question with localStorage to obtain the answers
+      */
+    getIdQuestion() {
       console.log("YEAH searchIdTeme",this.questionsForum);
         //var cont = 0;
         // this.questionsForum.forEach(element => {
@@ -151,31 +154,31 @@ export default {
         this.$store.dispatch(GET_ANSWER_FORUM, id_question);
 
     },
-    onSubmit(question, subteme, currentUser) {
-      console.log("onSubmit_FORO_COMMENT", question, currentUser);
-      let validateMaxLength = maxLength55(question);
-      let validateMinLength = minLength5(question);
+    // onSubmit(question, subteme, currentUser) {
+    //   console.log("onSubmit_FORO_COMMENT", question, currentUser);
+    //   let validateMaxLength = maxLength55(question);
+    //   let validateMinLength = minLength5(question);
 
-      !validateMaxLength
-        ? Utils.toasterError("Error, maximo 55 caracteres")
-        : true;
-      !validateMinLength
-        ? Utils.toasterError("Error, minimo 5 caracteres")
-        : true;
+    //   !validateMaxLength
+    //     ? Utils.toasterError("Error, maximo 55 caracteres")
+    //     : true;
+    //   !validateMinLength
+    //     ? Utils.toasterError("Error, minimo 5 caracteres")
+    //     : true;
 
-      if (validateMaxLength && validateMinLength) {
-        console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
-        console.log("FORUM____", this.temesForum);
-        var cont = 0;
-        this.temesForum.forEach(element => {
-          let id_tema = element.slug == this.$route.params.slug ? element.id : false;
-          if (id_tema != false && cont === 0) {
-            cont++;
-            this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
-          }
-        });
-      }
-    }
+    //   if (validateMaxLength && validateMinLength) {
+    //     console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
+    //     console.log("FORUM____", this.temesForum);
+    //     var cont = 0;
+    //     this.temesForum.forEach(element => {
+    //       let id_tema = element.slug == this.$route.params.slug ? element.id : false;
+    //       if (id_tema != false && cont === 0) {
+    //         cont++;
+    //         this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+    //       }
+    //     });
+    //   }
+    // }
   },
   data() {
     return {

@@ -73,6 +73,9 @@ import CompItemsList from "@/components/ItemList";
 
 export default {
   name: "home",
+  /**
+    * show categories and count users to show on home
+    */
   mounted() {
     this.$store.dispatch(GET_CATEGORIES).then(res=>{
       this.$store.dispatch(GET_ALL_USERS);
