@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { GET_COMMENT, COMMENT_CREATE, GET_DETAILS, UPDATE_COMMENT } from "@/store/actions.type";
+import { GET_COMMENT, COMMENT_CREATE, UPDATE_COMMENT } from "@/store/actions.type";
 import { mapGetters } from "vuex";
 import { Utils } from "../utils/utils.js";
 import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
@@ -80,6 +80,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * @method onSubmit We validate the data before sending it to the server
+     */
     onSubmit(id, comment, currentUser) {
       console.log("onSubmit_COMMENT", this.userDetail[0].id, comment, currentUser);
       let validateMaxLength = maxLength55(comment);
@@ -105,8 +108,10 @@ export default {
       }
       
     },
+    /**
+     * @method init we get the collegiate number to look for the lawyer user
+     */
     init() {
-      console.log("MOUNTED", this.$props.id);
       let num_colegiado = this.$props.id;
       this.$store
         .dispatch(GET_COMMENT, { num_colegiado })
@@ -120,19 +125,25 @@ export default {
           //this.errors = response.data.errors;
         });
     },
+    /**
+     * @method activeEditComment we save the id of the comment and the comment and 
+     * activate the field to edit it
+     */
     activeEditComment(id,contentComment){
       this.idComment = id;
       this.editedComment = true;
       this.updateComment = contentComment;
     },
+    /**
+     * @method editComment We get the new data and call the action to send it 
+     * to the server to be updated
+     */
     editComment(id){
-      console.log("editComment",id,this.updateComment,this.userDetail[0].id);
       let dataComment = {id_comment:id,id_userLawyer:this.userDetail[0].id,comment:this.updateComment};
       this.$store.dispatch(UPDATE_COMMENT, { dataComment }).then(data => {
           console.log("DATA__UPDATE_COMMENT", data);
           this.$data.commentLawyer = JSON.parse(data.data.result).comments;
           this.editedComment = false;
-
           //this.errors = {};
         })
         .catch(({ response }) => {

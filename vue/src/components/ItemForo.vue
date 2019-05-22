@@ -9,54 +9,6 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <!-- <article v-for="(questionsForum, index) in questionsForum" :key="index">
-      <img
-        class="responsive-imgForo"
-        src="img/users/joanet1.jpg"
-        alt="imagen usuario abogado"
-        width="35"
-        height="35"
-      >
-      {{questionsForum.client_id}}
-      <br>
-      <p class="question-user">{{questionsForum.question}}</p>
-      <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
-        v-on:click="activateSubmitAnswer(questionsForum.id)">Responder</button>
-      <div class="card-block">
-        <textarea
-          v-if="answerQuestion==true && idQuestion==questionsForum.id"
-          class="form-control"
-          v-model="answer"
-          placeholder="Responda la pregunta ..."
-          rows="3"
-        ></textarea>
-      <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
-        v-on:click="submitAnswer(questionsForum.id, currentUser)">Responder</button>
-        
-      </div>
-      <br/>
-      <br/>
-    </article> -->
-    
-    <!-- <form
-      class="card comment-form"
-      v-if="isAuthenticated && currentUser.typeUser == 4"
-      v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
-    >
-      <input type="text" v-model="subteme" placeholder="Introduzca el título ...">
-      <div class="card-block">
-        <textarea
-          class="form-control"
-          v-model="question"
-          placeholder="Escribe su pregunta ..."
-          rows="3"
-        ></textarea>
-      </div>
-      <div class="card-footer">
-       
-        <button class="btn btn-sm btn-primary">Enviar pregunta</button>
-      </div>
-    </form> -->
     <section v-if="isAuthenticated" class="container-item">
       <table cellspacing="5" cellpadding="12">
         <tr class="item-name">
@@ -81,14 +33,12 @@
               </router-link>
             </td>
         </tr>
-        
-        
       </table>
       <form
-          class="card comment-form"
-          v-if="isAuthenticated && currentUser.typeUser == 4"
-          v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
-        >
+        class="card comment-form"
+        v-if="isAuthenticated && currentUser.typeUser == 4"
+        v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
+      >
         <fieldset class="card-block form-group">
           <label for="title-tema">Cree un subtema y pregunte lo que necesite</label>
           <input type="text" id="title-tema" class="form-control form-control-lg" v-model="subteme" placeholder="Introduzca el título del tema ...">
@@ -104,7 +54,6 @@
           <div class="card-footer">
             <button class="btn btn-sm btn-primary">Enviar pregunta</button>
           </div> 
-          
       </form>
     </section>
     <section v-else>
@@ -113,7 +62,6 @@
     </section>
   </section>
 </template>
-
 <script>
 import { mapGetters } from "vuex";
 import {
@@ -128,32 +76,14 @@ import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
 export default {
   name: "ComponenteItemForo",
   mounted() {
-    console.log("ITEM_FORO", this.$route.params.slug);
-
     if (this.temesForum.length == 0) {
       this.$store.dispatch(GET_TEMES_FORUM).then(res=>{
         this.searchIdTeme();
       });
     }
     this.searchIdTeme();
-    
-  },
-  props: {
-    content: { type: String, required: false }
   },
   methods: {
-    activateSubmitAnswer(id_question){
-      this.answerQuestion = true;
-      this.idQuestion = id_question;
-      this.desactivateAnswer = false;
-      this.activateAnswer = true;
-    },
-    submitAnswer(id_question, currentUser){ 
-      console.log("submitAnswer",id_question, currentUser, this.answer);
-      let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
-      this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
-
-    },
     itemTitle(slug) {
       return (
         slug

@@ -57,6 +57,9 @@ import { SEND_CONTACT } from "@/store/actions.type";
 
 export default {
   name: "RwvContact",
+  /**
+   * We declare and initialize the fields
+   */
   data() {
     return {
       name: "",
@@ -66,11 +69,23 @@ export default {
     };
   },
   computed: {
+    /**
+     * Show server errors
+     */
     ...mapState({
       errors: state => state.auth.errors
     })
   },
   methods: {
+    /**
+     * Send data form contact to server.
+     * We call action SEND_CONTACT to send data at server.
+     * Then we redirect the user to the home.
+     * @param {string} email value email
+     * @param {string} subject value subject
+     * @param {string} name value name
+     * @param {string} comment value comment
+     */
     onSubmit() {
       this.$store
         .dispatch(SEND_CONTACT, {
@@ -78,8 +93,7 @@ export default {
           subject: this.subject,
           name: this.name,
           comment: this.comment
-        })
-        .then(() => this.$router.push({ name: "home" }));
+        }).then(() => this.$router.push({ name: "home" }));
     }
   }
 };

@@ -42,13 +42,7 @@ import { GET_GUARDIAS } from "@/store/actions.type";
 
 export default {
   name: "CompItemsList",
-  data() {
-    return {
-      misGuardias: []
-    };
-  },
   mounted() {
-    console.log("GUARDIASSSS", this);
     this.$store.dispatch(GET_GUARDIAS);
   },
   computed: {

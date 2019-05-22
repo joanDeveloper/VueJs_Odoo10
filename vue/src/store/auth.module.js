@@ -1,12 +1,6 @@
 import ApiService from "@/common/api.service";
 import JwtService from "@/common/jwt.service";
-import {
-  LOGIN,
-  LOGOUT,
-  REGISTER,
-  CHECK_AUTH,
-  UPDATE_USER
-} from "./actions.type";
+import { LOGIN, LOGOUT, REGISTER, CHECK_AUTH } from "./actions.type";
 import { SET_AUTH, PURGE_AUTH, SET_ERROR } from "./mutations.type";
 import Vue from "vue";
 import Toasted from "vue-toasted";
@@ -85,7 +79,7 @@ const actions = {
     if (JwtService.getToken()) {
       //ApiService.setHeader();
       return new Promise((resolve, reject) => {
-        ApiService.post("verify",{"Token":JwtService.getToken()})
+        ApiService.post("verify", { "Token": JwtService.getToken() })
           .then(({ data }) => {
             console.log("CHECK_AUTH",data.result);
             context.commit(SET_AUTH, data.result.user);
@@ -93,31 +87,16 @@ const actions = {
           })
           .catch(({ response }) => {
             console.log("CHECK_AUTH_ERROR",response);
-            context.commit(SET_ERROR, JSON.parse(response.data.result).error.message);
+            context.commit(
+              SET_ERROR,
+              JSON.parse(response.data.result).error.message
+            );
             reject(response);
           });
       });
     } else {
       context.commit(PURGE_AUTH);
     }
-   
-  },
-  [UPDATE_USER](context, payload) {
-    const { email, username, password, image, bio } = payload;
-    const user = {
-      email,
-      username,
-      bio,
-      image
-    };
-    if (password) {
-      user.password = password;
-    }
-
-    return ApiService.put("user", user).then(({ data }) => {
-      context.commit(SET_AUTH, data.user);
-      return data;
-    });
   }
 };
 
@@ -132,14 +111,12 @@ const mutations = {
     state.errors = error;
   },
   [SET_AUTH](state, user) {
-    console.log("SET_AUTH",user);
     state.isAuthenticated = true;
     state.user = user.currentUser;
     state.errors = {};
     JwtService.saveToken(user.token);
   },
   [PURGE_AUTH](state) {
-    console.log("PURGE_AUTH__");
     state.isAuthenticated = false;
     state.user = {};
     state.errors = {};

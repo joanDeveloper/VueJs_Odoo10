@@ -64,7 +64,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOGOUT, UPDATE_USER } from "@/store/actions.type";
+import { LOGOUT } from "@/store/actions.type";
 
 export default {
   name: "RwvSettings",
@@ -72,12 +72,12 @@ export default {
     ...mapGetters(["currentUser"])
   },
   methods: {
-    updateSettings() {
-      this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
-        // #todo, nice toast and no redirect
-        this.$router.push({ name: "home" });
-      });
-    },
+    // updateSettings() {
+    //   this.$store.dispatch(UPDATE_USER, this.currentUser).then(() => {
+    //     // #todo, nice toast and no redirect
+    //     this.$router.push({ name: "home" });
+    //   });
+    // },
     logout() {
       this.$store.dispatch(LOGOUT).then(() => {
         this.$router.push({ name: "home" });

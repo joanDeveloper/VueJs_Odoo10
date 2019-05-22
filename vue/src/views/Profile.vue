@@ -5,8 +5,9 @@
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
             <img src="img/users/joanet1.jpg" class="user-img" />
-            <h4>{{ profile.username }}</h4>
-            <p>{{ profile.bio }}</p>
+            <h4>{{ currentUser.email }}</h4>
+            <!-- <p>{{ profile.bio }}</p> -->
+            
             <!-- <div v-if="isCurrentUser()">
               <router-link
                 class="btn btn-sm btn-outline-secondary action-btn"
@@ -90,11 +91,7 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  FETCH_PROFILE,
-  FETCH_PROFILE_FOLLOW,
-  FETCH_PROFILE_UNFOLLOW,
-  CHARGE_MONEY_PROFILE,
-  CHECK_AUTH
+  CHARGE_MONEY_PROFILE
 } from "@/store/actions.type";
 import Vue from 'vue';
 import VueStripeCheckout from 'vue-stripe-checkout';
@@ -111,9 +108,9 @@ export default {
       currency: 'eur'
     }
   },
-  mounted() {
+  // mounted() {
     
-  },
+  // },
   computed: {
     ...mapGetters(["currentUser", "profile", "isAuthenticated"])
   },
@@ -158,10 +155,10 @@ export default {
       // do stuff 
     }
   },
-  watch: {
-    $route(to) {
-      //this.$store.dispatch(FETCH_PROFILE, to.params);
-    }
-  }
+  // watch: {
+  //   $route(to) {
+  //     //this.$store.dispatch(FETCH_PROFILE, to.params);
+  //   }
+  // }
 };
 </script>

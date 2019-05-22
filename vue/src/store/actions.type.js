@@ -1,27 +1,7 @@
-export const ARTICLE_PUBLISH = "publishArticle";
-export const ARTICLE_DELETE = "deleteArticle";
-export const ARTICLE_EDIT = "editArticle";
-export const ARTICLE_EDIT_ADD_TAG = "addTagToArticle";
-export const ARTICLE_EDIT_REMOVE_TAG = "removeTagFromArticle";
-export const ARTICLE_RESET_STATE = "resetArticleState";
-export const CHECK_AUTH = "checkAuth";
-export const COMMENT_CREATE = "createComment";
-export const COMMENT_DESTROY = "destroyComment";
-export const FAVORITE_ADD = "addFavorite";
-export const FAVORITE_REMOVE = "removeFavorite";
-export const FETCH_ARTICLE = "fetchArticle";
-export const FETCH_ARTICLES = "fetchArticles";
-export const FETCH_COMMENTS = "fetchComments";
-export const FETCH_PROFILE = "fetchProfile";
-export const FETCH_PROFILE_FOLLOW = "fetchProfileFollow";
-export const FETCH_PROFILE_UNFOLLOW = "fetchProfileUnfollow";
-export const FETCH_TAGS = "fetchTags";
 export const LOGIN = "login";
 export const LOGOUT = "logout";
 export const REGISTER = "register";
-export const UPDATE_USER = "updateUser";
-
-////////////////////////////////////
+export const CHECK_AUTH = "checkAuth";
 export const SEND_CONTACT = "SEND_CONTACT";
 export const GET_LAWYERS = "GET_LAWYERS";
 export const GET_CATEGORIES = "GET_CATEGORIES";
@@ -38,6 +18,7 @@ export const DELETE_INTERESADO = "DELETE_INTERESADO";
 export const DELETE_ASOCIACION = "DELETE_ASOCIACION";
 export const GET_ASSOCIACIONES_INTERESADOS = "GET_ASSOCIACIONES_INTERESADOS";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const COMMENT_CREATE = "createComment";
 export const GET_TEMES_FORUM = "GET_TEMES_FORUM";
 export const CREATE_QUESTION_FORUM = "CREATE_QUESTION_FORUM";
 export const GET_QUESTIONS_FORUM = "GET_QUESTIONS_FORUM";

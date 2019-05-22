@@ -78,11 +78,9 @@ import RwvCommentEditor from "@/components/CommentEditor";
 export default {
   name: "CompItemsList",
   mounted() {
-    console.log("DETAIL", this.$route.params.id);
     this.$store
       .dispatch(GET_DETAILS, this.$route.params.id)
       .then(data => {
-        console.log("AS_DETAIL___", JSON.parse(data.result)[0].id);
         let id = JSON.parse(data.result)[0].id;
         this.$store.dispatch(GET_ASSOCIACIONES_INTERESADOS, id);
       })

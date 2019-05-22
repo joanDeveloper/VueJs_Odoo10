@@ -22,10 +22,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {
-  GET_TEMES_FORUM
-} from "@/store/actions.type";
-import RwvCommentEditor from "@/components/CommentEditor";
+import { GET_TEMES_FORUM } from "@/store/actions.type";
 
 export default {
   name: "ComponenteForo",
@@ -43,9 +40,6 @@ export default {
       "asociacionesInteresadas",
       "temesForum"
     ])
-  },
-  components: {
-    RwvCommentEditor
   }
 };
 

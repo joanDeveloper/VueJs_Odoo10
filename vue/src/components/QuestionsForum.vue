@@ -66,100 +66,6 @@
         <button class="btn btn-sm btn-info">Enviar pregunta</button>
       </div>   
     </form>
-
-    <!-- <table>
-      <div v-for="(questionsForum, index) in questionsForum" :key="index">
-        <tr>
-          <th v-if="questionsForum.slug_subtema == slugSubtema">
-            <img
-              class="user-image"
-              src="img/users/joanet1.jpg"
-              alt="imagen usuario abogado"
-              width="35"
-              height="35"
-            >
-          </th>
-          <th v-if="questionsForum.slug_subtema == slugSubtema">
-            <span class="user-email">{{questionsForum.client_id}}</span>
-          </th>
-          <th v-if="questionsForum.slug_subtema == slugSubtema" class="subitem-date">
-            <span class="subitem-date">{{questionsForum.create_date}}</span>
-          </th>
-        </tr>
-        <tr v-if="questionsForum.slug_subtema == slugSubtema" class="subitem-question">
-          <td>{{questionsForum.question}}</td>
-        </tr>
-        <tr v-if="questionsForum.slug_subtema == slugSubtema">
-          <td class="space-top">
-            <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && desactivateAnswer == true" 
-            v-on:click="activateSubmitAnswer(questionsForum.id)">Contestar</button>
-            <router-link :to="{ name: 'answerForum', params: { subtema: questionsForum.slug_subtema } }">
-              <button class="btn btn-sm btn-primary space-between" v-on:click='setIdQuestion(questionsForum.id)' >Ver Respuestas</button>
-            </router-link>
-          </td>
-          <td>
-            <div class="card-footer" v-if="answerQuestions==true && idQuestion==questionsForum.id">
-              <textarea
-                class="form-control"
-                v-model="answer"
-                placeholder="Responda la pregunta ..."
-                rows="3"
-              />
-              <button class="btn btn-sm btn-primary" v-if="isAuthenticated && currentUser.typeUser == 1 && activateAnswer == true" 
-                v-on:click="submitAnswer(questionsForum.id, currentUser)">Enviar Respuesta</button>
-            </div>
-          </td>
-        </tr>
-      </div>
-    </table> -->
-
-    <!-- <form
-      class="card comment-form"
-      v-if="isAuthenticated && currentUser.typeUser == 4"
-      v-on:submit.prevent="onSubmit(question, subteme, currentUser);"
-    >
-      <div class="card-block">
-        <label for="write-question">Escribe su pregunta en este subtema</label>
-        <textarea
-          id="write-question"
-          class="form-control"
-          v-model="question"
-          placeholder="Escribe su pregunta ..."
-          rows="3"
-        />
-      </div>
-      <div class="card-footer">
-        <button class="btn btn-sm btn-info">Enviar pregunta</button>
-      </div>   
-    </form> -->
-
-
-    <!-- <article v-for="(answerQuestion, index) in answerQuestion" :key="'answer-'+index">
-      <div>
-        {{answerQuestion.answer}}
-      </div>
-    </article> -->
-    
-    <!-- <form
-      class="card comment-form"
-      v-if="isAuthenticated && currentUser.typeUser == 4"
-      v-on:submit.prevent="onSubmit(question, subteme, currentUser); "
-    >
-      <input type="text" v-model="subteme" placeholder="Introduzca el título ...">
-      <div class="card-block">
-        <textarea
-          class="form-control"
-          v-model="question"
-          placeholder="Escribe su pregunta ..."
-          rows="3"
-        ></textarea>
-      </div>
-      <div class="card-footer">
-       
-        <button class="btn btn-sm btn-primary">Enviar pregunta</button>
-      </div>
-    </form> -->
-    
   </section>
 </template>
 
@@ -179,24 +85,16 @@ import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
 export default {
   name: "ComponenteItemForo",
   beforeMount() {
-    console.log("ITEM_FORO", this.$route.params.subtema);
     let slug = this.$route.params.subtema;
     if (this.questionsForum.length == 0) {
-      this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug).then(res=>{
-        //this.$store.dispatch(GET_ANSWER_FORUM, slug);
-        //this.searchIdTeme();
-      });
+      this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug);
     }
-    //this.$store.dispatch(GET_ANSWER_FORUM, slug);
-    //this.searchIdTeme();
-    
   },
   props: {
     content: { type: String, required: false }
   },
   methods: {
     setIdQuestion(id_question){
-      console.log("METHOD_TEST",id_question);
       localStorage.setItem("id_question",id_question);
     },
     activateSubmitAnswer(id_question){
@@ -205,8 +103,7 @@ export default {
       this.desactivateAnswer = false;
       this.activateAnswer = true;
     },
-    submitAnswer(id_question, currentUser){ 
-      console.log("submitAnswer",id_question, currentUser, this.answer);
+    submitAnswer(id_question, currentUser){
       let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
       this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
 
@@ -223,22 +120,7 @@ export default {
           .replace("-", " ")
       );
     },
-    // searchIdTeme() {
-    //   console.log("YEAH searchIdTeme",this.questionsForum);
-    //     this.questionsForum.forEach(element => {
-    //         console.log("questionsForum",element);
-    //         let id_question = element.slug_subtema == this.$route.params.subtema ? element.id : false;
-    //         console.log("searchIdTeme__",id_question);
-    //         let cont = 0;
-    //         if (id_question != false && cont === 0) {
-    //             cont++;
-    //             console.log("CCCCCCCC");
-    //             this.$store.dispatch(GET_ANSWER_FORUM, id_question);
-    //         }
-    //     });
-    // },
     onSubmit(question, subteme, currentUser) {
-      console.log("onSubmit_FORO_COMMENT", question, currentUser);
       var cont = 0;
       let validateMaxLength = maxLength55(question);
       let validateMinLength = minLength5(question);
@@ -251,8 +133,6 @@ export default {
         : true;
 
       if (validateMaxLength && validateMinLength) {
-        console.log("CREATE_QUESTION_FORUM", this.$route.params.subtema,currentUser);
-        console.log("FORUM____", this.questionsForum[0].id_tema[1]);
         if (currentUser.credits >= 500){
           this.questionsForum.forEach(element => {
             let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
@@ -262,24 +142,10 @@ export default {
               console.log("AAA____GGGG",id_tema, subteme, question, currentUser);
               this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
             }
-            
           });
         }else{
-          console.log("NO_PASTA");
           Utils.toasterError("Por favor, recargue 500 créditos mínimo para hacer esta pregunta. Gracias.")
         }
-        //this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
-        
-        // let g = this.questionsForum[0].slug_subtema.charAt(0).toUpperCase() + this.questionsForum[0].slug_subtema.slice(1);
-        // console.log("FORUM____GGGG", g.replace("-", " "));
-        // this.temesForum.forEach(element => {
-        //   let id_tema = element.slug == this.$route.params.slug ? element.id : false;
-        //   let cont = 0;
-        //   if (id_tema != false && cont === 0) {
-        //     cont++;
-        //     this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
-        //   }
-        // });
       }
     }
   },
@@ -352,7 +218,4 @@ export default {
 .space-top{
   padding-top: 5%;
 }
-/*td{
-  width: 50%;
-}*/
 </style>

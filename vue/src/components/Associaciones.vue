@@ -80,7 +80,6 @@
           </tr>
         </table>
       </div>
-      <!-- <p v-else>Usted no es un usuario abogado</p> -->
     </section>
   </section>
 </template>
@@ -116,23 +115,31 @@ export default {
     ])
   },
   methods: {
+    /**
+     * @method suscribe We call the action so that an user can subscribe to an association
+     */
     suscribe(id) {
-      console.log("suscribe associacion", id, this.currentUser.id);
       let payload = { id_asociacion: id, id_user: this.currentUser.id };
       this.$store.dispatch(POST_ASSOCIACIONES, payload);
     },
+    /**
+     * @method selected We call this action so that an association can choose the lawyer
+     */
     selected(id) {
-      console.log("selected lawyer", id, this.currentUser.id);
       let payload = { id_interesado: id, id_asociacion: this.currentUser.id };
       this.$store.dispatch(POST_INTERESADO, payload);
     },
+    /**
+     * @method deleteSelected we call this action to deselect the lawyer user
+     */
     deleteSelected(id) {
-      console.log("deleteSelected lawyer", id, this.currentUser.id);
       let payload = { id_interesado: id , id_asociacion: this.currentUser.id};
       this.$store.dispatch(DELETE_INTERESADO, payload);
     },
+    /**
+     * @method unsuscribe we call this action so that a lawyer user can unsubscribe from the association
+     */
     unsuscribe(id) {
-      console.log("unsuscribe lawyer", id, this.currentUser.id);
       let payload = { id_interesado: this.currentUser.id , id_asociacion: id};
       this.$store.dispatch(DELETE_ASOCIACION, payload);
     }

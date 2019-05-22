@@ -15,5 +15,4 @@ export default {
     errors: { type: Object, required: true }
   }
 };
-console.log("LIST_ERRORS",errors);
 </script>
