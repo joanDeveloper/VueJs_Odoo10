@@ -60,10 +60,7 @@ export default {
   },
   props: {
     id: { type: Number, required: true },
-    currentUser: { type: Object, required: true },
     content: { type: String, required: false },
-    editedComment: { type: Boolean, required: false },
-    idComment: { type: Number, required: false },
     userImage: { type: String, required: false }
   },
   computed: {

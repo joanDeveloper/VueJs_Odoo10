@@ -62,7 +62,7 @@
         </div>
       </div>
     </article>
-    <RwvCommentEditor v-if="userDetail[0]" :id="this.$route.params.id" :currentUser="currentUser"></RwvCommentEditor>
+    <RwvCommentEditor v-if="userDetail[0]" :id="parseInt(this.$route.params.id)" :currentUser="currentUser"></RwvCommentEditor>
   </section>
 </template>
 

@@ -73,11 +73,8 @@
 import { mapGetters } from "vuex";
 import {
   GET_QUESTIONS_BYSLUG_FORUM,
-  GET_TEMES_FORUM,
   CREATE_QUESTION_FORUM,
-  GET_QUESTIONS_FORUM,
-  SUBMIT_ANSWER_FORUM,
-  GET_ANSWER_FORUM
+  SUBMIT_ANSWER_FORUM
 } from "@/store/actions.type";
 import { Utils } from "../utils/utils.js";
 import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
@@ -85,29 +82,42 @@ import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
 export default {
   name: "ComponenteItemForo",
   beforeMount() {
+    // if we load the page we will not have the questions, 
+    // so we will call again to the action to obtain them
     let slug = this.$route.params.subtema;
-    if (this.questionsForum.length == 0) {
-      this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug);
-    }
+    this.questionsForum.length == 0 ? this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug) : false;
   },
   props: {
     content: { type: String, required: false }
   },
   methods: {
+    /**
+     * @method setIdQuestion we set the id of the question in localStorage every time 
+     * we want to see your answer
+     */
     setIdQuestion(id_question){
       localStorage.setItem("id_question",id_question);
     },
+    /**
+     * @method activateSubmitAnswer we activate the field and we save the id of the question
+     */
     activateSubmitAnswer(id_question){
       this.answerQuestions = true;
       this.idQuestion = id_question;
       this.desactivateAnswer = false;
       this.activateAnswer = true;
     },
+    /**
+     * @method submitAnswer we send the response to the server
+     */
     submitAnswer(id_question, currentUser){
       let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
       this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
 
     },
+    /**
+     * @method itemTitle replace hyphens with spaces and the first letter in uppercase
+     */
     itemTitle(slug) {
       return (
         slug
@@ -120,6 +130,10 @@ export default {
           .replace("-", " ")
       );
     },
+    /**
+     * @method onSubmit first we validate the data of the form, then we verify 
+     * if the user has more than 500 credits and we look for the id of the subject from the slug
+     */
     onSubmit(question, subteme, currentUser) {
       var cont = 0;
       let validateMaxLength = maxLength55(question);
@@ -139,7 +153,6 @@ export default {
             if (subteme != false && cont === 0) {
               cont++;
               let id_tema = this.questionsForum[0].id_tema[0];
-              console.log("AAA____GGGG",id_tema, subteme, question, currentUser);
               this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
             }
           });

@@ -67,23 +67,25 @@ import { mapGetters } from "vuex";
 import {
   GET_TEMES_FORUM,
   CREATE_QUESTION_FORUM,
-  GET_QUESTIONS_FORUM,
-  SUBMIT_ANSWER_FORUM
+  GET_QUESTIONS_FORUM
 } from "@/store/actions.type";
 import { Utils } from "../utils/utils.js";
 import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
+var contTeme = 0, contQuestion = 0;
 
 export default {
   name: "ComponenteItemForo",
   mounted() {
-    if (this.temesForum.length == 0) {
-      this.$store.dispatch(GET_TEMES_FORUM).then(res=>{
-        this.searchIdTeme();
-      });
-    }
-    this.searchIdTeme();
+    // If don't find the themes in the store, call back to action
+    this.temesForum.length == 0 ? 
+    this.$store.dispatch(GET_TEMES_FORUM).then(res=>{
+      this.searchIdTeme();
+    }) : this.searchIdTeme();
   },
   methods: {
+    /**
+     * @method itemTitle replace hyphens with spaces and the first letter in uppercase
+     */
     itemTitle(slug) {
       return (
         slug
@@ -96,20 +98,25 @@ export default {
           .replace("-", " ")
       );
     },
+    /**
+     * @method searchIdTeme we search in the array of topics the id of the topics from the slug 
+     * so that we can return the questions of the forum
+     */
     searchIdTeme() {
-      console.log("YEAH searchIdTeme");
-      var cont = 0;
       this.temesForum.forEach(element => {
         let id_tema =
           element.slug == this.$route.params.slug ? element.id : false;
-        if (id_tema != false && cont === 0) {
-          cont++;
+        if (id_tema != false && contTeme === 0) {
+          contTeme++;
           this.$store.dispatch(GET_QUESTIONS_FORUM, id_tema);
         }
       });
     },
+    /**
+     * @method onSubmit first we validate the data of the form, then we verify 
+     * if the user has more than 500 credits and we look for the id of the subject from the slug
+     */
     onSubmit(question, subteme, currentUser) {
-      console.log("onSubmit_FORO_COMMENT", question, currentUser);
       let validateMaxLength = maxLength55(question);
       let validateMinLength = minLength5(question);
 
@@ -121,23 +128,17 @@ export default {
         : true;
 
       if (validateMaxLength && validateMinLength) {
-        console.log("CREATE_QUESTION_FORUM", this.$route.params.slug,currentUser);
-        console.log("FORUM____", this.temesForum);
-
         if (currentUser.credits >= 500){
           this.temesForum.forEach(element => {
             let id_tema = element.slug == this.$route.params.slug ? element.id : false;
-            let cont = 0;
-            if (id_tema != false && cont === 0) {
-              cont++;
+            if (id_tema != false && contQuestion === 0) {
+              contQuestion++;
               this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
             }
           });
         }else{
-          console.log("NO_PASTA");
           Utils.toasterError("Por favor, recargue 500 créditos mínimo para hacer esta pregunta. Gracias.")
         }
-
       }
     }
   },

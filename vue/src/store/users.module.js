@@ -13,7 +13,6 @@ const getters = {
     return state.users;
   },
   userDetail(state) {
-    console.log("AAAA22222________",state);
     return state.userDetail;
   },
   countUsers(state) {

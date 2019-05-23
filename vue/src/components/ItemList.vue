@@ -9,10 +9,13 @@
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
-    <input type="text" id="searchName" placeholder="filter by name" v-model="searchName">
-    <input type="text" id="searchSurname" placeholder="filter by surname" v-model="searchSurname">
-    <input type="text" id="searchEmail" placeholder="filter by email" v-model="searchEmail">
-    <button class="btn btn-sm btn-primary" v-on:click="filter">Filtrar</button>
+    <div class="inputs-search">
+      <input class="form-search" type="text" id="searchName" placeholder="filter by name" v-model="searchName">
+      <input class="form-search" type="text" id="searchSurname" placeholder="filter by surname" v-model="searchSurname">
+      <input class="form-search" type="text" id="searchEmail" placeholder="filter by email" v-model="searchEmail">
+      <button class="btn btn-sm btn-primary button-search" v-on:click="filter">Filtrar</button>
+    </div>
+    
     <article v-for="(user, index) in user.users" :key="index" class="container container-border">
       <router-link :to="{ name: 'detailItems', 
         params: { id: user.num_colegiado } }">
@@ -58,6 +61,7 @@ import VPagination from "./VPagination";
 export default {
   name: "CompItemsList",
   mounted() {
+    // When the component is mounted, it will return the first 10 of the first page
     let dataJson = {
       category: this.$route.params.categories,
       filters: { limit: 10, offset: 0 }
@@ -88,6 +92,10 @@ export default {
     };
   },
   computed: {
+    /**
+     * @method listConfig we declare the category that belongs to the user, 
+     * the limit of users per page and the current page
+     */
     listConfig() {
       const { type } = this;
       const category = {
@@ -103,31 +111,36 @@ export default {
         ...category
       };
     },
+    /**
+     * @method pages if the number of users is less than the number of elements per page previously
+     * declared, we will not show the pages, otherwise we will return the pages
+     * @returns {array}
+     */
     pages() {
-      console.log("PAGES_LIST", this.user.usersCount, this.itemsPerPage);
       if (this.user.usersCount <= this.itemsPerPage) return [];
-
+      // if the user array is empty, it returns a range error by console
       return [
-        ...Array(Math.ceil(this.user.usersCount / this.itemsPerPage)).keys()
+        ...Array(Math.ceil( this.user.length === 0 ? 1 : this.user.usersCount / this.itemsPerPage)).keys()
       ].map(e => e + 1);
     },
-    ...mapGetters(["user", "articlesCount", "isLoading", "articles"])
+    ...mapGetters(["user", "isLoading"])
   },
   watch: {
+    /**
+     * @method currentPage we'll get the page we're on and we'll call 
+     * the fetchLawyers method to get the users
+     */
     currentPage(newValue) {
-      console.log("currentPage",newValue);
       this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
-      this.fetchArticles();
+      this.fetchLawyers();
     }
   },
   methods: {
+    /**
+     * @method filter every time we filter, we will get the fields entered and 
+     * send it to the server along with offset and limit so that we can return the paged users
+     */
     filter() {
-      console.log(
-        "FILTER",
-        this.searchEmail,
-        this.searchName,
-        this.searchSurname
-      );
       this.resetPagination();
       let dataFilters = {
         page: this.listConfig,
@@ -137,12 +150,21 @@ export default {
       };
       this.fetchFiltersItems(dataFilters);
     },
-    fetchArticles() {
+    /**
+     * @method fetchLawyers we get the paged users 
+     */
+    fetchLawyers() {
       this.$store.dispatch(GET_LAWYERS, this.listConfig);
     },
+    /**
+     * @method fetchFiltersItems we get the paged users for the filters
+     */
     fetchFiltersItems(data) {
       this.$store.dispatch(GET_LAWYERS_FILTERED, data);
     },
+    /**
+     * @method resetPagination we reset the page when we filter
+     */
     resetPagination() {
       this.listConfig.offset = 0;
       this.currentPage = 1;
@@ -151,6 +173,24 @@ export default {
 };
 </script>
 <style>
+.inputs-search{
+  text-align: center;
+}
+.form-search{
+  width: 20%;
+  padding: .5rem .75rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+.button-search{
+  height: 37px !important;
+}
 .responsive-img__list {
   width: 5%;
   height: 3vw;

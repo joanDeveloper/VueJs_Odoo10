@@ -43,15 +43,10 @@ export default {
   name: "ComponentAnswerForo",
   beforeMount() {
     // When the page is reloaded the content of the store is lost, therefore, we make the request again by slug
-    console.log("ITEM_FORO", this.$route.params.subtema);
     let slug = this.$route.params.subtema;
-    if (this.questionsForum.length == 0) {
-      this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug).then(res=>{
-        this.getIdQuestion();
-      });
-    }
-    this.getIdQuestion();
-    
+    this.questionsForum.length == 0 ? this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug).then(res=>{
+      this.getIdQuestion();
+    }) : this.getIdQuestion();
   },
   props: {
     content: { type: String, required: false }
