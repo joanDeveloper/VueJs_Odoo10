@@ -71,7 +71,6 @@ import {
 } from "@/store/actions.type";
 import { Utils } from "../utils/utils.js";
 import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
-var contTeme = 0, contQuestion = 0;
 
 export default {
   name: "ComponenteItemForo",
@@ -87,22 +86,14 @@ export default {
      * @method itemTitle replace hyphens with spaces and the first letter in uppercase
      */
     itemTitle(slug) {
-      return (
-        slug
-          .split("tema-")[1]
-          .charAt(0)
-          .toUpperCase() +
-        slug
-          .split("tema-")[1]
-          .slice(1)
-          .replace("-", " ")
-      );
+      return Utils.TitleBannerTemeForum(slug);
     },
     /**
      * @method searchIdTeme we search in the array of topics the id of the topics from the slug 
      * so that we can return the questions of the forum
      */
     searchIdTeme() {
+      var contTeme = 0;
       this.temesForum.forEach(element => {
         let id_tema =
           element.slug == this.$route.params.slug ? element.id : false;
@@ -117,6 +108,7 @@ export default {
      * if the user has more than 500 credits and we look for the id of the subject from the slug
      */
     onSubmit(question, subteme, currentUser) {
+      var contQuestion = 0;
       let validateMaxLength = maxLength55(question);
       let validateMinLength = minLength5(question);
 
@@ -158,10 +150,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "userDetail",
       "isAuthenticated",
       "currentUser",
-      "asociacionesInteresadas",
       "temesForum",
       "questionsForum"
     ])

@@ -5,35 +5,9 @@
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
             <img src="img/users/joanet1.jpg" class="user-img" />
+            <h5 v-if="currentUser.nombre"><strong>{{ currentUser.nombre }}</strong></h5>
             <h4>{{ currentUser.email }}</h4>
-            <!-- <p>{{ profile.bio }}</p> -->
             
-            <!-- <div v-if="isCurrentUser()">
-              <router-link
-                class="btn btn-sm btn-outline-secondary action-btn"
-                :to="{ name: 'settings' }"
-              >
-                <i class="ion-gear-a"></i> Edit Profile Settings
-              </router-link>
-            </div>
-            <div v-else>
-              <button
-                class="btn btn-sm btn-secondary action-btn"
-                v-if="profile.following"
-                @click.prevent="unfollow();"
-              >
-                <i class="ion-plus-round"></i> &nbsp;Unfollow
-                {{ profile.username }}
-              </button>
-              <button
-                class="btn btn-sm btn-outline-secondary action-btn"
-                v-if="!profile.following"
-                @click.prevent="follow();"
-              >
-                <i class="ion-plus-round"></i> &nbsp;Follow
-                {{ profile.username }}
-              </button>
-            </div> -->
           </div>
         </div>
       </div>
@@ -108,9 +82,6 @@ export default {
       currency: 'eur'
     }
   },
-  // mounted() {
-    
-  // },
   computed: {
     ...mapGetters(["currentUser", "profile", "isAuthenticated"])
   },
@@ -154,11 +125,6 @@ export default {
     canceled () {
       // do stuff 
     }
-  },
-  // watch: {
-  //   $route(to) {
-  //     //this.$store.dispatch(FETCH_PROFILE, to.params);
-  //   }
-  // }
+  }
 };
 </script>

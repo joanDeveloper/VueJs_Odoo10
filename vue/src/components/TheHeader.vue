@@ -91,7 +91,8 @@
               params: { username: currentUser.email }
             }"
           >
-            {{ currentUser.email }}
+            <span v-if="currentUser.nombre">{{ currentUser.nombre }}</span>
+            <span v-else>{{ currentUser.email }}</span>
           </router-link>
         </li>
 

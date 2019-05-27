@@ -3,6 +3,7 @@ import JwtService from "@/common/jwt.service";
 import { LOGIN, LOGOUT, REGISTER, CHECK_AUTH } from "./actions.type";
 import { SET_AUTH, PURGE_AUTH, SET_ERROR } from "./mutations.type";
 import Vue from "vue";
+import { Utils } from "../utils/utils";
 import Toasted from "vue-toasted";
 Vue.use(Toasted);
 
@@ -49,27 +50,13 @@ const actions = {
           // context.commit(SET_AUTH, data.user);
           // resolve(data);
           console.log("RES", data.result);
-          if (!JSON.parse(data.result).error) {
-            Vue.toasted.show(JSON.parse(data.result).message, {
-              theme: "outline",
-              position: "top-right",
-              duration: 5000
-            });
-          } else {
-            Vue.toasted.show(JSON.parse(data.result).error.message, {
-              theme: "bubble",
-              position: "top-right",
-              duration: 5000
-            });
-          }
+          !JSON.parse(data.result).error
+            ? Utils.toasterInfo(JSON.parse(data.result).message)
+            : Utils.toasterError(JSON.parse(data.result).error.message);
         })
         .catch(({ response }) => {
           console.log("RES_ERROR", response);
-          Vue.toasted.show(response, {
-            theme: "bubble",
-            position: "top-right",
-            duration: 5000
-          });
+          Utils.toasterError(response);
           context.commit(SET_ERROR, response.result.error);
           reject(response);
         });
@@ -102,11 +89,7 @@ const actions = {
 
 const mutations = {
   [SET_ERROR](state, error) {
-    Vue.toasted.show(error, {
-      theme: "bubble",
-      position: "top-right",
-      duration: 5000
-    });
+    Utils.toasterError(error);
     JwtService.destroyToken();
     state.errors = error;
   },

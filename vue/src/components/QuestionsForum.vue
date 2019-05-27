@@ -5,7 +5,7 @@
       style="background:linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%);"
     >
       <div class="container" align="center">
-        <h1 class="logo-font">Tema ---</h1>
+        <h1 class="logo-font">Consultas Subtema {{ itemTitle(this.$route.params.subtema) }}</h1>
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
@@ -85,6 +85,7 @@ export default {
     // if we load the page we will not have the questions, 
     // so we will call again to the action to obtain them
     let slug = this.$route.params.subtema;
+    console.log("ASDASD::__",slug);
     this.questionsForum.length == 0 ? this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug) : false;
   },
   props: {
@@ -111,24 +112,16 @@ export default {
      * @method submitAnswer we send the response to the server
      */
     submitAnswer(id_question, currentUser){
+      console.log("submitAnswer",id_question);
       let payload = {"id_question":id_question, "userLawyer":currentUser, "answer":this.answer};
+      console.log("payload",payload);
       this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
-
     },
     /**
      * @method itemTitle replace hyphens with spaces and the first letter in uppercase
      */
     itemTitle(slug) {
-      return (
-        slug
-          .split("tema-")[1]
-          .charAt(0)
-          .toUpperCase() +
-        slug
-          .split("tema-")[1]
-          .slice(1)
-          .replace("-", " ")
-      );
+      return Utils.TitleBannerForum(slug);
     },
     /**
      * @method onSubmit first we validate the data of the form, then we verify 
@@ -147,6 +140,7 @@ export default {
         : true;
 
       if (validateMaxLength && validateMinLength) {
+        // Must have at least 500 credits to make the query
         if (currentUser.credits >= 500){
           this.questionsForum.forEach(element => {
             let subteme = element.slug_subtema == this.$route.params.subtema ? element.subtema : false;
@@ -178,11 +172,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "userDetail",
       "isAuthenticated",
       "currentUser",
-      "asociacionesInteresadas",
-      "temesForum",
       "questionsForum",
       "answerQuestion"
     ])

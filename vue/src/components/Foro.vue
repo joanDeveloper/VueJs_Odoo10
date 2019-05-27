@@ -26,26 +26,15 @@ import { GET_TEMES_FORUM } from "@/store/actions.type";
 
 export default {
   name: "ComponenteForo",
-  
   mounted() {
-    console.log("FORO", this.$route.params.id);
     this.$store.dispatch(GET_TEMES_FORUM);
-    
   },
   computed: {
     ...mapGetters([
-      "userDetail",
-      "isAuthenticated",
-      "currentUser",
-      "asociacionesInteresadas",
       "temesForum"
     ])
   }
 };
-
-
-
-
 </script>
 <style>
 .delete-link{

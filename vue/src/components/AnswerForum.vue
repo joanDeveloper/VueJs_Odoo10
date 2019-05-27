@@ -5,7 +5,7 @@
       style="background:linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%);"
     >
       <div class="container" align="center">
-        <h1 class="logo-font">Tema ---</h1>
+        <h1 class="logo-font">Respuestas Subtema {{ itemTitle(this.$route.params.subtema) }}</h1>
         <h4>Su seguridad a su alcanze</h4>
       </div>
     </div>
@@ -56,25 +56,14 @@ export default {
      * @method itemTitle replace hyphens with spaces and the first letter in uppercase
      */
     itemTitle(slug) {
-      return (
-        slug
-          .split("tema-")[1]
-          .charAt(0)
-          .toUpperCase() +
-        slug
-          .split("tema-")[1]
-          .slice(1)
-          .replace("-", " ")
-      );
+      return Utils.TitleBannerForum(slug);
     },
     /**
       * get id of the question with localStorage to obtain the answers
       */
     getIdQuestion() {
-      console.log("YEAH getIdQuestion",this.questionsForum);
       let id_question = localStorage.getItem("id_question");
       this.$store.dispatch(GET_ANSWER_FORUM, id_question);
-
     }
   },
   data() {
