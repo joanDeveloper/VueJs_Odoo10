@@ -1,7 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import JwtService from "@/common/jwt.service";
+//import JwtService from "@/common/jwt.service";
 import { API_URL } from "@/common/config";
 
 const ApiService = {
@@ -10,12 +10,12 @@ const ApiService = {
     Vue.axios.defaults.baseURL = API_URL;
   },
 
-  setHeader() {
-    console.log("setHeader",JwtService.getToken());
-    Vue.axios.defaults.headers.common[
-      "authorizationssss56557"
-    ] = `Token ` + JwtService.getToken();
-  },
+  // setHeader() {
+  //   console.log("setHeader",JwtService.getToken());
+  //   Vue.axios.defaults.headers.common[
+  //     "authorizationssss56557"
+  //   ] = `Token ` + JwtService.getToken();
+  // },
 
   query(resource, params) {
     return Vue.axios.get(resource, params).catch(error => {
@@ -55,32 +55,6 @@ const ApiService = {
 
 export default ApiService;
 
-export const TagsService = {
-  get() {
-    return ApiService.get("tags");
-  }
-};
-
-export const ArticlesService = {
-  query(type, params) {
-    return ApiService.query("articles" + (type === "feed" ? "/feed" : ""), {
-      params: params
-    });
-  },
-  get(slug) {
-    return ApiService.get("articles", slug);
-  },
-  create(params) {
-    return ApiService.post("articles", { article: params });
-  },
-  update(slug, params) {
-    return ApiService.update("articles", slug, { article: params });
-  },
-  destroy(slug) {
-    return ApiService.delete(`articles/${slug}`);
-  }
-};
-
 export const ContactService = {
   post(payload) {
     return ApiService.post(`contact`, { data: payload });
@@ -113,14 +87,12 @@ export const CategoriesService = {
 
 export const GuardiasService = {
   get(id) {
-    console.log("GuardiasService", id);
     return ApiService.getParams("getGuards", id);
   }
 };
 
 export const CasosService = {
   get(id) {
-    console.log("CasosService", id);
     return ApiService.getParams("get-casos", id);
   }
 };
@@ -136,13 +108,13 @@ export const ForumService = {
     return ApiService.get("get-temesForum");
   },
   postQuestion(payload) {
-    return ApiService.post("create-commentForum",{ payload });
+    return ApiService.post("create-commentForum", { payload });
   },
   postAnswer(payload) {
-    return ApiService.post("create-answer",{ payload });
+    return ApiService.post("create-answer", { payload });
   },
   getAnswer(slug) {
-    return ApiService.getParams("get-answer",slug );
+    return ApiService.getParams("get-answer", slug);
   },
   getQuestions(id_tema) {
     return ApiService.getParams("get-questionForum", id_tema);
@@ -154,7 +126,6 @@ export const ForumService = {
 
 export const AssociacionesService = {
   get() {
-    console.log("AssociacionesService");
     return ApiService.get("get-associaciones");
   },
   getLawyers(payload) {
@@ -183,24 +154,9 @@ export const CommentsService = {
   },
 
   post(payload) {
-    console.log("POST COMMENT",payload);
     return ApiService.post(`create-comments`, { payload });
   },
   update(payload) {
-    console.log("UPDATE COMMENT",payload);
     return ApiService.post(`update-comments`, { payload });
-  },
-
-  destroy(slug, commentId) {
-    return ApiService.delete(`articles/${slug}/comments/${commentId}`);
-  }
-};
-
-export const FavoriteService = {
-  add(slug) {
-    return ApiService.post(`articles/${slug}/favorite`);
-  },
-  remove(slug) {
-    return ApiService.delete(`articles/${slug}/favorite`);
   }
 };

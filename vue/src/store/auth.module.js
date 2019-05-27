@@ -25,15 +25,12 @@ const getters = {
 const actions = {
   [LOGIN](context, credentials) {
     return new Promise(resolve => {
-      console.log("LOGIN__", credentials);
       ApiService.post("signin", { credentials })
         .then(({ data }) => {
-          console.log("RES_LOGIN", data.result);
           context.commit(SET_AUTH, data.result.user);
           resolve(data);
         })
         .catch(({ response }) => {
-          console.log("RES_LOGIN_ERROR", response);
           context.commit(SET_ERROR, response.data.result.error.message);
           //reject(response)
         });
@@ -44,18 +41,15 @@ const actions = {
   },
   [REGISTER](context, credentials) {
     return new Promise((resolve, reject) => {
-      console.log("REGISTER", context, credentials);
       ApiService.post("register", { credentials })
         .then(({ data }) => {
           // context.commit(SET_AUTH, data.user);
           // resolve(data);
-          console.log("RES", data.result);
           !JSON.parse(data.result).error
             ? Utils.toasterInfo(JSON.parse(data.result).message)
             : Utils.toasterError(JSON.parse(data.result).error.message);
         })
         .catch(({ response }) => {
-          console.log("RES_ERROR", response);
           Utils.toasterError(response);
           context.commit(SET_ERROR, response.result.error);
           reject(response);
@@ -68,12 +62,10 @@ const actions = {
       return new Promise((resolve, reject) => {
         ApiService.post("verify", { "Token": JwtService.getToken() })
           .then(({ data }) => {
-            console.log("CHECK_AUTH",data.result);
             context.commit(SET_AUTH, data.result.user);
             resolve(data);
           })
           .catch(({ response }) => {
-            console.log("CHECK_AUTH_ERROR",response);
             context.commit(
               SET_ERROR,
               JSON.parse(response.data.result).error.message

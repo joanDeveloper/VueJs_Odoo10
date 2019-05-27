@@ -107,6 +107,16 @@
           </router-link>
         </li>
         
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            active-class="active"
+            exact
+            :to="{ name: 'contact' }"
+          >
+            <i class="ion-compose"></i>Contact
+          </router-link>
+        </li>
       </ul>
     </div>
   </nav>

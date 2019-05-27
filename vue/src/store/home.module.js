@@ -17,16 +17,13 @@ const getters = {
 
 const actions = {
   [GET_CATEGORIES](context, data) {
-    console.log("CONTEXT_CATEGORIES", context, data);
     CategoriesService.get()
       .then(({ data }) => {
-        console.log("GET_CATEGORIES", data);
         state.categories = data;
       })
       .catch(() => {});
   }
 };
-
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
 export default {

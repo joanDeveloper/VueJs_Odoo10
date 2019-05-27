@@ -81,7 +81,6 @@ export default {
      * @method onSubmit We validate the data before sending it to the server
      */
     onSubmit(id, comment, currentUser) {
-      console.log("onSubmit_COMMENT", this.userDetail[0].id, comment, currentUser);
       let validateMaxLength = maxLength55(comment);
       let validateMinLength = minLength5(comment);
 
@@ -93,13 +92,11 @@ export default {
         this.$store
           .dispatch(COMMENT_CREATE, { id, comment, currentUser })
           .then(data => {
-            console.log("DATA__", JSON.parse(data.data.result).comments);
-            console.log("DATA__", this);
             this.$data.commentLawyer = JSON.parse(data.data.result).comments;
             //this.errors = {};
           })
           .catch(({ response }) => {
-            console.log("DATA__ERROR", response);
+            //console.log("DATA__ERROR", response);
             //this.errors = response.data.errors;
           });
       }
@@ -113,9 +110,7 @@ export default {
       this.$store
         .dispatch(GET_COMMENT, { num_colegiado })
         .then(data => {
-          console.log("DATA__GET_COMMENT", data);
           this.$data.commentLawyer = data.data.comments;
-          //this.errors = {};
         })
         .catch(({ response }) => {
           console.log("DATA__ERROR", response);
@@ -138,13 +133,12 @@ export default {
     editComment(id){
       let dataComment = {id_comment:id,id_userLawyer:this.userDetail[0].id,comment:this.updateComment};
       this.$store.dispatch(UPDATE_COMMENT, { dataComment }).then(data => {
-          console.log("DATA__UPDATE_COMMENT", data);
           this.$data.commentLawyer = JSON.parse(data.data.result).comments;
           this.editedComment = false;
           //this.errors = {};
         })
         .catch(({ response }) => {
-          console.log("DATA_UPDATE_COMMENT__ERROR", response);
+          //console.log("DATA_UPDATE_COMMENT__ERROR", response);
           //this.errors = response.data.errors;
         });
     }
