@@ -33,7 +33,7 @@ const actions = {
       })
       .catch(() => {});
   },
-  [GET_ALL_USERS](context, slug) {
+  [GET_ALL_USERS]() {
     UsersService.getAll()
       .then(({ data }) => {
         state.countUsers = data.countUsers;
@@ -48,7 +48,7 @@ const actions = {
       .catch(() => {});
   },
   [GET_DETAILS](context, id) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       UsersService.postDetail(id)
         .then(({ data }) => {
           state.userDetail = JSON.parse(data.result);

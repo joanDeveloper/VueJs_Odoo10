@@ -93,8 +93,9 @@ export default {
   },
   computed: {
     /**
-     * @method listConfig we declare the category that belongs to the user, 
+     * we declare the category that belongs to the user, 
      * the limit of users per page and the current page
+     * @method listConfig
      */
     listConfig() {
       const { type } = this;
@@ -112,8 +113,9 @@ export default {
       };
     },
     /**
-     * @method pages if the number of users is less than the number of elements per page previously
+     * if the number of users is less than the number of elements per page previously
      * declared, we will not show the pages, otherwise we will return the pages
+     * @method pages
      * @returns {array}
      */
     pages() {
@@ -127,8 +129,8 @@ export default {
   },
   watch: {
     /**
-     * @method currentPage we'll get the page we're on and we'll call 
-     * the fetchLawyers method to get the users
+     * we'll get the page we're on and we'll call the fetchLawyers method to get the users
+     * @method currentPage
      */
     currentPage(newValue) {
       this.listConfig.filters.offset = (newValue - 1) * this.itemsPerPage;
@@ -137,8 +139,9 @@ export default {
   },
   methods: {
     /**
-     * @method filter every time we filter, we will get the fields entered and 
+     * every time we filter, we will get the fields entered and 
      * send it to the server along with offset and limit so that we can return the paged users
+     * @method filter
      */
     filter() {
       this.resetPagination();
@@ -151,19 +154,22 @@ export default {
       this.fetchFiltersItems(dataFilters);
     },
     /**
-     * @method fetchLawyers we get the paged users 
+     * we get the paged users
+     * @method fetchLawyers
      */
     fetchLawyers() {
       this.$store.dispatch(GET_LAWYERS, this.listConfig);
     },
     /**
-     * @method fetchFiltersItems we get the paged users for the filters
+     * we get the paged users for the filters
+     * @method fetchFiltersItems
      */
     fetchFiltersItems(data) {
       this.$store.dispatch(GET_LAWYERS_FILTERED, data);
     },
     /**
-     * @method resetPagination we reset the page when we filter
+     * we reset the page when we filter
+     * @method resetPagination
      */
     resetPagination() {
       this.listConfig.offset = 0;

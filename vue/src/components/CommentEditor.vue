@@ -78,7 +78,8 @@ export default {
   },
   methods: {
     /**
-     * @method onSubmit We validate the data before sending it to the server
+     * We validate the data before sending it to the server
+     * @method onSubmit
      */
     onSubmit(id, comment, currentUser) {
       let validateMaxLength = maxLength55(comment);
@@ -103,7 +104,8 @@ export default {
       
     },
     /**
-     * @method init we get the collegiate number to look for the lawyer user
+     * we get the collegiate number to look for the lawyer user
+     * @method init
      */
     init() {
       let num_colegiado = this.$props.id;
@@ -118,8 +120,8 @@ export default {
         });
     },
     /**
-     * @method activeEditComment we save the id of the comment and the comment and 
-     * activate the field to edit it
+     * we save the id of the comment and the comment and activate the field to edit it
+     * @method activeEditComment
      */
     activeEditComment(id,contentComment){
       this.idComment = id;
@@ -127,8 +129,8 @@ export default {
       this.updateComment = contentComment;
     },
     /**
-     * @method editComment We get the new data and call the action to send it 
-     * to the server to be updated
+     * We get the new data and call the action to send it to the server to be updated
+     * @method editComment 
      */
     editComment(id){
       let dataComment = {id_comment:id,id_userLawyer:this.userDetail[0].id,comment:this.updateComment};

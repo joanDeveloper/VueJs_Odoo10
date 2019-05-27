@@ -29,15 +29,17 @@ export default {
   },
   methods: {
     /**
-     * @method changePage it serves to go changing of page every time that we click
+     * it serves to go changing of page every time that we click
+     * @method changePage
      */
     changePage(goToPage) {
       if (goToPage === this.currentPage) return;
       this.$emit("update:currentPage", goToPage);
     },
     /**
-     * @method paginationClass It serves to activate the CSS class, 
+     * It serves to activate the CSS class, 
      * therefore it will mark a color to indicate us on the page that we are
+     * @method paginationClass
      */
     paginationClass(page) {
       return {

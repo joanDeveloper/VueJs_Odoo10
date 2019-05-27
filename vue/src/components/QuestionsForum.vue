@@ -85,7 +85,6 @@ export default {
     // if we load the page we will not have the questions, 
     // so we will call again to the action to obtain them
     let slug = this.$route.params.subtema;
-    console.log("ASDASD::__",slug);
     this.questionsForum.length == 0 ? this.$store.dispatch(GET_QUESTIONS_BYSLUG_FORUM, slug) : false;
   },
   props: {
@@ -93,14 +92,15 @@ export default {
   },
   methods: {
     /**
-     * @method setIdQuestion we set the id of the question in localStorage every time 
-     * we want to see your answer
+     * we set the id of the question in localStorage every time we want to see your answer
+     * @method setIdQuestion
      */
     setIdQuestion(id_question){
       localStorage.setItem("id_question",id_question);
     },
     /**
-     * @method activateSubmitAnswer we activate the field and we save the id of the question
+     * we activate the field and we save the id of the question
+     * @method activateSubmitAnswer
      */
     activateSubmitAnswer(id_question){
       this.answerQuestions = true;
@@ -109,7 +109,8 @@ export default {
       this.activateAnswer = true;
     },
     /**
-     * @method submitAnswer we send the response to the server
+     * we send the response to the server
+     * @method submitAnswer
      */
     submitAnswer(id_question, currentUser){
       console.log("submitAnswer",id_question);
@@ -118,14 +119,16 @@ export default {
       this.$store.dispatch(SUBMIT_ANSWER_FORUM, payload);
     },
     /**
-     * @method itemTitle replace hyphens with spaces and the first letter in uppercase
+     * replace hyphens with spaces and the first letter in uppercase
+     * @method itemTitle
      */
     itemTitle(slug) {
       return Utils.TitleBannerForum(slug);
     },
     /**
-     * @method onSubmit first we validate the data of the form, then we verify 
+     * first we validate the data of the form, then we verify 
      * if the user has more than 500 credits and we look for the id of the subject from the slug
+     * @method onSubmit
      */
     onSubmit(question, subteme, currentUser) {
       var cont = 0;

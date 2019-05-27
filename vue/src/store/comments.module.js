@@ -1,6 +1,5 @@
 import { CommentsService } from "@/common/api.service";
 import { COMMENT_CREATE, GET_COMMENT, UPDATE_COMMENT } from "./actions.type";
-import { Utils } from "../utils/utils";
 
 const initialState = {
   comments: []

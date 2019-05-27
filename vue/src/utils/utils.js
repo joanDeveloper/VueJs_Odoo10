@@ -7,7 +7,8 @@ Vue.use(Toasted);
 
 export const Utils = {
   /**
-   * @method toasterError show error missage
+   * show error missage
+   * @method toasterError
    */
   toasterError(error) {
     Vue.toasted.show(error, {
@@ -17,7 +18,8 @@ export const Utils = {
     });
   },
   /**
-   * @method toasterError show information missage
+   * show information missage
+   * @method toasterInfo
    */
   toasterInfo(content) {
     Vue.toasted.show(content, {
@@ -27,13 +29,15 @@ export const Utils = {
     });
   },
   /**
-   * @method TitleBannerForum show title banner forum (questions, answer)
+   * replace hyphens with spaces and the first letter in uppercase
+   * @method TitleBannerForum
    */
   TitleBannerForum(slug) {
     return slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/gi, " ");
   },
   /**
-   * @method TitleBannerTemeForum show title banner forum (itemForo)
+   * replace hyphens with spaces and the first letter in uppercase
+   * @method TitleBannerTemeForum
    */
   TitleBannerTemeForum(slug) {
     return (

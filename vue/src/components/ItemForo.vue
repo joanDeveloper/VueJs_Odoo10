@@ -83,14 +83,16 @@ export default {
   },
   methods: {
     /**
-     * @method itemTitle replace hyphens with spaces and the first letter in uppercase
+     * show title banner forum (questions, answer)
+     * @method itemTitle
      */
     itemTitle(slug) {
       return Utils.TitleBannerTemeForum(slug);
     },
     /**
-     * @method searchIdTeme we search in the array of topics the id of the topics from the slug 
+     * we search in the array of topics the id of the topics from the slug 
      * so that we can return the questions of the forum
+     * @method searchIdTeme
      */
     searchIdTeme() {
       var contTeme = 0;
@@ -104,8 +106,9 @@ export default {
       });
     },
     /**
-     * @method onSubmit first we validate the data of the form, then we verify 
+     * first we validate the data of the form, then we verify 
      * if the user has more than 500 credits and we look for the id of the subject from the slug
+     * @method onSubmit
      */
     onSubmit(question, subteme, currentUser) {
       var contQuestion = 0;
@@ -166,9 +169,6 @@ export default {
 }
 .question-user {
   margin-left: 3.3%;
-}
-.btn{
-  /* margin-left: 3%; */
 }
 
 .delete-link-item{

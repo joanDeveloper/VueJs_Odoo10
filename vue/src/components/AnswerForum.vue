@@ -53,7 +53,8 @@ export default {
   },
   methods: {
     /**
-     * @method itemTitle replace hyphens with spaces and the first letter in uppercase
+     * replace hyphens with spaces and the first letter in uppercase
+     * @method itemTitle
      */
     itemTitle(slug) {
       return Utils.TitleBannerForum(slug);
@@ -82,11 +83,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "userDetail",
-      "isAuthenticated",
-      "currentUser",
-      "asociacionesInteresadas",
-      "temesForum",
       "questionsForum",
       "answerQuestion"
     ])

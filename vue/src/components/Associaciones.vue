@@ -116,28 +116,32 @@ export default {
   },
   methods: {
     /**
-     * @method suscribe We call the action so that an user can subscribe to an association
+     * We call the action so that an user can subscribe to an association
+     * @method suscribe
      */
     suscribe(id) {
       let payload = { id_asociacion: id, id_user: this.currentUser.id };
       this.$store.dispatch(POST_ASSOCIACIONES, payload);
     },
     /**
-     * @method selected We call this action so that an association can choose the lawyer
+     * We call this action so that an association can choose the lawyer
+     * @method selected
      */
     selected(id) {
       let payload = { id_interesado: id, id_asociacion: this.currentUser.id };
       this.$store.dispatch(POST_INTERESADO, payload);
     },
     /**
-     * @method deleteSelected we call this action to deselect the lawyer user
+     * we call this action to deselect the lawyer user
+     * @method deleteSelected
      */
     deleteSelected(id) {
       let payload = { id_interesado: id , id_asociacion: this.currentUser.id};
       this.$store.dispatch(DELETE_INTERESADO, payload);
     },
     /**
-     * @method unsuscribe we call this action so that a lawyer user can unsubscribe from the association
+     * we call this action so that a lawyer user can unsubscribe from the association
+     * @method unsuscribe
      */
     unsuscribe(id) {
       let payload = { id_interesado: this.currentUser.id , id_asociacion: id};

@@ -18,19 +18,19 @@ const initialState = {
 export const state = { ...initialState };
 
 export const actions = {
-  async [GET_TEMES_FORUM](context) {
+  async [GET_TEMES_FORUM]() {
     return await ForumService.get()
       .then(data => {
         state.temesForum = data.data;
       })
-      .catch(({ response }) => {});
+      .catch(() => {});
   },
   async [CREATE_QUESTION_FORUM](context, payload) {
     return await ForumService.postQuestion(payload)
       .then(data => {
         state.questionsForum = JSON.parse(data.data.result).questions;
       })
-      .catch(({ response }) => {});
+      .catch(() => {});
   },
 
   async [GET_QUESTIONS_FORUM](context, payload) {
@@ -38,7 +38,7 @@ export const actions = {
       .then(data => {
         state.questionsForum = data.data.questions;
       })
-      .catch(({ response }) => {});
+      .catch(() => {});
   },
 
   async [SUBMIT_ANSWER_FORUM](context, payload) {
@@ -57,7 +57,7 @@ export const actions = {
       .then(data => {
         state.questionsForum = data.data.questions;
       })
-      .catch(({ response }) => {});
+      .catch(() => {});
   },
 
   async [GET_ANSWER_FORUM](context, payload) {
@@ -65,7 +65,7 @@ export const actions = {
       .then(data => {
         state.answerQuestion = data.data.answers;
       })
-      .catch(({ response }) => {});
+      .catch(() => {});
   }
 };
 

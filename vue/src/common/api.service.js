@@ -9,7 +9,9 @@ const ApiService = {
     Vue.use(VueAxios, axios);
     Vue.axios.defaults.baseURL = API_URL;
   },
-
+  getVisitors() {
+    return ApiService.get(`calculate-visitors`);
+  },
   // setHeader() {
   //   console.log("setHeader",JwtService.getToken());
   //   Vue.axios.defaults.headers.common[
@@ -60,6 +62,12 @@ export const ContactService = {
     return ApiService.post(`contact`, { data: payload });
   }
 };
+
+// export const VisitorService = {
+//   get() {
+//     return ApiService.getParams(`calculate-visitors`);
+//   }
+// };
 
 export const UsersService = {
   get() {

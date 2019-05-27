@@ -16,7 +16,7 @@ const getters = {
 };
 
 const actions = {
-  [GET_CATEGORIES](context, data) {
+  [GET_CATEGORIES]() {
     CategoriesService.get()
       .then(({ data }) => {
         state.categories = data;

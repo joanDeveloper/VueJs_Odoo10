@@ -19,11 +19,7 @@ class ProfileController(http.Controller):
         data = request.jsonrequest
         _logger.info(data['currentUser']['id'])
         _logger.info(data['credits'])
-        #fields = ['user_lawyer','nombre_zonas','nombre_turno','date_attendance','delivered']
-        # search = self._models.execute_kw(self._db, self._uid, self._password,'guards.lawyers',
-        # 'search_read',[[['user_lawyer', '=', int(post['idUser'])]]])
-        # _logger.info(search)
-        # return json.dumps(search)
+        
         searchCredits = self._models.execute_kw(self._db, self._uid, self._password,'users.lawyer',
         'search_read',[[['id', '=', int(data['currentUser']['id'])]]])
         #_logger.info(searchCredits['credits'])
