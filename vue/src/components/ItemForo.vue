@@ -67,7 +67,8 @@ import { mapGetters } from "vuex";
 import {
   GET_TEMES_FORUM,
   CREATE_QUESTION_FORUM,
-  GET_QUESTIONS_FORUM
+  GET_QUESTIONS_FORUM,
+  CHECK_AUTH
 } from "@/store/actions.type";
 import { Utils } from "../utils/utils.js";
 import { emails, maxLength55, minLength5 } from "../utils/helpers.js";
@@ -128,7 +129,11 @@ export default {
             let id_tema = element.slug == this.$route.params.slug ? element.id : false;
             if (id_tema != false && contQuestion === 0) {
               contQuestion++;
-              this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser});
+              this.$store.dispatch(CREATE_QUESTION_FORUM, {id_tema,question,subteme,currentUser}).then(()=>{
+                this.$store.dispatch(CHECK_AUTH).then(() => {
+                  console.log("CHECK_AUTH");
+                });
+              });
             }
           });
         }else{
