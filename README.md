@@ -2,8 +2,6 @@
 
 > This project has been developed for educational reasons for the application of final module 2ºDAW.
 
-Project demo is available at http://colegioabogadosliberty.tk/#/
-
 We use **Vue.js** for the frontend and **Odoo 10** for the backend.
 
 ## Short Description
