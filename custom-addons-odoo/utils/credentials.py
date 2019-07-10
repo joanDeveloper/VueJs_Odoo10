@@ -6,8 +6,8 @@ class Credentials():
         _logger.info("CREDENTIALSSSS")
         url = 'http://51.75.31.239:8069'
         db = base64.b64decode("bGliZXJ0eQ==")
-        username = base64.b64decode('am9hbm1vZGF3QGdtYWlsLmNvbQ==')
-        password = base64.b64decode('QW1waUpvYW5ldDMwMTExMg==')
+        username = base64.b64decode('am9hbm1vZ')
+        password = base64.b64decode('QW1waUpvY')
 
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(url))
         uid = common.authenticate(db, username, password, {})
