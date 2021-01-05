@@ -1,7 +1,7 @@
 {
   "author": "Joan Montés <joanmodaw@gmail.com>",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "date-fns": "^1.29.0",
     "marked": "^0.5.1",
     "register-service-worker": "^1.0.0",
