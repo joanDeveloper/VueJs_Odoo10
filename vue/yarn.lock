@@ -6323,10 +6323,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.5.1.tgz#062f43b88b02ee80901e8e8d8e6a620ddb3aa752"
-  integrity sha512-iUkBZegCZou4AdwbKTwSW/lNDcz5OuRSl3qdcl31Ia0B2QPG0Jn+tKblh/9/eP9/6+4h27vpoh8wel/vQOV0vw==
+marked@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.10.tgz#423e295385cc0c3a70fa495e0df68b007b879423"
+  integrity sha512-+QvuFj0nGgO970fySghXGmuw+Fd0gD2x3+MqCWLIPf5oxdv1Ka6b2q+z9RP01P/IaKPMEramy+7cNy/Lw8c3hw==
 
 math-random@^1.0.1:
   version "1.0.1"
@@ -9836,6 +9836,11 @@ vue-router@^3.0.1:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
   integrity sha512-vLLoY452L+JBpALMP5UHum9+7nzR9PeIBCghU9ZtJ1eWm6ieUI8Zb/DI3MYxH32bxkjzYV1LRjNv4qr8d+uX/w==
 
+vue-stripe-checkout@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/vue-stripe-checkout/-/vue-stripe-checkout-1.2.6.tgz#01f6818fd2cb4b2e91a862ed77ede0df0d412139"
+  integrity sha512-ujIHGWXNlbssOC1w6sllENU0l+q+BfXjKfJEe79xmT3TzBJAnmhel7WCa8SXOgqTQcARlihCTUpfxy121PGlnQ==
+
 vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
@@ -9856,6 +9861,11 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
   integrity sha512-x3LV3wdmmERhVCYy3quqA57NJW7F3i6faas++pJQWtknWT+n7k30F4TVdHvCLn48peTJFRvCpxs3UuFPqgeELg==
+
+vue-toasted@^1.1.26:
+  version "1.1.28"
+  resolved "https://registry.yarnpkg.com/vue-toasted/-/vue-toasted-1.1.28.tgz#dbabb83acc89f7a9e8765815e491d79f0dc65c26"
+  integrity sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw==
 
 vue@^2.5.17:
   version "2.5.17"
